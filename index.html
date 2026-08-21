@@ -1,396 +1,549 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SpotGuess - Görselin küçük bir kısmından ne olduğunu tahmin et.">
   <title>SpotGuess</title>
 
   <style>
-    :root{
-      --bg:#ffffff;
-      --panel:#f7f7f8;
-      --panel2:#f0f0f2;
-      --text:#111111;
-      --muted:#666;
-      --border:#dedee2;
-      --accent:#111111;
-      --green:#15803d;
-      --red:#c62828;
+    :root {
+      --text: #111827;
+      --muted: #667085;
+      --border: #e5e7eb;
+      --card: rgba(255, 255, 255, 0.92);
+      --purple: #7c3aed;
+      --blue: #2563eb;
+      --pink: #ec4899;
+      --green: #16a34a;
+      --red: #dc2626;
+      --gray-bg: #f8fafc;
     }
 
-    *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:Arial,Helvetica,sans-serif;
+    * {
+      box-sizing: border-box;
     }
 
-    button,input{font:inherit}
-
-    .app{
-      width:min(1050px,94%);
-      margin:auto;
-      padding:24px 0 40px;
+    html {
+      scroll-behavior: smooth;
     }
 
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:16px;
-      margin-bottom:24px;
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 5%, rgba(124, 58, 237, 0.08), transparent 25%),
+        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.08), transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.07), transparent 30%),
+        #ffffff;
     }
 
-    .logo{
-      font-size:32px;
-      font-weight:900;
-      letter-spacing:-1.5px;
+    button,
+    input {
+      font: inherit;
     }
 
-    .logo span{
-      color:#777;
+    button {
+      cursor: pointer;
     }
 
-    .score-pill{
-      padding:10px 15px;
-      border:1px solid var(--border);
-      border-radius:14px;
-      background:#fafafa;
-      font-weight:800;
+    .app {
+      width: min(1100px, 94%);
+      margin: 0 auto;
+      padding: 24px 0 48px;
     }
 
-    .screen{
-      border:1px solid var(--border);
-      border-radius:26px;
-      background:#fff;
-      padding:28px;
+    /* ---------------- HEADER ---------------- */
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
-    .hidden{display:none!important}
-
-    /* HOME */
-
-    .hero{
-      text-align:center;
-      padding:12px 0 20px;
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1.7px;
     }
 
-    .hero h1{
-      margin:0;
-      font-size:clamp(42px,8vw,74px);
-      letter-spacing:-4px;
+    .logo span {
+      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .hero h1 span{color:#777}
-
-    .hero p{
-      max-width:650px;
-      margin:14px auto 0;
-      color:var(--muted);
-      line-height:1.7;
+    .score-pill {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.92);
+      padding: 10px 15px;
+      border-radius: 14px;
+      font-weight: 800;
+      box-shadow: 0 8px 25px rgba(15,23,42,.05);
     }
 
-    .section-title{
-      margin:24px 0 12px;
-      font-weight:900;
+    /* ---------------- SCREEN ---------------- */
+
+    .screen {
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(14, 165, 233, 0.08), transparent 28%),
+        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.06), transparent 30%),
+        var(--card);
+      box-shadow:
+        0 25px 70px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(10px);
+      padding: 30px;
     }
 
-    .category-grid{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
+    .hidden {
+      display: none !important;
     }
 
-    .category{
-      border:1px solid var(--border);
-      border-radius:17px;
-      background:#fff;
-      padding:16px 10px;
-      cursor:pointer;
-      transition:.15s;
-      font-weight:800;
+    /* ---------------- HOME ---------------- */
+
+    .hero {
+      text-align: center;
+      padding: 10px 0 20px;
     }
 
-    .category:hover{
-      transform:translateY(-2px);
-      border-color:#999;
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(46px, 8vw, 78px);
+      letter-spacing: -5px;
+      background:
+        linear-gradient(
+          90deg,
+          #111827,
+          #7c3aed,
+          #2563eb,
+          #ec4899
+        );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    .category.active{
-      background:#111;
-      color:#fff;
-      border-color:#111;
+    .hero p {
+      max-width: 670px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 16px;
     }
 
-    .category-icon{
-      display:block;
-      font-size:28px;
-      margin-bottom:8px;
+    .section-title {
+      margin: 28px 0 12px;
+      font-size: 18px;
+      font-weight: 900;
     }
 
-    .difficulty-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 11px;
     }
 
-    .difficulty{
-      border:1px solid var(--border);
-      border-radius:15px;
-      background:#fff;
-      padding:14px 10px;
-      cursor:pointer;
-      font-weight:800;
+    .category {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.92);
+      color: var(--text);
+      padding: 18px 10px;
+      font-weight: 800;
+      transition: .18s ease;
+      box-shadow: 0 5px 16px rgba(15,23,42,.03);
     }
 
-    .difficulty.active{
-      background:#111;
-      color:#fff;
-      border-color:#111;
+    .category:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px rgba(15,23,42,.08);
     }
 
-    .start-wrap{
-      display:flex;
-      justify-content:center;
-      margin-top:28px;
+    .category.active {
+      color: #fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--purple), var(--blue));
+      box-shadow: 0 12px 28px rgba(99,102,241,.24);
     }
 
-    .primary{
-      border:0;
-      border-radius:15px;
-      background:#111;
-      color:#fff;
-      padding:15px 24px;
-      font-weight:900;
-      cursor:pointer;
+    .category-icon {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 8px;
     }
 
-    .secondary{
-      border:1px solid var(--border);
-      border-radius:15px;
-      background:#f2f2f3;
-      color:#111;
-      padding:15px 20px;
-      font-weight:900;
-      cursor:pointer;
+    .difficulty-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 11px;
     }
 
-    /* GAME */
-
-    .game-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:12px;
+    .difficulty {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.92);
+      padding: 14px 10px;
+      font-weight: 800;
+      transition: .18s ease;
     }
 
-    .round{
-      color:var(--muted);
-      font-weight:800;
+    .difficulty:hover {
+      transform: translateY(-2px);
     }
 
-    .badge{
-      border:1px solid var(--border);
-      background:#f4f4f4;
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:13px;
-      font-weight:900;
+    .difficulty.active {
+      background: #111827;
+      color: white;
+      border-color: #111827;
     }
 
-    .question{
-      text-align:center;
-      margin:6px 0 6px;
-      font-size:clamp(28px,5vw,42px);
+    .start-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
     }
 
-    .question-sub{
-      text-align:center;
-      color:var(--muted);
-      margin-bottom:20px;
+    .primary {
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 24px;
+      background: linear-gradient(135deg, #111827, #374151);
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 12px 25px rgba(15,23,42,.16);
+      transition: .18s ease;
     }
 
-    .timer-row{
-      display:flex;
-      justify-content:space-between;
-      color:var(--muted);
-      font-size:13px;
-      margin-bottom:7px;
+    .primary:hover {
+      transform: translateY(-2px);
     }
 
-    .timer{
-      height:10px;
-      background:#ececee;
-      border-radius:999px;
-      overflow:hidden;
-      margin-bottom:20px;
+    .secondary {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 20px;
+      background: white;
+      color: var(--text);
+      font-weight: 800;
     }
 
-    .timer-fill{
-      height:100%;
-      width:100%;
-      background:#111;
-      transition:width .15s linear;
+    .info-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
     }
 
-    .canvas-wrap{
-      width:min(760px,100%);
-      aspect-ratio:4/3;
-      margin:auto;
-      background:#fff;
-      border:1px solid #d8d8dc;
-      border-radius:22px;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .info-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
     }
 
-   .art{
-  position:absolute;
-  width:72%;
-  max-width:560px;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  user-select:none;
-  pointer-events:none;
+    /* ---------------- GAME HEADER ---------------- */
 
-  /* SADECE SEÇİLEN KISIM GÖRÜNSÜN */
-  clip-path: inset(40% 40% 40% 40%);
-  transition: clip-path .35s ease;
-}
-
-    .white-mask{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index:2;
+    .game-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 13px;
     }
 
-    .reveal{
-      position:absolute;
-      z-index:3;
-      border:2px solid #111;
-      pointer-events:none;
-      transition:.35s ease;
+    .round {
+      color: var(--muted);
+      font-weight: 800;
     }
 
-    .reveal-info{
-      position:absolute;
-      z-index:4;
-      left:12px;
-      bottom:12px;
-      padding:7px 10px;
-      border-radius:10px;
-      border:1px solid #ddd;
-      background:rgba(255,255,255,.95);
-      font-size:12px;
-      font-weight:900;
+    .badge {
+      padding: 8px 13px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.95);
+      font-size: 13px;
+      font-weight: 900;
     }
 
-    .hint{
-      min-height:24px;
-      text-align:center;
-      margin:15px 0 10px;
-      color:var(--muted);
-      font-weight:800;
+    .question {
+      text-align: center;
+      margin: 5px 0;
+      font-size: clamp(28px, 5vw, 42px);
+      letter-spacing: -1px;
     }
 
-    .answer-row{
-      width:min(760px,100%);
-      margin:auto;
-      display:flex;
-      gap:10px;
+    .question-sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 20px;
     }
 
-    .answer{
-      flex:1;
-      min-width:0;
-      border:1px solid #ccc;
-      border-radius:15px;
-      padding:15px;
-      outline:none;
+    /* ---------------- TIMER ---------------- */
+
+    .timer-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
     }
 
-    .answer:focus{
-      border-color:#111;
+    .timer {
+      height: 10px;
+      background: #eceff3;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 22px;
     }
 
-    .feedback{
-      min-height:28px;
-      text-align:center;
-      margin-top:14px;
-      font-weight:900;
+    .timer-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #111827, #4b5563);
+      transition: width .15s linear;
     }
 
-    .correct{color:var(--green)}
-    .wrong{color:var(--red)}
+    /* ---------------- IMAGE AREA ---------------- */
 
-    .next-wrap{
-      display:flex;
-      justify-content:center;
-      margin-top:12px;
+    .image-container {
+      width: min(790px, 100%);
+      aspect-ratio: 4 / 3;
+      margin: 0 auto;
+      border-radius: 24px;
+      border: 1px solid #dfe3e8;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* RESULT */
-
-    .result{
-      text-align:center;
-      padding:30px 0;
+    /*
+      Bu alan görselin tamamını barındırıyor.
+    */
+    .logo-frame {
+      position: relative;
+      width: min(76%, 610px);
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      background: white;
+      border-radius: 12px;
     }
 
-    .result h2{
-      margin:0;
-      font-size:45px;
+    /*
+      Gerçek logo/görsel burada.
+      clip-path ile sadece küçük parçası görünür.
+    */
+    .logo-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      pointer-events: none;
+      clip-path: inset(40% 40% 40% 40%);
+      transition: clip-path .35s ease;
     }
 
-    .big-score{
-      font-size:76px;
-      font-weight:900;
-      margin:10px 0 15px;
+    /*
+      Görselin geri kalanını beyazlaştıran katman.
+      Böylece ekranda sadece açık pencere görünür.
+    */
+    .white-overlay {
+      position: absolute;
+      inset: 0;
+      background: white;
+      pointer-events: none;
+      z-index: 2;
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%
+      );
+      transition: clip-path .35s ease;
     }
 
-    .result-text{
-      color:var(--muted);
-      margin-bottom:24px;
-      line-height:1.6;
+    /*
+      Açık alanın çevresindeki ince çerçeve.
+    */
+    .reveal-border {
+      position: absolute;
+      border: 2px solid rgba(17,24,39,.55);
+      border-radius: 8px;
+      pointer-events: none;
+      z-index: 4;
+      transition: all .35s ease;
     }
 
-    @media(max-width:850px){
-      .category-grid{
-        grid-template-columns:repeat(3,1fr);
+    .reveal-info {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      z-index: 5;
+      background: rgba(255,255,255,.95);
+      border: 1px solid #d9dde3;
+      color: #111827;
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    /* ---------------- INPUT ---------------- */
+
+    .hint {
+      text-align: center;
+      min-height: 25px;
+      margin: 16px 0 11px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .answer-row {
+      width: min(790px, 100%);
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .answer {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid #d0d5dd;
+      background: white;
+      border-radius: 15px;
+      padding: 15px;
+      outline: none;
+      color: var(--text);
+    }
+
+    .answer:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(124,58,237,.10);
+    }
+
+    .feedback {
+      min-height: 30px;
+      text-align: center;
+      margin-top: 14px;
+      font-weight: 900;
+    }
+
+    .correct {
+      color: var(--green);
+    }
+
+    .wrong {
+      color: var(--red);
+    }
+
+    .next-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    /* ---------------- RESULT ---------------- */
+
+    .result {
+      text-align: center;
+      padding: 30px 0;
+    }
+
+    .result h2 {
+      margin: 0;
+      font-size: 48px;
+      letter-spacing: -2px;
+    }
+
+    .big-score {
+      font-size: 78px;
+      font-weight: 900;
+      margin: 8px 0;
+      background: linear-gradient(90deg, var(--purple), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .result-line {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .result-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ---------------- RESPONSIVE ---------------- */
+
+    @media (max-width: 900px) {
+      .category-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
 
-      .difficulty-grid{
-        grid-template-columns:repeat(2,1fr);
+      .difficulty-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media(max-width:600px){
-      .screen{
-        padding:18px;
-        border-radius:20px;
+    @media (max-width: 650px) {
+      .app {
+        width: 94%;
+        padding-top: 15px;
       }
 
-      .category-grid{
-        grid-template-columns:repeat(2,1fr);
+      .screen {
+        padding: 18px;
+        border-radius: 21px;
       }
 
-      .answer-row{
-        flex-direction:column;
+      header {
+        margin-bottom: 15px;
       }
 
-      .canvas-wrap{
-        aspect-ratio:1/1;
+      .logo {
+        font-size: 26px;
       }
 
-      .art{
-        width:78%;
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .answer-row {
+        flex-direction: column;
+      }
+
+      .image-container {
+        aspect-ratio: 1 / 1;
+      }
+
+      .logo-frame {
+        width: 84%;
+      }
+
+      .hero h1 {
+        letter-spacing: -3px;
       }
     }
   </style>
@@ -408,19 +561,22 @@
     </div>
   </header>
 
-  <!-- ANA MENÜ -->
+  <!-- ================= HOME ================= -->
+
   <section id="homeScreen" class="screen">
 
     <div class="hero">
-      <h1>Spot<span>Guess</span></h1>
+      <h1>SpotGuess</h1>
+
       <p>
-        Görselin sadece küçük bir kısmını gör.
-        Ne olduğunu tahmin et.
-        Ne kadar erken bilirsen o kadar fazla puan kazan.
+        Bir logo, bayrak veya görselin sadece küçük bir kısmını gör.
+        Ne olduğunu tahmin et. Ne kadar az parçayla bilirsen o kadar çok puan kazan.
       </p>
     </div>
 
-    <div class="section-title">Kategori seç</div>
+    <div class="section-title">
+      Kategori seç
+    </div>
 
     <div class="category-grid">
 
@@ -451,7 +607,9 @@
 
     </div>
 
-    <div class="section-title">Zorluk</div>
+    <div class="section-title">
+      Zorluk
+    </div>
 
     <div class="difficulty-grid">
 
@@ -474,25 +632,35 @@
     </div>
 
     <div class="start-wrap">
-      <button id="startBtn" class="primary">
+      <button id="startButton" class="primary">
         Oyuna Başla
       </button>
+    </div>
+
+    <div class="info-row">
+      <div class="info-chip">10 soru</div>
+      <div class="info-chip">Süreli</div>
+      <div class="info-chip">Puan sistemi</div>
+      <div class="info-chip">Rastgele bölge</div>
     </div>
 
   </section>
 
 
-  <!-- OYUN -->
+  <!-- ================= GAME ================= -->
+
   <section id="gameScreen" class="screen hidden">
 
     <div class="game-top">
+
       <div class="round">
-        Soru <span id="round">1</span> / 10
+        Soru <span id="roundNumber">1</span> / 10
       </div>
 
-      <div class="badge" id="badge">
+      <div id="categoryBadge" class="badge">
         🌍 Bayraklar
       </div>
+
     </div>
 
     <h2 id="questionTitle" class="question">
@@ -500,25 +668,36 @@
     </h2>
 
     <div class="question-sub">
-      Sadece açık olan kısmı incele.
+      Sadece açık olan küçük bölgeyi görebiliyorsun.
     </div>
 
-    <div class="timer-row">
+    <div class="timer-top">
       <span>Zaman</span>
-      <span><strong id="time">15</strong> saniye</span>
+      <span><strong id="timerText">15</strong> saniye</span>
     </div>
 
     <div class="timer">
       <div id="timerFill" class="timer-fill"></div>
     </div>
 
-    <div class="canvas-wrap">
 
-      <img id="art" class="art" alt="Tahmin görseli">
-     
+    <!-- IMAGE -->
 
-      <!-- Açık pencere -->
-      <div id="reveal" class="reveal"></div>
+    <div class="image-container">
+
+      <div class="logo-frame">
+
+        <img
+          id="logoImage"
+          class="logo-image"
+          src=""
+          alt="Tahmin görseli"
+          draggable="false"
+        >
+
+      </div>
+
+      <div id="revealBorder" class="reveal-border"></div>
 
       <div id="revealInfo" class="reveal-info">
         Görünen alan: %8
@@ -526,61 +705,75 @@
 
     </div>
 
+
     <div id="hint" class="hint">
       Henüz ipucu yok.
     </div>
 
+
     <div class="answer-row">
 
       <input
-        id="answer"
+        id="answerInput"
         class="answer"
         type="text"
         autocomplete="off"
         placeholder="Tahminini yaz..."
       >
 
-      <button id="guessBtn" class="primary">
+      <button id="guessButton" class="primary">
         Tahmin Et
       </button>
 
     </div>
 
+
     <div id="feedback" class="feedback"></div>
 
+
     <div class="next-wrap">
-      <button id="nextBtn" class="secondary hidden">
+
+      <button id="nextButton" class="secondary hidden">
         Sonraki Soru →
       </button>
+
     </div>
 
   </section>
 
 
-  <!-- SONUÇ -->
+  <!-- ================= RESULT ================= -->
+
   <section id="resultScreen" class="screen hidden">
 
     <div class="result">
 
       <h2>Oyun Bitti</h2>
 
-      <div id="bigScore" class="big-score">0</div>
-
-      <div class="result-text">
-        Doğru: <strong id="correctCount">0</strong> / 10
-        <br>
-        Başarı: <strong id="successPercent">%0</strong>
+      <div id="bigScore" class="big-score">
+        0
       </div>
 
-      <button id="againBtn" class="primary">
-        Tekrar Oyna
-      </button>
+      <div class="result-line">
+        Doğru cevap:
+        <strong id="correctCount">0</strong> / 10
+        <br>
 
-      <br><br>
+        Başarı:
+        <strong id="successPercent">%0</strong>
+      </div>
 
-      <button id="homeBtn" class="secondary">
-        Ana Menü
-      </button>
+      <div class="result-buttons">
+
+        <button id="againButton" class="primary">
+          Tekrar Oyna
+        </button>
+
+        <button id="homeButton" class="secondary">
+          Ana Menü
+        </button>
+
+      </div>
 
     </div>
 
@@ -590,1143 +783,1199 @@
 
 
 <script>
+
   /*
-    NOT:
-    Aşağıdaki görseller özgün SVG tasarımlarıdır.
-    Gerçek marka/logoların birebir kopyası değildir.
+    ==========================================================
+    SORU VERİLERİ
+    ==========================================================
+
+    Görseller images/ klasöründen okunuyor.
+
+    ÖRNEK:
+      images/bjk.png
+
+    Yeni soru eklemek için:
+      {
+        answer: "Beşiktaş",
+        aliases: ["bjk", "besiktas", "beşiktaş"],
+        image: "images/bjk.png",
+        hint: "İstanbul'dan bir spor kulübü."
+      }
+
+    Görsel dosyaları senin eklediğin,
+    kullanma hakkına sahip olduğun görseller olmalı.
   */
 
-  const QUESTIONS = {
+
+  const QUESTION_BANK = {
 
     flags: [
+
       {
-        answer:"Türkiye",
-        aliases:["turkiye","türkiye","turkey"],
-        hint:"Bayrağında ay ve yıldız bulunur.",
-        svg: createFlagTurkey()
+        answer: "Türkiye",
+        aliases: ["turkiye", "türkiye", "turkey"],
+        image: "images/turkiye.png",
+        hint: "Bayrağında ay ve yıldız bulunur."
       },
+
       {
-        answer:"Japonya",
-        aliases:["japonya","japan"],
-        hint:"Asya'da bir ada ülkesi.",
-        svg: createFlagJapan()
+        answer: "Japonya",
+        aliases: ["japonya", "japan"],
+        image: "images/japonya.png",
+        hint: "Asya'da bir ada ülkesi."
       },
+
       {
-        answer:"Fransa",
-        aliases:["fransa","france"],
-        hint:"Avrupa'da üç dikey renkli bölgesi var.",
-        svg: createFlagFrance()
+        answer: "Fransa",
+        aliases: ["fransa", "france"],
+        image: "images/fransa.png",
+        hint: "Avrupa'da bulunan üç renkli bir bayrak."
       },
+
       {
-        answer:"Almanya",
-        aliases:["almanya","germany"],
-        hint:"Bayrağı üç yatay şeritten oluşur.",
-        svg: createFlagGermany()
+        answer: "Almanya",
+        aliases: ["almanya", "germany"],
+        image: "images/almanya.png",
+        hint: "Üç yatay renkli bölgesi vardır."
       },
+
       {
-        answer:"İtalya",
-        aliases:["italya","italy"],
-        hint:"Akdeniz'de çizme şeklindeki ülke.",
-        svg: createFlagItaly()
+        answer: "İtalya",
+        aliases: ["italya", "italy"],
+        image: "images/italya.png",
+        hint: "Akdeniz'de çizme şeklinde bir ülke."
       },
+
       {
-        answer:"Kanada",
-        aliases:["kanada","canada"],
-        hint:"Ortada akçaağaç yaprağı bulunur.",
-        svg: createFlagCanada()
+        answer: "Kanada",
+        aliases: ["kanada", "canada"],
+        image: "images/kanada.png",
+        hint: "Bayrağında akçaağaç yaprağı vardır."
       }
+
     ],
+
 
     brands: [
+
       {
-        answer:"Beşiktaş",
-        aliases:["bjk","besiktas","beşiktaş"],
-        hint:"İstanbul merkezli bir spor kulübü.",
-        svg: createClubBlackWhite()
+        answer: "Beşiktaş",
+        aliases: ["bjk", "besiktas", "beşiktaş"],
+        image: "images/bjk.png",
+        hint: "İstanbul'dan siyah-beyaz bir spor kulübü."
       },
+
       {
-        answer:"Nike",
-        aliases:["nike"],
-        hint:"Spor giyim markası.",
-        svg: createNikeInspired()
+        answer: "Nike",
+        aliases: ["nike"],
+        image: "images/nike.png",
+        hint: "Spor giyim markası."
       },
+
       {
-        answer:"YouTube",
-        aliases:["youtube"],
-        hint:"Video platformu.",
-        svg: createVideoInspired()
+        answer: "Adidas",
+        aliases: ["adidas"],
+        image: "images/adidas.png",
+        hint: "Üç çizgili tasarımıyla tanınır."
       },
+
       {
-        answer:"Spotify",
-        aliases:["spotify"],
-        hint:"Müzik dinleme platformu.",
-        svg: createMusicInspired()
+        answer: "YouTube",
+        aliases: ["youtube"],
+        image: "images/youtube.png",
+        hint: "Video platformu."
       },
+
       {
-        answer:"Adidas",
-        aliases:["adidas"],
-        hint:"Üç şeritli spor markası.",
-        svg: createThreeStripeInspired()
+        answer: "Spotify",
+        aliases: ["spotify"],
+        image: "images/spotify.png",
+        hint: "Müzik ve podcast platformu."
       }
+
     ],
+
 
     football: [
+
       {
-        answer:"Beşiktaş",
-        aliases:["bjk","besiktas","beşiktaş"],
-        hint:"İstanbul'un siyah-beyaz kulübü.",
-        svg: createClubBlackWhite()
+        answer: "Beşiktaş",
+        aliases: ["bjk", "besiktas", "beşiktaş"],
+        image: "images/bjk.png",
+        hint: "İstanbul'un siyah-beyaz kulüplerinden biri."
       },
+
       {
-        answer:"Galatasaray",
-        aliases:["galatasaray","gs"],
-        hint:"Sarı-kırmızı renklerle bilinir.",
-        svg: createClubYellowRed()
+        answer: "Galatasaray",
+        aliases: ["galatasaray", "gs"],
+        image: "images/galatasaray.png",
+        hint: "Sarı-kırmızı renklerle bilinir."
       },
+
       {
-        answer:"Fenerbahçe",
-        aliases:["fenerbahce","fenerbahçe","fb"],
-        hint:"Sarı-lacivert renklerle bilinir.",
-        svg: createClubBlueYellow()
+        answer: "Fenerbahçe",
+        aliases: ["fenerbahce", "fenerbahçe", "fb"],
+        image: "images/fenerbahce.png",
+        hint: "Sarı-lacivert renklerle bilinir."
       },
+
       {
-        answer:"Barcelona",
-        aliases:["barcelona","barca","barça"],
-        hint:"Katalonya ile özdeşleşen futbol kulübü.",
-        svg: createClubBlueRed()
+        answer: "Barcelona",
+        aliases: ["barcelona", "barca", "barça"],
+        image: "images/barcelona.png",
+        hint: "Katalonya ile özdeşleşen futbol kulübü."
       }
+
     ],
+
 
     basketball: [
+
       {
-        answer:"Chicago Bulls",
-        aliases:["bulls","chicago bulls"],
-        hint:"Kırmızı-siyah renkleriyle bilinir.",
-        svg: createBasketRed()
+        answer: "Chicago Bulls",
+        aliases: ["bulls", "chicago bulls"],
+        image: "images/chicago-bulls.png",
+        hint: "NBA'de oynayan kırmızı renkli takım."
       },
+
       {
-        answer:"Los Angeles Lakers",
-        aliases:["lakers","los angeles lakers"],
-        hint:"Mor-sarı renkli NBA takımı.",
-        svg: createBasketPurple()
+        answer: "Los Angeles Lakers",
+        aliases: ["lakers", "los angeles lakers"],
+        image: "images/lakers.png",
+        hint: "Mor ve sarı renkleriyle tanınır."
       },
+
       {
-        answer:"Boston Celtics",
-        aliases:["celtics","boston celtics"],
-        hint:"Yeşil renkli NBA takımı.",
-        svg: createBasketGreen()
+        answer: "Boston Celtics",
+        aliases: ["celtics", "boston celtics"],
+        image: "images/celtics.png",
+        hint: "Yeşil renkli NBA takımı."
       }
+
     ],
 
+
     games: [
+
       {
-        answer:"Minecraft",
-        aliases:["minecraft"],
-        hint:"Bloklardan oluşan bir oyun dünyası.",
-        svg: createGameMinecraft()
+        answer: "Minecraft",
+        aliases: ["minecraft"],
+        image: "images/minecraft.png",
+        hint: "Bloklardan oluşan bir oyun dünyası."
       },
+
       {
-        answer:"Fortnite",
-        aliases:["fortnite"],
-        hint:"Battle royale türündeki popüler oyun.",
-        svg: createGameBattle()
+        answer: "Fortnite",
+        aliases: ["fortnite"],
+        image: "images/fortnite.png",
+        hint: "Battle royale türüyle tanınır."
       },
+
       {
-        answer:"Roblox",
-        aliases:["roblox"],
-        hint:"Kullanıcıların oyunlar oluşturabildiği platform.",
-        svg: createGameBlock()
+        answer: "Roblox",
+        aliases: ["roblox"],
+        image: "images/roblox.png",
+        hint: "Kullanıcıların birçok farklı oyun oynayabildiği platform."
       },
+
       {
-        answer:"Among Us",
-        aliases:["among us"],
-        hint:"Renkli astronotların olduğu sosyal çıkarım oyunu.",
-        svg: createGameCrew()
+        answer: "Among Us",
+        aliases: ["among us"],
+        image: "images/among-us.png",
+        hint: "Astronotların olduğu sosyal çıkarım oyunu."
       }
+
     ]
+
   };
 
-  let category = "flags";
-  let difficulty = "easy";
+
+  /* ==========================================================
+     DEĞİŞKENLER
+  ========================================================== */
+
+  let selectedCategory = "flags";
+  let selectedDifficulty = "easy";
 
   let questions = [];
-  let current = 0;
+  let currentIndex = 0;
+
   let score = 0;
-  let correct = 0;
+  let correctAnswers = 0;
+
   let revealLevel = 1;
-  let timer = null;
-  let time = 15;
-  let locked = false;
+
   let currentRegion = null;
 
-  const homeScreen = document.getElementById("homeScreen");
-  const gameScreen = document.getElementById("gameScreen");
-  const resultScreen = document.getElementById("resultScreen");
+  let timer = null;
+  let timeLeft = 15;
 
-  const art = document.getElementById("art");
-  const mask = document.getElementById("mask");
-  const reveal = document.getElementById("reveal");
+  let locked = false;
 
-  const roundEl = document.getElementById("round");
-  const timeEl = document.getElementById("time");
-  const timerFill = document.getElementById("timerFill");
-  const revealInfo = document.getElementById("revealInfo");
-  const hint = document.getElementById("hint");
-  const answer = document.getElementById("answer");
-  const feedback = document.getElementById("feedback");
-  const nextBtn = document.getElementById("nextBtn");
-  const topScore = document.getElementById("topScore");
-  const badge = document.getElementById("badge");
-  const questionTitle = document.getElementById("questionTitle");
 
-  /* ===========================
-     SVG YARDIMCI
-  =========================== */
+  /* ==========================================================
+     ELEMENTLER
+  ========================================================== */
 
-  function svg(inner){
-    return "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 600 400"
-             width="600"
-             height="400">
-          ${inner}
-        </svg>
-      `);
-  }
+  const homeScreen =
+    document.getElementById("homeScreen");
 
-  function createFlagTurkey(){
-    return svg(`
-      <rect width="600" height="400" fill="#c91524"/>
-      <circle cx="255" cy="200" r="88" fill="#fff"/>
-      <circle cx="292" cy="200" r="69" fill="#c91524"/>
-      <polygon points="
-        405,125
-        421,179
-        478,181
-        433,214
-        450,270
-        405,237
-        360,270
-        377,214
-        332,181
-        389,179"
-        fill="#fff"/>
-    `);
-  }
+  const gameScreen =
+    document.getElementById("gameScreen");
 
-  function createFlagJapan(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <circle cx="300" cy="200" r="105" fill="#c91524"/>
-    `);
-  }
+  const resultScreen =
+    document.getElementById("resultScreen");
 
-  function createFlagFrance(){
-    return svg(`
-      <rect width="200" height="400" fill="#123f98"/>
-      <rect x="200" width="200" height="400" fill="#fff"/>
-      <rect x="400" width="200" height="400" fill="#ef3340"/>
-    `);
-  }
+  const topScore =
+    document.getElementById("topScore");
 
-  function createFlagGermany(){
-    return svg(`
-      <rect width="600" height="133" fill="#111"/>
-      <rect y="133" width="600" height="134" fill="#d9272e"/>
-      <rect y="267" width="600" height="133" fill="#f6c515"/>
-    `);
-  }
+  const roundNumber =
+    document.getElementById("roundNumber");
 
-  function createFlagItaly(){
-    return svg(`
-      <rect width="200" height="400" fill="#009246"/>
-      <rect x="200" width="200" height="400" fill="#fff"/>
-      <rect x="400" width="200" height="400" fill="#ce2b37"/>
-    `);
-  }
+  const categoryBadge =
+    document.getElementById("categoryBadge");
 
-  function createFlagCanada(){
-    return svg(`
-      <rect width="145" height="400" fill="#d81e34"/>
-      <rect x="145" width="310" height="400" fill="#fff"/>
-      <rect x="455" width="145" height="400" fill="#d81e34"/>
+  const questionTitle =
+    document.getElementById("questionTitle");
 
-      <polygon points="
-        300,70
-        320,138
-        370,120
-        350,170
-        397,198
-        350,220
-        360,290
-        300,252
-        240,290
-        250,220
-        203,198
-        250,170
-        230,120
-        280,138"
-        fill="#d81e34"/>
-    `);
-  }
+  const logoImage =
+    document.getElementById("logoImage");
 
-  /* ===== ÖZGÜN KULÜP TASARIMLARI ===== */
+  const logoFrame =
+    document.querySelector(".logo-frame");
 
-  function createClubBlackWhite(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
+  const revealBorder =
+    document.getElementById("revealBorder");
 
-      <path d="
-        M300 44
-        L420 82
-        L402 274
-        Q300 340 198 274
-        L180 82 Z"
-        fill="#111"/>
+  const revealInfo =
+    document.getElementById("revealInfo");
 
-      <path d="
-        M300 63
-        L397 95
-        L381 259
-        Q300 310 219 259
-        L203 95 Z"
-        fill="#fff"/>
+  const timerText =
+    document.getElementById("timerText");
 
-      <rect x="255" y="71" width="45" height="198" fill="#111"/>
-      <rect x="300" y="71" width="45" height="198" fill="#111"/>
+  const timerFill =
+    document.getElementById("timerFill");
 
-      <circle cx="244" cy="35" r="13" fill="#111"/>
-      <circle cx="300" cy="24" r="13" fill="#111"/>
-      <circle cx="356" cy="35" r="13" fill="#111"/>
+  const hint =
+    document.getElementById("hint");
 
-      <text x="300" y="210"
-        text-anchor="middle"
-        font-family="Arial"
-        font-weight="900"
-        font-size="50"
-        fill="#111">
-        BG
-      </text>
-    `);
-  }
+  const answerInput =
+    document.getElementById("answerInput");
 
-  function createClubYellowRed(){
-    return svg(`
-      <rect width="600" height="400" fill="#eee"/>
-      <circle cx="300" cy="200" r="120"
-        fill="#e7bd23" stroke="#8e1830" stroke-width="20"/>
+  const feedback =
+    document.getElementById("feedback");
 
-      <path d="M240 88 L275 185 L225 240"
-        stroke="#8e1830" stroke-width="22" fill="none"/>
+  const nextButton =
+    document.getElementById("nextButton");
 
-      <path d="M360 88 L325 185 L375 240"
-        stroke="#8e1830" stroke-width="22" fill="none"/>
 
-      <text x="300" y="225"
-        text-anchor="middle"
-        font-size="58"
-        font-family="Arial"
-        font-weight="900"
-        fill="#8e1830">
-        GR
-      </text>
-    `);
-  }
+  /* ==========================================================
+     KATEGORİ SEÇİMİ
+  ========================================================== */
 
-  function createClubBlueYellow(){
-    return svg(`
-      <rect width="600" height="400" fill="#142c8c"/>
-      <circle cx="300" cy="200" r="120"
-        fill="#fff"
-        stroke="#e4b929"
-        stroke-width="18"/>
+  document
+    .querySelectorAll(".category")
+    .forEach(button => {
 
-      <path d="M205 145 Q300 95 395 145"
-        fill="none"
-        stroke="#e4b929"
-        stroke-width="18"/>
+      button.addEventListener("click", () => {
 
-      <path d="M215 250 Q300 295 385 250"
-        fill="none"
-        stroke="#e4b929"
-        stroke-width="18"/>
+        document
+          .querySelectorAll(".category")
+          .forEach(item => {
+            item.classList.remove("active");
+          });
 
-      <text x="300" y="223"
-        text-anchor="middle"
-        font-size="62"
-        font-family="Arial"
-        font-weight="900"
-        fill="#142c8c">
-        FB
-      </text>
-    `);
-  }
+        button.classList.add("active");
 
-  function createClubBlueRed(){
-    return svg(`
-      <rect width="600" height="400" fill="#a90038"/>
-      <rect x="70" width="115" height="400" fill="#173c91"/>
-      <rect x="300" width="115" height="400" fill="#173c91"/>
-      <circle cx="300" cy="200" r="102"
-        fill="#f4c21c"
-        stroke="#173c91"
-        stroke-width="12"/>
+        selectedCategory =
+          button.dataset.category;
 
-      <text x="300" y="222"
-        text-anchor="middle"
-        font-size="58"
-        font-family="Arial"
-        font-weight="900"
-        fill="#a90038">
-        CB
-      </text>
-    `);
-  }
+      });
 
-  /* ===== MARKA ESİNLİ ÖZGÜN TASARIM ===== */
-
-  function createNikeInspired(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <path d="
-        M105 250
-        Q230 205 505 105
-        Q360 210 250 264
-        Q165 306 105 283
-        Q85 275 105 250 Z"
-        fill="#111"/>
-    `);
-  }
-
-  function createVideoInspired(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <rect x="110" y="100"
-        width="380" height="200"
-        rx="45"
-        fill="#df1e37"/>
-      <polygon points="270,145 270,255 390,200"
-        fill="#fff"/>
-    `);
-  }
-
-  function createMusicInspired(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <circle cx="300" cy="200" r="110" fill="#1db954"/>
-      <path d="M220 173 Q300 145 380 175"
-        fill="none"
-        stroke="#fff"
-        stroke-width="17"
-        stroke-linecap="round"/>
-      <path d="M232 207 Q300 184 368 210"
-        fill="none"
-        stroke="#fff"
-        stroke-width="17"
-        stroke-linecap="round"/>
-      <path d="M247 240 Q300 222 353 245"
-        fill="none"
-        stroke="#fff"
-        stroke-width="17"
-        stroke-linecap="round"/>
-    `);
-  }
-
-  function createThreeStripeInspired(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <polygon points="145,290 215,110 265,110 195,290" fill="#111"/>
-      <polygon points="240,290 310,110 360,110 290,290" fill="#111"/>
-      <polygon points="335,290 405,110 455,110 385,290" fill="#111"/>
-    `);
-  }
-
-  /* ===== BASKETBOL ===== */
-
-  function createBasketRed(){
-    return svg(`
-      <rect width="600" height="400" fill="#fff"/>
-      <circle cx="300" cy="200" r="112" fill="#d82027"/>
-      <path d="M220 135 Q300 200 380 135"
-        fill="none" stroke="#111" stroke-width="13"/>
-      <path d="M220 265 Q300 200 380 265"
-        fill="none" stroke="#111" stroke-width="13"/>
-      <text x="300" y="217"
-        text-anchor="middle"
-        font-size="56"
-        font-family="Arial"
-        font-weight="900"
-        fill="#111">
-        CHI
-      </text>
-    `);
-  }
-
-  function createBasketPurple(){
-    return svg(`
-      <rect width="600" height="400" fill="#552583"/>
-      <circle cx="300" cy="200" r="110" fill="#fdb927"/>
-      <text x="300" y="214"
-        text-anchor="middle"
-        font-size="60"
-        font-family="Arial"
-        font-weight="900"
-        fill="#552583">
-        LK
-      </text>
-    `);
-  }
-
-  function createBasketGreen(){
-    return svg(`
-      <rect width="600" height="400" fill="#087b40"/>
-      <circle cx="300" cy="200" r="110"
-        fill="#fff"
-        stroke="#111"
-        stroke-width="8"/>
-      <text x="300" y="228"
-        text-anchor="middle"
-        font-size="82"
-        font-family="Arial"
-        font-weight="900"
-        fill="#087b40">
-        C
-      </text>
-    `);
-  }
-
-  /* ===== OYUN ===== */
-
-  function createGameMinecraft(){
-    return svg(`
-      <rect width="600" height="400" fill="#5f9444"/>
-      <rect x="125" y="90"
-        width="350"
-        height="230"
-        fill="#3f3f3f"/>
-
-      <rect x="180" y="135"
-        width="70"
-        height="70" fill="#151515"/>
-
-      <rect x="350" y="135"
-        width="70"
-        height="70" fill="#151515"/>
-
-      <rect x="235" y="225"
-        width="130"
-        height="55" fill="#151515"/>
-
-      <text x="300" y="56"
-        text-anchor="middle"
-        font-family="Arial"
-        font-size="30"
-        font-weight="900"
-        fill="#fff">
-        MINECRAFT
-      </text>
-    `);
-  }
-
-  function createGameBattle(){
-    return svg(`
-      <rect width="600" height="400" fill="#56379b"/>
-      <text x="300" y="220"
-        text-anchor="middle"
-        font-family="Arial"
-        font-size="70"
-        font-weight="900"
-        fill="#fff"
-        transform="rotate(-7 300 200)">
-        BATTLE
-      </text>
-    `);
-  }
-
-  function createGameBlock(){
-    return svg(`
-      <rect width="600" height="400" fill="#e42a22"/>
-      <rect x="210" y="105"
-        width="180"
-        height="180"
-        rx="30"
-        fill="#fff"
-        transform="rotate(20 300 195)"/>
-
-      <rect x="260" y="155"
-        width="80"
-        height="80"
-        fill="#e42a22"
-        transform="rotate(20 300 195)"/>
-    `);
-  }
-
-  function createGameCrew(){
-    return svg(`
-      <rect width="600" height="400" fill="#191919"/>
-
-      <path d="
-        M220 285
-        L205 220
-        Q185 130 245 95
-        Q300 65 355 95
-        Q415 130 395 220
-        L380 285
-        Z"
-        fill="#d63639"/>
-
-      <path d="
-        M250 115
-        L365 135
-        L350 205
-        L265 185
-        Z"
-        fill="#bcecff"/>
-    `);
-  }
-
-  /* ============================
-     SEÇİMLER
-  ============================ */
-
-  document.querySelectorAll(".category").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".category")
-        .forEach(x=>x.classList.remove("active"));
-
-      btn.classList.add("active");
-      category = btn.dataset.category;
     });
-  });
 
-  document.querySelectorAll(".difficulty").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".difficulty")
-        .forEach(x=>x.classList.remove("active"));
 
-      btn.classList.add("active");
-      difficulty = btn.dataset.difficulty;
+  /* ==========================================================
+     ZORLUK SEÇİMİ
+  ========================================================== */
+
+  document
+    .querySelectorAll(".difficulty")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".difficulty")
+          .forEach(item => {
+            item.classList.remove("active");
+          });
+
+        button.classList.add("active");
+
+        selectedDifficulty =
+          button.dataset.difficulty;
+
+      });
+
     });
-  });
 
-  /* ============================
-     YARDIMCI
-  ============================ */
 
-  function normalize(str){
-    return str
+  /* ==========================================================
+     YARDIMCI FONKSİYONLAR
+  ========================================================== */
+
+  function normalize(text) {
+
+    return text
       .toLocaleLowerCase("tr-TR")
       .trim()
-      .replace(/ı/g,"i")
-      .replace(/ş/g,"s")
-      .replace(/ğ/g,"g")
-      .replace(/ü/g,"u")
-      .replace(/ö/g,"o")
-      .replace(/ç/g,"c");
+      .replace(/ı/g, "i")
+      .replace(/ş/g, "s")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c");
+
   }
 
-  function shuffle(arr){
-    const a=[...arr];
-    for(let i=a.length-1;i>0;i--){
-      const j=Math.floor(Math.random()*(i+1));
-      [a[i],a[j]]=[a[j],a[i]];
+
+  function shuffle(array) {
+
+    const result = [...array];
+
+    for (
+      let i = result.length - 1;
+      i > 0;
+      i--
+    ) {
+
+      const j =
+        Math.floor(Math.random() * (i + 1));
+
+      [
+        result[i],
+        result[j]
+      ] = [
+        result[j],
+        result[i]
+      ];
+
     }
-    return a;
+
+    return result;
+
   }
 
-  function difficultyTime(){
-    if(difficulty==="easy") return 18;
-    if(difficulty==="medium") return 14;
-    if(difficulty==="hard") return 11;
+
+  function getTimeByDifficulty() {
+
+    if (selectedDifficulty === "easy")
+      return 18;
+
+    if (selectedDifficulty === "medium")
+      return 14;
+
+    if (selectedDifficulty === "hard")
+      return 11;
+
     return 8;
+
   }
 
-  /* ============================
-     RASTGELE AÇIK BÖLGE
-  ============================ */
 
-function generateRegion(){
+  function getInitialSize() {
 
-  const width =
-    revealLevel === 1 ? 16 :
-    revealLevel === 2 ? 26 :
-    revealLevel === 3 ? 42 :
-    65;
+    if (selectedDifficulty === "easy")
+      return 23;
 
-  const height =
-    revealLevel === 1 ? 16 :
-    revealLevel === 2 ? 25 :
-    revealLevel === 3 ? 38 :
-    58;
+    if (selectedDifficulty === "medium")
+      return 18;
 
-  const x = Math.random() * (100 - width);
-  const y = Math.random() * (100 - height);
+    if (selectedDifficulty === "hard")
+      return 13;
 
-  return {
-    x,
-    y,
-    width,
-    height
-  };
-}
+    return 8;
 
-  function applyReveal(){
-    currentRegion = generateRegion();
+  }
 
-    reveal.style.left = `${currentRegion.x}%`;
-    reveal.style.top = `${currentRegion.y}%`;
-    reveal.style.width = `${currentRegion.width}%`;
-    reveal.style.height = `${currentRegion.height}%`;
+
+  /* ==========================================================
+     RASTGELE BÖLGE
+  ========================================================== */
+
+  function generateRandomRegion() {
+
+    const size =
+      revealLevel === 1
+        ? getInitialSize()
+        : revealLevel === 2
+        ? getInitialSize() * 1.55
+        : revealLevel === 3
+        ? getInitialSize() * 2.3
+        : revealLevel === 4
+        ? getInitialSize() * 3.2
+        : 100;
+
+    const finalSize =
+      Math.min(size, 85);
+
+    const x =
+      Math.random() * (100 - finalSize);
+
+    const y =
+      Math.random() * (100 - finalSize);
+
+    return {
+      x,
+      y,
+      width: finalSize,
+      height: finalSize
+    };
+
+  }
+
+
+  /* ==========================================================
+     CLIP-PATH UYGULA
+  ========================================================== */
+
+  function applyReveal() {
+
+    if (!currentRegion)
+      return;
+
+    const r =
+      currentRegion;
 
     /*
-      Maske SVG görünümünün dışında kalan
-      her şeyi beyaza çeviriyor.
+      Görselin sadece seçilen bölgesi görünür.
     */
-    mask.style.clipPath =
-      `polygon(
-        0 0,
-        100% 0,
-        100% 100%,
-        0 100%,
-        0 0
-      )`;
 
-    /*
-      Açık pencerenin içini kesiyoruz.
-    */
-    mask.style.background = `
-      linear-gradient(
-        white,
-        white
+    logoImage.style.clipPath = `
+      inset(
+        ${r.y}%
+        ${100 - r.x - r.width}%
+        ${100 - r.y - r.height}%
+        ${r.x}%
       )
     `;
 
     /*
-      CSS mask yerine gerçek beyaz
-      dört blok oluşturuyoruz.
+      Açık pencerenin çerçevesini görselin üzerine
+      aynı yerde yerleştiriyoruz.
     */
 
-    const top = currentRegion.y;
-    const left = currentRegion.x;
-    const right =
-      100-(currentRegion.x+currentRegion.width);
-    const bottom =
-      100-(currentRegion.y+currentRegion.height);
+    const frameRect =
+      logoFrame.getBoundingClientRect();
 
-    mask.style.clipPath =
-      `polygon(
-        0 0,
-        100% 0,
-        100% ${top}%,
-        ${currentRegion.x+currentRegion.width}% ${top}%,
-        ${currentRegion.x+currentRegion.width}% ${currentRegion.y+currentRegion.height}%,
-        0 ${currentRegion.y+currentRegion.height}%,
-        0 0
-      )`;
+    const containerRect =
+      logoFrame.parentElement.getBoundingClientRect();
 
-    /*
-      Daha güvenilir çözüm:
-      art'ın üstüne beyaz overlay,
-      reveal alanını z-index ile üste çıkarıyoruz.
-    */
+    const left =
+      logoFrame.offsetLeft +
+      frameRect.width * (r.x / 100);
 
-    mask.style.left = "0";
-    mask.style.top = "0";
-    mask.style.right = "0";
-    mask.style.bottom = "0";
+    const top =
+      logoFrame.offsetTop +
+      frameRect.height * (r.y / 100);
 
-    mask.style.clipPath =
-      `polygon(
-        0 0,
-        100% 0,
-        100% ${top}%,
-        ${left+currentRegion.width}% ${top}%,
-        ${left+currentRegion.width}% ${top+currentRegion.height}%,
-        0 ${top+currentRegion.height}%,
-        0 100%,
-        100% 100%,
-        100% ${top+currentRegion.height}%,
-        ${left+currentRegion.width}% ${top+currentRegion.height}%,
-        ${left+currentRegion.width}% ${top}%,
-        0 ${top}%,
-        0 0
-      )`;
+    const width =
+      frameRect.width *
+      (r.width / 100);
+
+    const height =
+      frameRect.height *
+      (r.height / 100);
+
+    revealBorder.style.left =
+      `${left}px`;
+
+    revealBorder.style.top =
+      `${top}px`;
+
+    revealBorder.style.width =
+      `${width}px`;
+
+    revealBorder.style.height =
+      `${height}px`;
 
     revealInfo.textContent =
-      `Görünen alan: ${Math.round(
-        currentRegion.width*currentRegion.height/7
+      `Görünen alan: ${Math.max(
+        1,
+        Math.round(
+          (r.width * r.height) / 100
+        )
       )}%`;
+
   }
 
-  /*
-    Yukarıdaki CSS maskesi yerine daha temiz ve
-    garantili yöntem kullanıyoruz:
-    maskeyi dört ayrı beyaz panel gibi göstermek için
-    clip-path içinde reveal boşluğu oluşturuyoruz.
-  */
 
-function applyRevealClean(){
-
-  const r = currentRegion;
-
-  /*
-    Görselin tamamını değil,
-    sadece seçilen bölgesini göster.
-  */
-
-  art.style.clipPath = `
-    inset(
-      ${r.y}%
-      ${100 - r.x - r.width}%
-      ${100 - r.y - r.height}%
-      ${r.x}%
-    )
-  `;
-
-  /*
-    Açık kısmın etrafında ince çerçeve.
-  */
-
-  reveal.style.left = `${r.x}%`;
-  reveal.style.top = `${r.y}%`;
-  reveal.style.width = `${r.width}%`;
-  reveal.style.height = `${r.height}%`;
-
-  revealInfo.textContent =
-    `Görünen alan: ${Math.round(r.width * r.height / 100)}%`;
-}
-  /* ============================
+  /* ==========================================================
      TIMER
-  ============================ */
+  ========================================================== */
 
-  function startTimer(){
+  function startTimer() {
 
     clearInterval(timer);
 
-    time=difficultyTime();
+    timeLeft =
+      getTimeByDifficulty();
 
-    timeEl.textContent=time;
-    timerFill.style.width="100%";
+    timerText.textContent =
+      timeLeft;
 
-    timer=setInterval(()=>{
+    timerFill.style.width =
+      "100%";
 
-      time--;
+    timer =
+      setInterval(() => {
 
-      timeEl.textContent=time;
+        if (locked)
+          return;
 
-      timerFill.style.width=
-        `${(time/difficultyTime())*100}%`;
+        timeLeft--;
 
-      if(time<=0){
-        clearInterval(timer);
+        timerText.textContent =
+          timeLeft;
 
-        nextReveal("Süre bitti.");
-      }
+        timerFill.style.width =
+          `${Math.max(
+            0,
+            (timeLeft / getTimeByDifficulty()) * 100
+          )}%`;
 
-    },1000);
+        if (timeLeft <= 0) {
+
+          clearInterval(timer);
+
+          revealMore(
+            "Süre bitti."
+          );
+
+        }
+
+      }, 1000);
+
   }
 
-  /* ============================
+
+  /* ==========================================================
      PUAN
-  ============================ */
+  ========================================================== */
 
-  function points(){
-    if(revealLevel===1)return 1000;
-    if(revealLevel===2)return 700;
-    if(revealLevel===3)return 450;
-    return 200;
+  function getPoints() {
+
+    if (revealLevel === 1)
+      return 1000;
+
+    if (revealLevel === 2)
+      return 750;
+
+    if (revealLevel === 3)
+      return 500;
+
+    if (revealLevel === 4)
+      return 250;
+
+    return 0;
+
   }
 
-  /* ============================
+
+  /* ==========================================================
      OYUNU BAŞLAT
-  ============================ */
+  ========================================================== */
 
-  document.getElementById("startBtn")
-    .addEventListener("click",startGame);
+  document
+    .getElementById("startButton")
+    .addEventListener(
+      "click",
+      startGame
+    );
 
-  function startGame(){
 
-    const pool=
-      QUESTIONS[category] || [];
+  function startGame() {
 
-    if(pool.length===0){
-      alert("Bu kategoride henüz soru yok.");
+    const pool =
+      QUESTION_BANK[selectedCategory];
+
+    if (!pool || pool.length === 0) {
+
+      alert(
+        "Bu kategoride henüz görsel eklenmemiş."
+      );
+
       return;
-    }
 
-    questions=
-      shuffle(pool);
+    }
 
     /*
-      10 soruya çıkmak için havuzu döngüyle doldur
+      Havuz 10'dan azsa tekrar kullan.
     */
-    while(questions.length<10){
-      questions=
-        questions.concat(shuffle(pool));
+
+    questions = [];
+
+    while (
+      questions.length < 10
+    ) {
+
+      questions.push(
+        ...shuffle(pool)
+      );
+
     }
 
-    questions=questions.slice(0,10);
+    questions =
+      questions.slice(0, 10);
 
-    current=0;
-    score=0;
-    correct=0;
+    currentIndex = 0;
+    score = 0;
+    correctAnswers = 0;
 
-    topScore.textContent="0";
+    topScore.textContent =
+      "0";
 
-    homeScreen.classList.add("hidden");
-    resultScreen.classList.add("hidden");
-    gameScreen.classList.remove("hidden");
+    homeScreen.classList.add(
+      "hidden"
+    );
+
+    resultScreen.classList.add(
+      "hidden"
+    );
+
+    gameScreen.classList.remove(
+      "hidden"
+    );
 
     loadQuestion();
+
   }
 
-  /* ============================
-     SORU YÜKLE
-  ============================ */
 
-  function loadQuestion(){
+  /* ==========================================================
+     KATEGORİ YAZILARI
+  ========================================================== */
+
+  function getCategoryName() {
+
+    const names = {
+
+      flags: "🌍 Bayraklar",
+
+      brands: "🏷️ Markalar",
+
+      football: "⚽ Futbol",
+
+      basketball: "🏀 Basketbol",
+
+      games: "🎮 Oyunlar"
+
+    };
+
+    return names[
+      selectedCategory
+    ];
+
+  }
+
+
+  function getQuestionTitle() {
+
+    const titles = {
+
+      flags: "Bu hangi ülke?",
+
+      brands: "Bu hangi marka?",
+
+      football: "Bu hangi takım?",
+
+      basketball: "Bu hangi takım?",
+
+      games: "Bu hangi oyun?"
+
+    };
+
+    return titles[
+      selectedCategory
+    ];
+
+  }
+
+
+  /* ==========================================================
+     SORU YÜKLE
+  ========================================================== */
+
+  function loadQuestion() {
 
     clearInterval(timer);
 
-    locked=false;
-    revealLevel=1;
+    locked = false;
 
-    const q=questions[current];
+    revealLevel = 1;
 
-    art.src=q.svg;
+    const question =
+      questions[currentIndex];
 
-    roundEl.textContent=current+1;
+    roundNumber.textContent =
+      currentIndex + 1;
 
-    const names={
-      flags:"🌍 Bayraklar",
-      brands:"🏷️ Markalar",
-      football:"⚽ Futbol",
-      basketball:"🏀 Basketbol",
-      games:"🎮 Oyunlar"
+    categoryBadge.textContent =
+      getCategoryName();
+
+    questionTitle.textContent =
+      getQuestionTitle();
+
+    /*
+      Önce görseli yükle.
+      Yüklenince clip-path uygula.
+    */
+
+    logoImage.onload = () => {
+
+      requestAnimationFrame(() => {
+
+        currentRegion =
+          generateRandomRegion();
+
+        applyReveal();
+
+      });
+
     };
 
-    const titles={
-      flags:"Bu hangi ülke?",
-      brands:"Bu hangi marka?",
-      football:"Bu hangi takım?",
-      basketball:"Bu hangi takım?",
-      games:"Bu hangi oyun?"
+    logoImage.onerror = () => {
+
+      feedback.textContent =
+        `Görsel bulunamadı: ${question.image}`;
+
+      feedback.className =
+        "feedback wrong";
+
     };
 
-    badge.textContent=names[category];
-    questionTitle.textContent=titles[category];
+    logoImage.src =
+      question.image;
 
-    hint.textContent="Henüz ipucu yok.";
-    feedback.textContent="";
-    feedback.className="feedback";
+    /*
+      Başlangıç değerleri
+    */
 
-    answer.value="";
-    answer.disabled=false;
+    hint.textContent =
+      "Henüz ipucu yok.";
 
-    nextBtn.classList.add("hidden");
+    feedback.textContent =
+      "";
 
-    currentRegion=generateRegion();
-    applyRevealClean();
+    feedback.className =
+      "feedback";
 
-    answer.focus();
+    answerInput.value =
+      "";
+
+    answerInput.disabled =
+      false;
+
+    nextButton.classList.add(
+      "hidden"
+    );
 
     startTimer();
+
+    setTimeout(() => {
+      answerInput.focus();
+    }, 100);
+
   }
 
-  /* ============================
+
+  /* ==========================================================
      DAHA FAZLA GÖSTER
-  ============================ */
+  ========================================================== */
 
-  function nextReveal(message=""){
+  function revealMore(message = "") {
 
-    if(locked)return;
+    if (locked)
+      return;
 
-    if(revealLevel<4){
+    if (revealLevel < 4) {
 
       revealLevel++;
 
-      currentRegion=generateRegion();
-      applyRevealClean();
+      /*
+        Aynı bölgeyi büyütmek için mevcut bölgenin
+        merkezini koruyoruz.
+      */
 
-      hint.textContent=
-        `İpucu: ${questions[current].hint}`;
+      const old =
+        currentRegion;
 
-      feedback.textContent=
-        `${message} Biraz daha açtık.`;
+      let newWidth =
+        old.width * 1.65;
 
-      feedback.className="feedback wrong";
+      let newHeight =
+        old.height * 1.65;
+
+      newWidth =
+        Math.min(
+          newWidth,
+          88
+        );
+
+      newHeight =
+        Math.min(
+          newHeight,
+          88
+        );
+
+      let newX =
+        old.x -
+        (newWidth - old.width) / 2;
+
+      let newY =
+        old.y -
+        (newHeight - old.height) / 2;
+
+      newX =
+        Math.max(
+          0,
+          Math.min(
+            newX,
+            100 - newWidth
+          )
+        );
+
+      newY =
+        Math.max(
+          0,
+          Math.min(
+            newY,
+            100 - newHeight
+          )
+        );
+
+      currentRegion = {
+        x: newX,
+        y: newY,
+        width: newWidth,
+        height: newHeight
+      };
+
+      applyReveal();
+
+      hint.textContent =
+        `İpucu: ${questions[currentIndex].hint}`;
+
+      feedback.textContent =
+        `${message} Daha fazla açıldı.`;
+
+      feedback.className =
+        "feedback wrong";
 
       startTimer();
 
-    }else{
+    } else {
 
-      finishQuestion(false);
+      finishQuestion();
 
     }
+
   }
 
-  /* ============================
-     CEVAP
-  ============================ */
 
-  document.getElementById("guessBtn")
-    .addEventListener("click",checkAnswer);
+  /* ==========================================================
+     CEVAP KONTROL
+  ========================================================== */
 
-  answer.addEventListener("keydown",e=>{
-    if(e.key==="Enter")checkAnswer();
-  });
+  document
+    .getElementById("guessButton")
+    .addEventListener(
+      "click",
+      submitAnswer
+    );
 
-  function checkAnswer(){
 
-    if(locked)return;
+  answerInput.addEventListener(
+    "keydown",
+    event => {
 
-    const q=questions[current];
+      if (
+        event.key === "Enter"
+      ) {
 
-    const user=normalize(answer.value);
+        submitAnswer();
 
-    if(!user){
+      }
 
-      feedback.textContent=
-        "Önce bir tahmin yaz.";
+    }
+  );
 
-      feedback.className="feedback wrong";
+
+  function submitAnswer() {
+
+    if (locked)
       return;
+
+    const question =
+      questions[currentIndex];
+
+    const guess =
+      normalize(
+        answerInput.value
+      );
+
+    if (!guess) {
+
+      feedback.textContent =
+        "Bir tahmin yaz.";
+
+      feedback.className =
+        "feedback wrong";
+
+      return;
+
     }
 
-    const accepted=[
-      normalize(q.answer),
-      ...(q.aliases||[]).map(normalize)
+    const accepted = [
+      normalize(question.answer),
+      ...(question.aliases || [])
+        .map(normalize)
     ];
 
-    if(accepted.includes(user)){
+    if (
+      accepted.includes(guess)
+    ) {
 
       clearInterval(timer);
 
-      locked=true;
-      answer.disabled=true;
+      locked = true;
 
-      const gained=points();
+      answerInput.disabled =
+        true;
 
-      score+=gained;
-      correct++;
+      const gained =
+        getPoints();
 
-      topScore.textContent=score;
+      score +=
+        gained;
 
-      revealLevel=4;
+      correctAnswers++;
 
-      currentRegion={
-        x:8,
-        y:8,
-        width:84,
-        height:84
+      topScore.textContent =
+        score;
+
+      currentRegion = {
+        x: 5,
+        y: 5,
+        width: 90,
+        height: 90
       };
 
-      applyRevealClean();
+      applyReveal();
 
-      feedback.textContent=
+      feedback.textContent =
         `✅ Doğru! +${gained} puan`;
 
-      feedback.className="feedback correct";
+      feedback.className =
+        "feedback correct";
 
-      nextBtn.classList.remove("hidden");
+      nextButton.classList.remove(
+        "hidden"
+      );
 
-    }else{
-
-      feedback.textContent=
-        "❌ Yanlış. Daha fazla açılıyor.";
-
-      feedback.className="feedback wrong";
-
-      nextReveal();
+      return;
 
     }
+
+    feedback.textContent =
+      "❌ Yanlış. Biraz daha açıyoruz.";
+
+    feedback.className =
+      "feedback wrong";
+
+    revealMore();
+
   }
 
-  /* ============================
-     SORUYU BİTİR
-  ============================ */
 
-  function finishQuestion(){
+  /* ==========================================================
+     SORUYU BİTİR
+  ========================================================== */
+
+  function finishQuestion() {
 
     clearInterval(timer);
 
-    locked=true;
-    answer.disabled=true;
+    locked = true;
 
-    currentRegion={
-      x:0,
-      y:0,
-      width:100,
-      height:100
+    answerInput.disabled =
+      true;
+
+    currentRegion = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100
     };
 
-    applyRevealClean();
+    applyReveal();
 
-    feedback.textContent=
-      `Cevap: ${questions[current].answer}`;
+    /*
+      Puan verilmez.
+    */
 
-    feedback.className="feedback wrong";
+    feedback.textContent =
+      `Cevap: ${questions[currentIndex].answer}`;
 
-    nextBtn.classList.remove("hidden");
+    feedback.className =
+      "feedback wrong";
+
+    nextButton.classList.remove(
+      "hidden"
+    );
+
   }
 
-  /* ============================
-     NEXT
-  ============================ */
 
-  document.getElementById("nextBtn")
-    .addEventListener("click",()=>{
+  /* ==========================================================
+     SONRAKİ SORU
+  ========================================================== */
 
-      current++;
+  nextButton.addEventListener(
+    "click",
+    () => {
 
-      if(current>=questions.length){
+      currentIndex++;
+
+      if (
+        currentIndex >=
+        questions.length
+      ) {
 
         finishGame();
 
-      }else{
+      } else {
 
         loadQuestion();
 
       }
 
-    });
+    }
+  );
 
-  /* ============================
-     SONUÇ
-  ============================ */
 
-  function finishGame(){
+  /* ==========================================================
+     OYUN SONU
+  ========================================================== */
+
+  function finishGame() {
 
     clearInterval(timer);
 
-    gameScreen.classList.add("hidden");
-    resultScreen.classList.remove("hidden");
+    gameScreen.classList.add(
+      "hidden"
+    );
 
-    document.getElementById("bigScore")
-      .textContent=score;
+    resultScreen.classList.remove(
+      "hidden"
+    );
 
-    document.getElementById("correctCount")
-      .textContent=correct;
+    document.getElementById(
+      "bigScore"
+    ).textContent =
+      score;
 
-    document.getElementById("successPercent")
-      .textContent=
-        "%" + Math.round((correct/10)*100);
+    document.getElementById(
+      "correctCount"
+    ).textContent =
+      correctAnswers;
+
+    document.getElementById(
+      "successPercent"
+    ).textContent =
+      "%" +
+      Math.round(
+        (correctAnswers / 10) * 100
+      );
+
   }
 
-  document.getElementById("againBtn")
-    .addEventListener("click",startGame);
 
-  document.getElementById("homeBtn")
-    .addEventListener("click",()=>{
+  /* ==========================================================
+     TEKRAR
+  ========================================================== */
 
-      clearInterval(timer);
+  document
+    .getElementById("againButton")
+    .addEventListener(
+      "click",
+      () => {
 
-      resultScreen.classList.add("hidden");
-      gameScreen.classList.add("hidden");
-      homeScreen.classList.remove("hidden");
+        resultScreen.classList.add(
+          "hidden"
+        );
 
-    });
+        gameScreen.classList.remove(
+          "hidden"
+        );
+
+        startGame();
+
+      }
+    );
+
+
+  /* ==========================================================
+     ANA MENÜ
+  ========================================================== */
+
+  document
+    .getElementById("homeButton")
+    .addEventListener(
+      "click",
+      () => {
+
+        clearInterval(timer);
+
+        resultScreen.classList.add(
+          "hidden"
+        );
+
+        gameScreen.classList.add(
+          "hidden"
+        );
+
+        homeScreen.classList.remove(
+          "hidden"
+        );
+
+      }
+    );
+
+
+  /* ==========================================================
+     PENCERE BOYUTU DEĞİŞİNCE
+     ÇERÇEVEYİ TEKRAR HESAPLA
+  ========================================================== */
+
+  window.addEventListener(
+    "resize",
+    () => {
+
+      if (
+        currentRegion &&
+        !gameScreen.classList.contains("hidden")
+      ) {
+
+        requestAnimationFrame(
+          applyReveal
+        );
+
+      }
+
+    }
+  );
 
 </script>
 
