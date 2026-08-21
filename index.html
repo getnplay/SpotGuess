@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>SpotGuess — Case File Guessing Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <span class="topbar__mark">◎</span>
+    <span class="topbar__title">SPOT<em>GUESS</em></span>
+  </div>
+  <button id="darkModeToggle" class="iconbtn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <span class="iconbtn__glyph" aria-hidden="true">☾</span>
+  </button>
+</header>
+
+<main class="stage">
+
+  <!-- ============ START SCREEN ============ -->
+  <section id="screen-start" class="screen">
+    <div class="dossier">
+      <p class="dossier__eyebrow">CASE FILE // GUESSING PROTOCOL</p>
+      <h1 class="dossier__title">Identify the subject<br>from the fragment.</h1>
+      <p class="dossier__lede">You get a 10% crop and 15 seconds. Every wrong guess exposes more of the evidence — and costs you points. Ten rounds. One file.</p>
+
+      <div class="panel panel--form">
+        <div class="field">
+          <label class="field__label" for="modeSelect">CATEGORY</label>
+          <div class="chipgroup" id="modeGroup" role="group" aria-label="Choose category">
+            <button class="chip is-active" data-mode="flags" type="button">🏳️ Flags</button>
+            <button class="chip" data-mode="logos" type="button">🏷️ Brand Logos</button>
+            <button class="chip" data-mode="sportsteams" type="button">🏆 Sports Teams</button>
+            <button class="chip" data-mode="videogames" type="button">🎮 Video Games</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="difficultySelect">DIFFICULTY</label>
+          <div class="chipgroup" id="difficultyGroup" role="group" aria-label="Choose difficulty">
+            <button class="chip is-active" data-difficulty="all" type="button">All levels</button>
+            <button class="chip" data-difficulty="easy" type="button">Easy</button>
+            <button class="chip" data-difficulty="medium" type="button">Medium</button>
+            <button class="chip" data-difficulty="hard" type="button">Hard</button>
+          </div>
+        </div>
+
+        <div class="field field--split">
+          <div>
+            <p class="field__label">TIMER / ROUND</p>
+            <p class="field__value" id="timerPreview">15s</p>
+          </div>
+          <div>
+            <p class="field__label">BEST STREAK</p>
+            <p class="field__value" id="bestStreakPreview">0</p>
+          </div>
+        </div>
+
+        <div class="startbtn-row">
+          <button id="startBtn" class="btn btn--primary" type="button">Open case file</button>
+          <button id="dailyBtn" class="btn btn--ghost" type="button">
+            <span>📅 Daily challenge</span>
+            <span id="dailyStatus" class="btn__tag"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GAME SCREEN ============ -->
+  <section id="screen-game" class="screen screen--hidden">
+    <div class="hud">
+      <div class="hud__item">
+        <span class="hud__label">ROUND</span>
+        <span class="hud__value" id="hudRound">1 / 10</span>
+      </div>
+      <div class="hud__item">
+        <span class="hud__label">SCORE</span>
+        <span class="hud__value" id="hudScore">0</span>
+      </div>
+      <div class="hud__item">
+        <span class="hud__label">STREAK</span>
+        <span class="hud__value" id="hudStreak">0🔥</span>
+      </div>
+      <div class="hud__item hud__item--mode">
+        <span class="hud__label">FILE</span>
+        <span class="hud__value" id="hudMode">Flags</span>
+      </div>
+    </div>
+
+    <div class="timerbar-wrap" aria-hidden="true">
+      <div class="timerbar" id="timerBar"></div>
+    </div>
+
+    <div class="evidence">
+      <div class="evidence__corner evidence__corner--tl"></div>
+      <div class="evidence__corner evidence__corner--tr"></div>
+      <div class="evidence__corner evidence__corner--bl"></div>
+      <div class="evidence__corner evidence__corner--br"></div>
+
+      <canvas id="revealCanvas" width="480" height="480" aria-label="Partially revealed image to guess"></canvas>
+
+      <div class="stamp" id="stamp" aria-live="polite"></div>
+
+      <div class="evidence__tag">
+        <span id="revealPercentLabel">10% VISIBLE</span>
+        <span class="evidence__sep">·</span>
+        <span id="revealPointsLabel">1000 PTS</span>
+      </div>
+    </div>
+
+    <form id="answerForm" class="answerbar" autocomplete="off">
+      <label class="answerbar__label" for="answerInput">YOUR ANSWER</label>
+      <div class="answerbar__row">
+        <input id="answerInput" name="answer" type="text" placeholder="Type your guess…" autocomplete="off" spellcheck="false">
+        <button type="submit" class="btn btn--primary btn--submit">Submit</button>
+      </div>
+      <p class="answerbar__feedback" id="feedbackLine" aria-live="polite"></p>
+    </form>
+
+    <div class="nextrow" id="nextRow">
+      <p class="nextrow__answer" id="revealedAnswer"></p>
+      <button id="nextBtn" class="btn btn--primary" type="button">Next round →</button>
+    </div>
+  </section>
+
+  <!-- ============ FINAL SCREEN ============ -->
+  <section id="screen-final" class="screen screen--hidden">
+    <div class="dossier">
+      <p class="dossier__eyebrow">CASE FILE // CLOSED</p>
+      <h1 class="dossier__title" id="finalHeadline">File closed.</h1>
+
+      <div class="panel panel--results">
+        <div class="results-grid">
+          <div class="results-cell">
+            <span class="field__label">FINAL SCORE</span>
+            <span class="results-cell__big" id="finalScore">0</span>
+          </div>
+          <div class="results-cell">
+            <span class="field__label">BEST STREAK</span>
+            <span class="results-cell__big" id="finalStreak">0</span>
+          </div>
+          <div class="results-cell">
+            <span class="field__label">SOLVED</span>
+            <span class="results-cell__big" id="finalSolved">0 / 10</span>
+          </div>
+          <div class="results-cell">
+            <span class="field__label">AVG REVEAL</span>
+            <span class="results-cell__big" id="finalAvgReveal">–</span>
+          </div>
+        </div>
+
+        <div class="sharecard" id="shareGrid" aria-label="Round-by-round result"></div>
+
+        <div class="startbtn-row">
+          <button id="shareBtn" class="btn btn--ghost" type="button">📋 Copy shareable result</button>
+          <button id="playAgainBtn" class="btn btn--primary" type="button">Play again</button>
+        </div>
+        <p class="copy-toast" id="copyToast">Copied to clipboard.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footbar">
+  <span>Placeholder evidence set — swap <code>images/</code> assets &amp; <code>questions.json</code> for licensed art anytime.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

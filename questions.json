@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "note": "Placeholder asset set. Flags are simplified geometric renditions of real national flags (not trademarked logos). Brand/team/game entries are entirely fictional placeholders. Swap the 'image' paths for properly licensed art later without touching script.js.",
+    "gridSize": 10
+  },
+  "categories": {
+    "flags": {
+      "label": "Flags",
+      "icon": "🏳️",
+      "items": [
+        { "id": "flags-france", "answer": "France", "aliases": ["french flag"], "image": "images/flags/france.svg", "difficulty": "easy" },
+        { "id": "flags-germany", "answer": "Germany", "aliases": ["german flag"], "image": "images/flags/germany.svg", "difficulty": "easy" },
+        { "id": "flags-italy", "answer": "Italy", "aliases": ["italian flag"], "image": "images/flags/italy.svg", "difficulty": "easy" },
+        { "id": "flags-belgium", "answer": "Belgium", "aliases": [], "image": "images/flags/belgium.svg", "difficulty": "medium" },
+        { "id": "flags-nigeria", "answer": "Nigeria", "aliases": [], "image": "images/flags/nigeria.svg", "difficulty": "medium" },
+        { "id": "flags-ireland", "answer": "Ireland", "aliases": [], "image": "images/flags/ireland.svg", "difficulty": "medium" },
+        { "id": "flags-japan", "answer": "Japan", "aliases": [], "image": "images/flags/japan.svg", "difficulty": "easy" },
+        { "id": "flags-south_korea", "answer": "South Korea", "aliases": ["korea"], "image": "images/flags/south_korea.svg", "difficulty": "medium" },
+        { "id": "flags-usa", "answer": "United States", "aliases": ["usa", "us", "america", "united states of america"], "image": "images/flags/usa.svg", "difficulty": "easy" },
+        { "id": "flags-canada", "answer": "Canada", "aliases": [], "image": "images/flags/canada.svg", "difficulty": "easy" },
+        { "id": "flags-brazil", "answer": "Brazil", "aliases": [], "image": "images/flags/brazil.svg", "difficulty": "easy" },
+        { "id": "flags-india", "answer": "India", "aliases": [], "image": "images/flags/india.svg", "difficulty": "medium" },
+        { "id": "flags-sweden", "answer": "Sweden", "aliases": [], "image": "images/flags/sweden.svg", "difficulty": "medium" },
+        { "id": "flags-switzerland", "answer": "Switzerland", "aliases": [], "image": "images/flags/switzerland.svg", "difficulty": "medium" },
+        { "id": "flags-mexico", "answer": "Mexico", "aliases": [], "image": "images/flags/mexico.svg", "difficulty": "medium" },
+        { "id": "flags-spain", "answer": "Spain", "aliases": [], "image": "images/flags/spain.svg", "difficulty": "medium" },
+        { "id": "flags-australia", "answer": "Australia", "aliases": [], "image": "images/flags/australia.svg", "difficulty": "hard" }
+      ]
+    },
+    "logos": {
+      "label": "Brand Logos",
+      "icon": "🏷️",
+      "items": [
+        { "id": "logos-zenith_motors", "answer": "Zenith Motors", "aliases": ["zenith"], "image": "images/logos/zenith_motors.svg", "difficulty": "easy" },
+        { "id": "logos-lumen_tech", "answer": "Lumen Tech", "aliases": ["lumen"], "image": "images/logos/lumen_tech.svg", "difficulty": "medium" },
+        { "id": "logos-orbit_coffee", "answer": "Orbit Coffee", "aliases": ["orbit"], "image": "images/logos/orbit_coffee.svg", "difficulty": "hard" },
+        { "id": "logos-cascade_bank", "answer": "Cascade Bank", "aliases": ["cascade"], "image": "images/logos/cascade_bank.svg", "difficulty": "easy" },
+        { "id": "logos-nimbus_airlines", "answer": "Nimbus Airlines", "aliases": ["nimbus"], "image": "images/logos/nimbus_airlines.svg", "difficulty": "medium" },
+        { "id": "logos-ember_energy", "answer": "Ember Energy", "aliases": ["ember"], "image": "images/logos/ember_energy.svg", "difficulty": "hard" },
+        { "id": "logos-frostline_foods", "answer": "Frostline Foods", "aliases": ["frostline"], "image": "images/logos/frostline_foods.svg", "difficulty": "easy" },
+        { "id": "logos-solstice_sports", "answer": "Solstice Sports", "aliases": ["solstice"], "image": "images/logos/solstice_sports.svg", "difficulty": "medium" },
+        { "id": "logos-marble_media", "answer": "Marble Media", "aliases": ["marble"], "image": "images/logos/marble_media.svg", "difficulty": "hard" },
+        { "id": "logos-quartz_studios", "answer": "Quartz Studios", "aliases": ["quartz"], "image": "images/logos/quartz_studios.svg", "difficulty": "easy" },
+        { "id": "logos-harbor_insurance", "answer": "Harbor Insurance", "aliases": ["harbor"], "image": "images/logos/harbor_insurance.svg", "difficulty": "medium" },
+        { "id": "logos-vertex_fitness", "answer": "Vertex Fitness", "aliases": ["vertex"], "image": "images/logos/vertex_fitness.svg", "difficulty": "hard" }
+      ]
+    },
+    "sportsteams": {
+      "label": "Sports Teams",
+      "icon": "🏆",
+      "items": [
+        { "id": "teams-ironclad_fc", "answer": "Ironclad FC", "aliases": ["ironclad"], "image": "images/sportsteams/ironclad_fc.svg", "difficulty": "easy" },
+        { "id": "teams-crimson_hawks", "answer": "Crimson Hawks", "aliases": ["hawks"], "image": "images/sportsteams/crimson_hawks.svg", "difficulty": "medium" },
+        { "id": "teams-blue_titans", "answer": "Blue Titans", "aliases": ["titans"], "image": "images/sportsteams/blue_titans.svg", "difficulty": "hard" },
+        { "id": "teams-golden_wolves", "answer": "Golden Wolves", "aliases": ["wolves"], "image": "images/sportsteams/golden_wolves.svg", "difficulty": "easy" },
+        { "id": "teams-storm_riders", "answer": "Storm Riders", "aliases": ["riders"], "image": "images/sportsteams/storm_riders.svg", "difficulty": "medium" },
+        { "id": "teams-northside_bears", "answer": "Northside Bears", "aliases": ["bears"], "image": "images/sportsteams/northside_bears.svg", "difficulty": "hard" },
+        { "id": "teams-river_city_sharks", "answer": "River City Sharks", "aliases": ["sharks"], "image": "images/sportsteams/river_city_sharks.svg", "difficulty": "easy" },
+        { "id": "teams-summit_eagles", "answer": "Summit Eagles", "aliases": ["eagles"], "image": "images/sportsteams/summit_eagles.svg", "difficulty": "medium" },
+        { "id": "teams-copper_vipers", "answer": "Copper Vipers", "aliases": ["vipers"], "image": "images/sportsteams/copper_vipers.svg", "difficulty": "hard" },
+        { "id": "teams-silverline_rangers", "answer": "Silverline Rangers", "aliases": ["rangers"], "image": "images/sportsteams/silverline_rangers.svg", "difficulty": "easy" },
+        { "id": "teams-emberstone_united", "answer": "Emberstone United", "aliases": ["emberstone"], "image": "images/sportsteams/emberstone_united.svg", "difficulty": "medium" },
+        { "id": "teams-pinecrest_owls", "answer": "Pinecrest Owls", "aliases": ["owls"], "image": "images/sportsteams/pinecrest_owls.svg", "difficulty": "hard" }
+      ]
+    },
+    "videogames": {
+      "label": "Video Games",
+      "icon": "🎮",
+      "items": [
+        { "id": "games-shadow_realm_chronicles", "answer": "Shadow Realm Chronicles", "aliases": ["shadow realm"], "image": "images/videogames/shadow_realm_chronicles.svg", "difficulty": "easy" },
+        { "id": "games-pixel_racer_x", "answer": "Pixel Racer X", "aliases": ["pixel racer"], "image": "images/videogames/pixel_racer_x.svg", "difficulty": "medium" },
+        { "id": "games-starforge_odyssey", "answer": "Starforge Odyssey", "aliases": ["starforge"], "image": "images/videogames/starforge_odyssey.svg", "difficulty": "hard" },
+        { "id": "games-mystic_blade_saga", "answer": "Mystic Blade Saga", "aliases": ["mystic blade"], "image": "images/videogames/mystic_blade_saga.svg", "difficulty": "easy" },
+        { "id": "games-neon_drift", "answer": "Neon Drift", "aliases": [], "image": "images/videogames/neon_drift.svg", "difficulty": "medium" },
+        { "id": "games-ruins_of_alderin", "answer": "Ruins of Alderin", "aliases": ["alderin"], "image": "images/videogames/ruins_of_alderin.svg", "difficulty": "hard" },
+        { "id": "games-skyfall_legends", "answer": "Skyfall Legends", "aliases": ["skyfall"], "image": "images/videogames/skyfall_legends.svg", "difficulty": "easy" },
+        { "id": "games-turbo_kart_frenzy", "answer": "Turbo Kart Frenzy", "aliases": ["turbo kart"], "image": "images/videogames/turbo_kart_frenzy.svg", "difficulty": "medium" },
+        { "id": "games-voidwalker", "answer": "Voidwalker", "aliases": [], "image": "images/videogames/voidwalker.svg", "difficulty": "hard" },
+        { "id": "games-dragons_hollow", "answer": "Dragon's Hollow", "aliases": ["dragons hollow"], "image": "images/videogames/dragons_hollow.svg", "difficulty": "easy" },
+        { "id": "games-arcane_depths", "answer": "Arcane Depths", "aliases": [], "image": "images/videogames/arcane_depths.svg", "difficulty": "medium" },
+        { "id": "games-quantum_strike", "answer": "Quantum Strike", "aliases": [], "image": "images/videogames/quantum_strike.svg", "difficulty": "hard" }
+      ]
+    }
+  }
+}

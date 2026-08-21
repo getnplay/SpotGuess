@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <rect width="400" height="400" fill="hsl(235,45%,16%)"/>
+    <polygon points="200,75 320,240 80,240" fill="hsl(235,70%,55%)"/><polygon points="200,140 265,235 135,235" fill="hsl(235,45%,16%)"/>
+    <text x="200" y="205" font-family="'Courier New', monospace" font-size="46" font-weight="bold"
+          fill="#F5F5F0" text-anchor="middle" dominant-baseline="middle">OC</text>
+    <text x="200" y="365" font-family="'Courier New', monospace" font-size="22" letter-spacing="2"
+          fill="hsl(275,70%,60%)" text-anchor="middle" opacity="0.85">ORBIT COFFEE</text>
+    </svg>
