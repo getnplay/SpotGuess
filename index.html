@@ -6,277 +6,493 @@
   <title>SpotGuess</title>
 
   <style>
+    :root {
+      --bg: #0b0d12;
+      --card: #141821;
+      --card2: #1b202c;
+      --border: #2a3040;
+      --text: #f5f7fb;
+      --muted: #9da6b8;
+      --accent: #6d5dfc;
+      --accent2: #8b7fff;
+      --green: #39d98a;
+      --red: #ff6b7a;
+      --yellow: #ffcc66;
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
+      background:
+        radial-gradient(circle at top, #171b2a 0%, var(--bg) 45%);
+      color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
-      background: #0f1117;
-      color: white;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
     }
 
     .app {
-      width: min(920px, 94%);
-      margin: 30px auto;
+      width: min(1100px, 94%);
+      margin: 0 auto;
+      padding: 24px 0 40px;
     }
 
     .topbar {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 22px;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 28px;
     }
 
     .logo {
       font-size: 30px;
-      font-weight: 800;
-      letter-spacing: -1px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
     }
 
     .logo span {
-      color: #6c63ff;
+      color: var(--accent2);
     }
 
-    .score-box {
-      background: #191c25;
-      border: 1px solid #292d39;
-      padding: 10px 16px;
+    .score-pill {
+      background: rgba(109, 93, 252, 0.12);
+      border: 1px solid rgba(109, 93, 252, 0.3);
+      padding: 10px 15px;
       border-radius: 14px;
-      font-weight: bold;
-    }
-
-    .game-card {
-      background: #171a22;
-      border: 1px solid #292d39;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.25);
-    }
-
-    .round-info {
-      text-align: center;
-      color: #aeb4c2;
-      margin-bottom: 10px;
-    }
-
-    .title {
-      text-align: center;
-      font-size: 34px;
-      margin: 5px 0 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #aeb4c2;
-      margin-bottom: 25px;
-    }
-
-    .timer {
-      width: 100%;
-      height: 12px;
-      background: #272b35;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 18px;
-    }
-
-    .timer-fill {
-      width: 100%;
-      height: 100%;
-      background: #6c63ff;
-      transition: width .2s linear;
-    }
-
-    .timer-text {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 18px;
-      font-size: 20px;
-    }
-
-    .image-area {
-      height: 280px;
-      background: #0d0f14;
-      border-radius: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      border: 1px solid #2a2f3b;
-    }
-
-    .guess-image {
-      width: 65%;
-      max-width: 420px;
-      max-height: 220px;
-      object-fit: contain;
-      clip-path: inset(0 85% 0 0);
-      transition: clip-path .45s ease;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-
-    .hint {
-      text-align: center;
-      margin: 16px 0;
-      color: #b8bdca;
-      min-height: 24px;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    input {
-      flex: 1;
-      min-width: 0;
-      background: #0e1117;
-      color: white;
-      border: 1px solid #343a47;
-      border-radius: 14px;
-      padding: 15px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #6c63ff;
-    }
-
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 14px 18px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform .15s ease, opacity .15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    .primary {
-      background: #6c63ff;
-      color: white;
-    }
-
-    .secondary {
-      background: #272c37;
-      color: white;
-    }
-
-    .result {
-      text-align: center;
-      margin-top: 22px;
-      min-height: 32px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .result.correct {
-      color: #60e38a;
-    }
-
-    .result.wrong {
-      color: #ff7d7d;
-    }
-
-    .next-btn {
-      width: 100%;
-      margin-top: 12px;
-      display: none;
-    }
-
-    .start-screen,
-    .end-screen {
-      text-align: center;
-    }
-
-    .start-screen h1,
-    .end-screen h1 {
-      font-size: 46px;
-      margin-bottom: 10px;
-    }
-
-    .start-screen p,
-    .end-screen p {
-      color: #aeb4c2;
-      line-height: 1.6;
-    }
-
-    .big-btn {
-      margin-top: 20px;
-      padding: 16px 30px;
-      font-size: 17px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 24px 0;
-    }
-
-    .stat {
-      background: #11141b;
-      border: 1px solid #292d39;
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .stat-title {
-      color: #9299a8;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-
-    .stat-value {
-      font-size: 24px;
       font-weight: 800;
+    }
+
+    .screen {
+      background: rgba(20, 24, 33, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
     }
 
     .hidden {
       display: none !important;
     }
 
+    .hero {
+      text-align: center;
+      padding: 18px 0 8px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(38px, 7vw, 70px);
+      letter-spacing: -3px;
+    }
+
+    .hero h1 span {
+      color: var(--accent2);
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 680px;
+      margin: 14px auto 0;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+
+    .section-title {
+      margin-top: 34px;
+      margin-bottom: 14px;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .category-grid,
+    .difficulty-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .category-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .difficulty-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .choice {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 18px 12px;
+      border-radius: 18px;
+      transition: 0.18s ease;
+      text-align: center;
+    }
+
+    .choice:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+
+    .choice.selected {
+      background: rgba(109, 93, 252, 0.14);
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 2px rgba(109, 93, 252, 0.08);
+    }
+
+    .choice-icon {
+      font-size: 31px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .difficulty .choice-icon {
+      font-size: 24px;
+    }
+
+    .start-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 15px 22px;
+      font-weight: 900;
+      transition: 0.15s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      min-width: 190px;
+    }
+
+    .secondary-btn {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: white;
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .game-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .round {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .game-title {
+      text-align: center;
+      margin: 8px 0 6px;
+      font-size: clamp(26px, 5vw, 42px);
+    }
+
+    .game-subtitle {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .timer-wrap {
+      margin-bottom: 20px;
+    }
+
+    .timer-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .timer {
+      width: 100%;
+      height: 10px;
+      background: #242938;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .timer-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+      transition: width .2s linear;
+    }
+
+    .image-box {
+      width: min(760px, 100%);
+      height: min(460px, 58vw);
+      min-height: 300px;
+      margin: 0 auto;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: #0b0e14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-stage {
+      position: relative;
+      width: 82%;
+      max-width: 640px;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #171b25;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .image-full {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .spot-window {
+      position: absolute;
+      width: 34%;
+      height: 34%;
+      min-width: 105px;
+      min-height: 80px;
+      border: 2px solid rgba(255,255,255,.55);
+      box-shadow:
+        0 0 0 9999px rgba(0,0,0,.76),
+        0 0 28px rgba(255,255,255,.12);
+      border-radius: 12px;
+      transition:
+        width .4s ease,
+        height .4s ease,
+        left .4s ease,
+        top .4s ease;
+    }
+
+    .zoom-text {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0,0,0,.6);
+      border: 1px solid rgba(255,255,255,.1);
+      padding: 7px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      color: white;
+      backdrop-filter: blur(8px);
+    }
+
+    .hint {
+      min-height: 25px;
+      margin: 17px 0 11px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .answer-input {
+      flex: 1;
+      min-width: 0;
+      background: #0e1117;
+      border: 1px solid var(--border);
+      color: white;
+      border-radius: 16px;
+      padding: 15px 16px;
+      outline: none;
+    }
+
+    .answer-input:focus {
+      border-color: var(--accent2);
+      box-shadow: 0 0 0 3px rgba(109, 93, 252, .1);
+    }
+
+    .feedback {
+      text-align: center;
+      min-height: 30px;
+      margin-top: 16px;
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .correct {
+      color: var(--green);
+    }
+
+    .wrong {
+      color: var(--red);
+    }
+
+    .next-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .results {
+      text-align: center;
+    }
+
+    .results h2 {
+      font-size: 44px;
+      margin: 8px 0;
+    }
+
+    .result-score {
+      font-size: 64px;
+      font-weight: 900;
+      color: var(--accent2);
+      margin: 8px 0 20px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 650px;
+      margin: 0 auto 26px;
+    }
+
+    .stat-card {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 17px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: 900;
+    }
+
+    .share-box {
+      margin: 0 auto 22px;
+      max-width: 600px;
+      background: #0d1016;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .share-box strong {
+      color: white;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #70788a;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .difficulty-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media (max-width: 650px) {
-      .game-card {
+      .app {
+        width: 94%;
+      }
+
+      .screen {
         padding: 18px;
+        border-radius: 22px;
       }
 
-      .title {
-        font-size: 27px;
+      .topbar {
+        margin-bottom: 16px;
       }
 
-      .start-screen h1,
-      .end-screen h1 {
-        font-size: 36px;
+      .logo {
+        font-size: 25px;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .difficulty-grid {
+        grid-template-columns: 1fr 1fr;
       }
 
       .input-row {
         flex-direction: column;
       }
 
-      .stats {
+      .image-box {
+        height: 68vw;
+        min-height: 270px;
+      }
+
+      .image-stage {
+        width: 92%;
+      }
+
+      .stats-grid {
         grid-template-columns: 1fr;
-      }
-
-      .image-area {
-        height: 220px;
-      }
-
-      .guess-image {
-        width: 80%;
       }
     }
   </style>
@@ -288,264 +504,544 @@
 
   <div class="topbar">
     <div class="logo">Spot<span>Guess</span></div>
-    <div class="score-box">
-      Skor: <span id="score">0</span>
+
+    <div class="score-pill">
+      🏆 <span id="topScore">0</span>
     </div>
   </div>
 
-  <div class="game-card">
+  <!-- ================= START SCREEN ================= -->
+  <section id="startScreen" class="screen">
 
-    <!-- START -->
-    <section id="startScreen" class="start-screen">
-      <h1>SpotGuess</h1>
+    <div class="hero">
+      <h1>Spot<span>Guess</span></h1>
       <p>
-        Bayrağın sadece küçük bir kısmını gör.<br>
-        Ne olduğunu tahmin et. Ne kadar erken bilirsen o kadar çok puan kazan.
+        Bir görselin sadece küçük bir kısmını gör.
+        Ne olduğunu tahmin et.
+        Ne kadar az ipucuyla bilirsen o kadar çok puan kazan.
       </p>
+    </div>
 
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-title">Soru</div>
-          <div class="stat-value">10</div>
-        </div>
+    <div class="section-title">
+      Kategori seç
+    </div>
 
-        <div class="stat">
-          <div class="stat-title">Süre</div>
-          <div class="stat-value">15 sn</div>
-        </div>
+    <div class="category-grid">
 
-        <div class="stat">
-          <div class="stat-title">Maksimum</div>
-          <div class="stat-value">1000</div>
-        </div>
-      </div>
+      <button class="choice category-choice selected"
+              data-category="flags">
+        <span class="choice-icon">🌍</span>
+        Bayraklar
+      </button>
 
-      <button class="primary big-btn" onclick="startGame()">
+      <button class="choice category-choice"
+              data-category="brands">
+        <span class="choice-icon">🏷️</span>
+        Markalar
+      </button>
+
+      <button class="choice category-choice"
+              data-category="football">
+        <span class="choice-icon">⚽</span>
+        Futbol
+      </button>
+
+      <button class="choice category-choice"
+              data-category="basketball">
+        <span class="choice-icon">🏀</span>
+        Basketbol
+      </button>
+
+      <button class="choice category-choice"
+              data-category="games">
+        <span class="choice-icon">🎮</span>
+        Oyunlar
+      </button>
+
+    </div>
+
+    <div class="section-title">
+      Zorluk seç
+    </div>
+
+    <div class="difficulty-grid">
+
+      <button class="choice difficulty-choice selected"
+              data-difficulty="easy">
+        <span class="choice-icon">🟢</span>
+        Kolay
+      </button>
+
+      <button class="choice difficulty-choice"
+              data-difficulty="medium">
+        <span class="choice-icon">🟡</span>
+        Orta
+      </button>
+
+      <button class="choice difficulty-choice"
+              data-difficulty="hard">
+        <span class="choice-icon">🔴</span>
+        Zor
+      </button>
+
+      <button class="choice difficulty-choice"
+              data-difficulty="impossible">
+        <span class="choice-icon">💀</span>
+        İmkânsız
+      </button>
+
+    </div>
+
+    <div class="start-wrap">
+      <button class="primary-btn" id="startButton">
         Oyuna Başla
       </button>
-    </section>
+    </div>
 
-    <!-- GAME -->
-    <section id="gameScreen" class="hidden">
+    <div class="footer-note">
+      10 soru · 15 saniye · Erken bilirsen daha çok puan
+    </div>
 
-      <div class="round-info">
-        Soru <span id="roundNumber">1</span> / <span id="totalRounds">10</span>
+  </section>
+
+  <!-- ================= GAME SCREEN ================= -->
+  <section id="gameScreen" class="screen hidden">
+
+    <div class="game-head">
+
+      <div class="round">
+        Soru <span id="roundNumber">1</span> / 10
       </div>
 
-      <h2 class="title">Bu hangi ülke?</h2>
+      <div class="category-badge" id="categoryBadge">
+        🌍 Bayraklar
+      </div>
 
-      <div class="subtitle">
-        Görünen kısmından tahmin et.
+    </div>
+
+    <h2 class="game-title" id="questionTitle">
+      Bu nedir?
+    </h2>
+
+    <div class="game-subtitle">
+      Görselin sadece bir kısmını görüyorsun.
+    </div>
+
+    <div class="timer-wrap">
+
+      <div class="timer-top">
+        <span>Zaman</span>
+        <span><strong id="timerText">15</strong> saniye</span>
       </div>
 
       <div class="timer">
-        <div id="timerFill" class="timer-fill"></div>
+        <div class="timer-fill" id="timerFill"></div>
       </div>
 
-      <div class="timer-text">
-        <span id="timerText">15</span> saniye
-      </div>
+    </div>
 
-      <div class="image-area">
-        <img id="guessImage" class="guess-image" alt="Tahmin görseli">
-      </div>
+    <div class="image-box">
 
-      <div id="hint" class="hint">
-        Henüz ipucu yok.
-      </div>
+      <div class="image-stage">
 
-      <div class="input-row">
-        <input
-          id="answerInput"
-          type="text"
-          placeholder="Cevabını yaz..."
-          autocomplete="off"
-          onkeydown="handleEnter(event)"
+        <img
+          id="imageFull"
+          class="image-full"
+          alt="Tahmin görseli"
         >
 
-        <button class="primary" onclick="submitAnswer()">
-          Tahmin Et
-        </button>
+        <div id="spotWindow" class="spot-window"></div>
+
+        <div class="zoom-text" id="zoomText">
+          Görünen alan: %10
+        </div>
+
       </div>
 
-      <div id="result" class="result"></div>
+    </div>
 
+    <div class="hint" id="hintText">
+      Henüz ipucu yok.
+    </div>
+
+    <div class="input-row">
+
+      <input
+        id="answerInput"
+        class="answer-input"
+        type="text"
+        autocomplete="off"
+        placeholder="Tahminini yaz..."
+      >
+
+      <button class="primary-btn" id="guessButton">
+        Tahmin Et
+      </button>
+
+    </div>
+
+    <div id="feedback" class="feedback"></div>
+
+    <div class="next-wrap">
       <button
         id="nextButton"
-        class="secondary next-btn"
-        onclick="nextQuestion()"
-      >
-        Sonraki Soru
+        class="secondary-btn hidden">
+        Sonraki Soru →
       </button>
+    </div>
 
-    </section>
+  </section>
 
-    <!-- END -->
-    <section id="endScreen" class="end-screen hidden">
-      <h1>Oyun Bitti</h1>
+  <!-- ================= RESULT SCREEN ================= -->
+  <section id="resultScreen" class="screen hidden">
 
-      <p>
-        Sonucun hazır.
-      </p>
+    <div class="results">
 
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-title">Toplam Skor</div>
-          <div id="finalScore" class="stat-value">0</div>
-        </div>
+      <h2>Oyun Bitti</h2>
 
-        <div class="stat">
-          <div class="stat-title">Doğru</div>
-          <div id="finalCorrect" class="stat-value">0</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-title">Sorular</div>
-          <div id="finalTotal" class="stat-value">10</div>
-        </div>
+      <div class="result-score" id="finalScore">
+        0
       </div>
 
-      <button class="primary big-btn" onclick="restartGame()">
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-label">Doğru</div>
+          <div class="stat-value" id="finalCorrect">0</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Toplam Soru</div>
+          <div class="stat-value" id="finalQuestions">10</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Başarı</div>
+          <div class="stat-value" id="finalPercent">%0</div>
+        </div>
+
+      </div>
+
+      <div class="share-box">
+        <strong>Sonuç kartın:</strong><br>
+        SpotGuess'te <strong id="shareScore">0</strong> puan aldım.
+        <br>
+        Bakalım sen kaç yapacaksın?
+      </div>
+
+      <button class="primary-btn" id="restartButton">
         Tekrar Oyna
       </button>
-    </section>
 
-  </div>
+      <div style="height:10px"></div>
+
+      <button class="secondary-btn" id="backHomeButton">
+        Ana Menü
+      </button>
+
+    </div>
+
+  </section>
+
 </div>
 
-
 <script>
-  /*
-    Prototype version.
-    Görseller SVG olarak kodun içinde oluşturuluyor.
-    Böylece şimdilik ayrıca images klasörüne ihtiyaç yok.
-  */
+  // ============================================================
+  // VERİLER
+  // ============================================================
 
-  const questions = [
-    {
-      answer: "Japonya",
-      aliases: ["japonya", "japan"],
-      hint: "Asya'da bir ada ülkesi.",
-      color1: "#ffffff",
-      color2: "#bc002d",
-      type: "flag"
-    },
+  const DATA = {
 
-    {
-      answer: "Fransa",
-      aliases: ["fransa", "france"],
-      hint: "Avrupa'da, üç renkli bir bayrağı var.",
-      color1: "#0055a4",
-      color2: "#ffffff",
-      color3: "#ef4135",
-      type: "flag3"
-    },
+    flags: [
+      {
+        name: "Türkiye",
+        aliases: ["turkiye", "türkiye", "turkey"],
+        emoji: "🇹🇷",
+        colors: ["#e30a17", "#ffffff"],
+        type: "turkey"
+      },
+      {
+        name: "Japonya",
+        aliases: ["japonya", "japan"],
+        emoji: "🇯🇵",
+        colors: ["#ffffff", "#bc002d"],
+        type: "japan"
+      },
+      {
+        name: "Fransa",
+        aliases: ["fransa", "france"],
+        emoji: "🇫🇷",
+        colors: ["#0055a4", "#ffffff", "#ef4135"],
+        type: "tricolor"
+      },
+      {
+        name: "Almanya",
+        aliases: ["almanya", "germany"],
+        emoji: "🇩🇪",
+        colors: ["#000000", "#dd0000", "#ffce00"],
+        type: "horizontal"
+      },
+      {
+        name: "İtalya",
+        aliases: ["italya", "italy"],
+        emoji: "🇮🇹",
+        colors: ["#009246", "#ffffff", "#ce2b37"],
+        type: "tricolor"
+      },
+      {
+        name: "Hollanda",
+        aliases: ["hollanda", "netherlands"],
+        emoji: "🇳🇱",
+        colors: ["#ae1c28", "#ffffff", "#21468b"],
+        type: "horizontal"
+      },
+      {
+        name: "Yunanistan",
+        aliases: ["yunanistan", "greece"],
+        emoji: "🇬🇷",
+        colors: ["#0d5eaf", "#ffffff"],
+        type: "greece"
+      },
+      {
+        name: "Kanada",
+        aliases: ["kanada", "canada"],
+        emoji: "🇨🇦",
+        colors: ["#d80621", "#ffffff"],
+        type: "canada"
+      },
+      {
+        name: "İsviçre",
+        aliases: ["isvicre", "isviçre", "switzerland"],
+        emoji: "🇨🇭",
+        colors: ["#d52b1e", "#ffffff"],
+        type: "switzerland"
+      },
+      {
+        name: "Brezilya",
+        aliases: ["brezilya", "brazil"],
+        emoji: "🇧🇷",
+        colors: ["#009c3b", "#ffdf00", "#002776"],
+        type: "brazil"
+      }
+    ],
 
-    {
-      answer: "Almanya",
-      aliases: ["almanya", "germany"],
-      hint: "Avrupa'nın merkezindeki büyük ülkelerden biri.",
-      color1: "#000000",
-      color2: "#dd0000",
-      color3: "#ffce00",
-      type: "flag3"
-    },
+    brands: [
+      {
+        name: "Apple",
+        aliases: ["apple"],
+        emoji: "🍎",
+        type: "apple"
+      },
+      {
+        name: "Nike",
+        aliases: ["nike"],
+        emoji: "✔️",
+        type: "nike"
+      },
+      {
+        name: "Coca-Cola",
+        aliases: ["coca cola", "coca-cola", "cocacola"],
+        emoji: "🥤",
+        type: "coke"
+      },
+      {
+        name: "YouTube",
+        aliases: ["youtube"],
+        emoji: "▶️",
+        type: "youtube"
+      },
+      {
+        name: "Adidas",
+        aliases: ["adidas"],
+        emoji: "👟",
+        type: "adidas"
+      }
+    ],
 
-    {
-      answer: "İtalya",
-      aliases: ["italya", "italy"],
-      hint: "Akdeniz'e uzanan çizme şeklinde bir ülke.",
-      color1: "#009246",
-      color2: "#ffffff",
-      color3: "#ce2b37",
-      type: "flag3"
-    },
+    football: [
+      {
+        name: "Barcelona",
+        aliases: ["barcelona", "fc barcelona", "barca"],
+        emoji: "🔵🔴",
+        type: "barcelona"
+      },
+      {
+        name: "Real Madrid",
+        aliases: ["real madrid", "real"],
+        emoji: "👑",
+        type: "realmadrid"
+      },
+      {
+        name: "Liverpool",
+        aliases: ["liverpool"],
+        emoji: "🔴",
+        type: "liverpool"
+      },
+      {
+        name: "Galatasaray",
+        aliases: ["galatasaray", "gs"],
+        emoji: "🟡🔴",
+        type: "galatasaray"
+      }
+    ],
 
-    {
-      answer: "Brezilya",
-      aliases: ["brezilya", "brazil"],
-      hint: "Güney Amerika'nın en büyük ülkesi.",
-      color1: "#009c3b",
-      color2: "#ffdf00",
-      color3: "#002776",
-      type: "brazil"
-    },
+    basketball: [
+      {
+        name: "Chicago Bulls",
+        aliases: ["chicago bulls", "bulls"],
+        emoji: "🐂",
+        type: "bulls"
+      },
+      {
+        name: "Los Angeles Lakers",
+        aliases: ["los angeles lakers", "lakers", "la lakers"],
+        emoji: "💜💛",
+        type: "lakers"
+      },
+      {
+        name: "Boston Celtics",
+        aliases: ["boston celtics", "celtics"],
+        emoji: "☘️",
+        type: "celtics"
+      }
+    ],
 
-    {
-      answer: "Türkiye",
-      aliases: ["türkiye", "turkiye", "turkey"],
-      hint: "Bayrağında ay ve yıldız bulunur.",
-      color1: "#e30a17",
-      color2: "#ffffff",
-      type: "turkey"
-    },
+    games: [
+      {
+        name: "Minecraft",
+        aliases: ["minecraft"],
+        emoji: "⛏️",
+        type: "minecraft"
+      },
+      {
+        name: "Fortnite",
+        aliases: ["fortnite"],
+        emoji: "🎮",
+        type: "fortnite"
+      },
+      {
+        name: "Roblox",
+        aliases: ["roblox"],
+        emoji: "🟥",
+        type: "roblox"
+      },
+      {
+        name: "Among Us",
+        aliases: ["among us"],
+        emoji: "👨‍🚀",
+        type: "amongus"
+      }
+    ]
+  };
 
-    {
-      answer: "İsviçre",
-      aliases: ["isviçre", "isvicre", "switzerland"],
-      hint: "Alpler ile ünlü Avrupa ülkesi.",
-      color1: "#d52b1e",
-      color2: "#ffffff",
-      type: "switzerland"
-    },
+  // ============================================================
+  // DURUM
+  // ============================================================
 
-    {
-      answer: "Yunanistan",
-      aliases: ["yunanistan", "greece"],
-      hint: "Türkiye'nin batısındaki komşu ülke.",
-      color1: "#0d5eaf",
-      color2: "#ffffff",
-      type: "greece"
-    },
+  const TOTAL_QUESTIONS = 10;
 
-    {
-      answer: "Kanada",
-      aliases: ["kanada", "canada"],
-      hint: "Kuzey Amerika'da, akçaağaç yaprağıyla bilinir.",
-      color1: "#d80621",
-      color2: "#ffffff",
-      type: "canada"
-    },
+  let selectedCategory = "flags";
+  let selectedDifficulty = "easy";
 
-    {
-      answer: "Hollanda",
-      aliases: ["hollanda", "netherlands"],
-      hint: "Laleler ve kanallarıyla ünlü Avrupa ülkesi.",
-      color1: "#ae1c28",
-      color2: "#ffffff",
-      color3: "#21468b",
-      type: "flag3"
-    }
-  ];
-
-  let currentQuestion = 0;
+  let gameQuestions = [];
+  let currentIndex = 0;
   let score = 0;
-  let correct = 0;
+  let correctAnswers = 0;
+
+  let currentQuestion = null;
+
   let timeLeft = 15;
   let timer = null;
-  let revealStage = 1;
-  let questionFinished = false;
 
-  const totalRounds = questions.length;
+  let answerLocked = false;
+
+  // görünür alan seviyesi
+  // 1 = çok küçük
+  // 2 = küçük
+  // 3 = orta
+  // 4 = büyük
+  // 5 = tamamı
+  let revealLevel = 1;
+
+  // ============================================================
+  // DOM
+  // ============================================================
 
   const startScreen = document.getElementById("startScreen");
   const gameScreen = document.getElementById("gameScreen");
-  const endScreen = document.getElementById("endScreen");
+  const resultScreen = document.getElementById("resultScreen");
 
-  const scoreEl = document.getElementById("score");
-  const roundNumberEl = document.getElementById("roundNumber");
-  const totalRoundsEl = document.getElementById("totalRounds");
-  const timerTextEl = document.getElementById("timerText");
-  const timerFillEl = document.getElementById("timerFill");
-  const guessImageEl = document.getElementById("guessImage");
-  const hintEl = document.getElementById("hint");
-  const answerInputEl = document.getElementById("answerInput");
-  const resultEl = document.getElementById("result");
-  const nextButtonEl = document.getElementById("nextButton");
+  const topScore = document.getElementById("topScore");
 
-  totalRoundsEl.textContent = totalRounds;
+  const startButton = document.getElementById("startButton");
+
+  const roundNumber = document.getElementById("roundNumber");
+  const categoryBadge = document.getElementById("categoryBadge");
+
+  const imageFull = document.getElementById("imageFull");
+  const spotWindow = document.getElementById("spotWindow");
+  const zoomText = document.getElementById("zoomText");
+
+  const timerText = document.getElementById("timerText");
+  const timerFill = document.getElementById("timerFill");
+
+  const hintText = document.getElementById("hintText");
+
+  const answerInput = document.getElementById("answerInput");
+  const guessButton = document.getElementById("guessButton");
+
+  const feedback = document.getElementById("feedback");
+  const nextButton = document.getElementById("nextButton");
+
+  const finalScore = document.getElementById("finalScore");
+  const finalCorrect = document.getElementById("finalCorrect");
+  const finalQuestions = document.getElementById("finalQuestions");
+  const finalPercent = document.getElementById("finalPercent");
+  const shareScore = document.getElementById("shareScore");
+
+  const restartButton = document.getElementById("restartButton");
+  const backHomeButton = document.getElementById("backHomeButton");
+
+  // ============================================================
+  // KATEGORİ
+  // ============================================================
+
+  document.querySelectorAll(".category-choice").forEach(button => {
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".category-choice")
+        .forEach(btn => btn.classList.remove("selected"));
+
+      button.classList.add("selected");
+
+      selectedCategory = button.dataset.category;
+    });
+  });
+
+  // ============================================================
+  // ZORLUK
+  // ============================================================
+
+  document.querySelectorAll(".difficulty-choice").forEach(button => {
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".difficulty-choice")
+        .forEach(btn => btn.classList.remove("selected"));
+
+      button.classList.add("selected");
+
+      selectedDifficulty = button.dataset.difficulty;
+    });
+  });
+
+  // ============================================================
+  // YARDIMCI
+  // ============================================================
 
   function normalize(text) {
+
     return text
       .toLocaleLowerCase("tr-TR")
       .trim()
@@ -555,316 +1051,1060 @@
       .replace(/ü/g, "u")
       .replace(/ö/g, "o")
       .replace(/ç/g, "c");
+
   }
 
-  function createSvg(question) {
-    let svg = "";
+  function shuffle(array) {
 
-    if (question.type === "flag") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="600" height="400" fill="${question.color1}"/>
-          <circle cx="300" cy="200" r="95" fill="${question.color2}"/>
-        </svg>
-      `;
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+
+      const j = Math.floor(Math.random() * (i + 1));
+
+      [copy[i], copy[j]] = [copy[j], copy[i]];
     }
 
-    if (question.type === "flag3") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="200" height="400" fill="${question.color1}"/>
-          <rect x="200" width="200" height="400" fill="${question.color2}"/>
-          <rect x="400" width="200" height="400" fill="${question.color3}"/>
-        </svg>
-      `;
-    }
-
-    if (question.type === "brazil") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="600" height="400" fill="${question.color1}"/>
-          <polygon
-            points="300,40 560,200 300,360 40,200"
-            fill="${question.color2}"
-          />
-          <circle cx="300" cy="200" r="95" fill="${question.color3}"/>
-        </svg>
-      `;
-    }
-
-    if (question.type === "turkey") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="600" height="400" fill="${question.color1}"/>
-          <circle cx="270" cy="200" r="85" fill="${question.color2}"/>
-          <circle cx="305" cy="200" r="70" fill="${question.color1}"/>
-          <polygon
-            points="390,140 408,184 455,188 419,219 430,267 390,241 350,267 361,219 325,188 372,184"
-            fill="${question.color2}"
-          />
-        </svg>
-      `;
-    }
-
-    if (question.type === "switzerland") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="600" height="400" fill="${question.color1}"/>
-          <rect x="245" y="75" width="110" height="250" fill="${question.color2}"/>
-          <rect x="170" y="145" width="260" height="110" fill="${question.color2}"/>
-        </svg>
-      `;
-    }
-
-    if (question.type === "greece") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="600" height="400" fill="${question.color2}"/>
-          <rect y="0" width="600" height="44" fill="${question.color1}"/>
-          <rect y="88" width="600" height="44" fill="${question.color1}"/>
-          <rect y="176" width="600" height="44" fill="${question.color1}"/>
-          <rect y="264" width="600" height="44" fill="${question.color1}"/>
-          <rect y="352" width="600" height="44" fill="${question.color1}"/>
-        </svg>
-      `;
-    }
-
-    if (question.type === "canada") {
-      svg = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
-          <rect width="150" height="400" fill="${question.color1}"/>
-          <rect x="150" width="300" height="400" fill="${question.color2}"/>
-          <rect x="450" width="150" height="400" fill="${question.color1}"/>
-          <polygon
-            points="300,70 320,150 370,135 345,180 390,205 345,230 360,290 300,255 240,290 255,230 210,205 255,180 230,135 280,150"
-            fill="${question.color1}"
-          />
-        </svg>
-      `;
-    }
-
-    return "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(svg);
+    return copy;
   }
 
-  function loadQuestion() {
-    const q = questions[currentQuestion];
+  // ============================================================
+  // SVG GÖRSEL ÜRETİMİ
+  // ============================================================
 
-    roundNumberEl.textContent = currentQuestion + 1;
+  function makeSvg(type, q) {
 
-    guessImageEl.src = createSvg(q);
+    const c = q.colors || [];
 
-    revealStage = 1;
+    let inner = "";
 
-    updateReveal();
+    if (type === "turkey") {
 
-    answerInputEl.value = "";
-    answerInputEl.disabled = false;
-    answerInputEl.focus();
+      inner = `
+        <rect width="600" height="400" fill="#e30a17"/>
+        <circle cx="245" cy="200" r="85" fill="#fff"/>
+        <circle cx="278" cy="200" r="67" fill="#e30a17"/>
 
-    resultEl.textContent = "";
-    resultEl.className = "result";
+        <polygon
+          points="
+            380,135
+            398,181
+            447,184
+            409,215
+            422,263
+            380,237
+            338,263
+            351,215
+            313,184
+            362,181
+          "
+          fill="#fff"
+        />
+      `;
+    }
 
-    nextButtonEl.style.display = "none";
+    else if (type === "japan") {
 
-    hintEl.textContent = "Henüz ipucu yok.";
+      inner = `
+        <rect width="600" height="400" fill="#fff"/>
+        <circle cx="300" cy="200" r="100" fill="#bc002d"/>
+      `;
+    }
 
-    questionFinished = false;
+    else if (type === "tricolor") {
 
-    startTimer();
+      inner = `
+        <rect width="200" height="400" fill="${c[0]}"/>
+        <rect x="200" width="200" height="400" fill="${c[1]}"/>
+        <rect x="400" width="200" height="400" fill="${c[2]}"/>
+      `;
+    }
+
+    else if (type === "horizontal") {
+
+      inner = `
+        <rect width="600" height="133" fill="${c[0]}"/>
+        <rect y="133" width="600" height="134" fill="${c[1]}"/>
+        <rect y="267" width="600" height="133" fill="${c[2]}"/>
+      `;
+    }
+
+    else if (type === "greece") {
+
+      inner = `
+        <rect width="600" height="400" fill="#0d5eaf"/>
+
+        <rect y="0" width="600" height="42" fill="#fff"/>
+        <rect y="84" width="600" height="42" fill="#fff"/>
+        <rect y="168" width="600" height="42" fill="#fff"/>
+        <rect y="252" width="600" height="42" fill="#fff"/>
+        <rect y="336" width="600" height="42" fill="#fff"/>
+
+        <rect width="220" height="210" fill="#0d5eaf"/>
+        <rect x="92" width="36" height="210" fill="#fff"/>
+        <rect y="87" width="220" height="36" fill="#fff"/>
+      `;
+    }
+
+    else if (type === "canada") {
+
+      inner = `
+        <rect width="150" height="400" fill="#d80621"/>
+        <rect x="150" width="300" height="400" fill="#fff"/>
+        <rect x="450" width="150" height="400" fill="#d80621"/>
+
+        <polygon
+          points="
+            300,65
+            319,132
+            371,119
+            347,167
+            394,194
+            347,218
+            360,290
+            300,250
+            240,290
+            253,218
+            206,194
+            253,167
+            229,119
+            281,132
+          "
+          fill="#d80621"
+        />
+      `;
+    }
+
+    else if (type === "switzerland") {
+
+      inner = `
+        <rect width="600" height="400" fill="#d52b1e"/>
+        <rect x="245" y="70" width="110" height="260" fill="#fff"/>
+        <rect x="170" y="145" width="260" height="110" fill="#fff"/>
+      `;
+    }
+
+    else if (type === "brazil") {
+
+      inner = `
+        <rect width="600" height="400" fill="#009c3b"/>
+
+        <polygon
+          points="300,35 565,200 300,365 35,200"
+          fill="#ffdf00"
+        />
+
+        <circle cx="300" cy="200" r="95" fill="#002776"/>
+        <path
+          d="M 218 185 Q 300 155 382 185"
+          fill="none"
+          stroke="#fff"
+          stroke-width="14"
+        />
+      `;
+    }
+
+    // -------- MARKALAR --------
+
+    else if (type === "apple") {
+
+      inner = `
+        <rect width="600" height="400" fill="#fafafa"/>
+
+        <path
+          d="
+          M 335 122
+          C 305 93, 255 101, 235 135
+          C 205 184, 225 251, 258 291
+          C 273 309, 291 334, 315 331
+          C 336 328, 344 316, 370 316
+          C 396 316, 405 331, 426 328
+          C 453 325, 474 286, 484 262
+          C 445 245, 437 185, 477 159
+          C 456 128, 423 112, 389 109
+          C 360 107, 344 126, 335 122 Z
+          "
+          fill="#111"
+        />
+
+        <path
+          d="
+          M 382 74
+          C 395 59, 417 47, 436 48
+          C 438 69, 431 91, 415 105
+          C 400 119, 377 128, 362 124
+          C 359 104, 367 88, 382 74 Z
+          "
+          fill="#111"
+        />
+      `;
+    }
+
+    else if (type === "nike") {
+
+      inner = `
+        <rect width="600" height="400" fill="#fff"/>
+
+        <path
+          d="
+            M 105 235
+            C 180 210, 265 180, 500 115
+            C 436 165, 355 222, 260 263
+            C 194 292, 134 302, 105 278
+            C 89 266, 91 250, 105 235 Z
+          "
+          fill="#111"
+        />
+      `;
+    }
+
+    else if (type === "coke") {
+
+      inner = `
+        <rect width="600" height="400" fill="#e50914"/>
+
+        <ellipse
+          cx="300"
+          cy="200"
+          rx="215"
+          ry="115"
+          fill="#fff"
+        />
+
+        <ellipse
+          cx="300"
+          cy="200"
+          rx="196"
+          ry="97"
+          fill="#e50914"
+        />
+
+        <text
+          x="300"
+          y="223"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="62"
+          font-weight="bold"
+          fill="#fff"
+        >
+          Coca-Cola
+        </text>
+      `;
+    }
+
+    else if (type === "youtube") {
+
+      inner = `
+        <rect width="600" height="400" fill="#fff"/>
+
+        <rect
+          x="125"
+          y="105"
+          width="350"
+          height="190"
+          rx="45"
+          fill="#ff0033"
+        />
+
+        <polygon
+          points="270,145 270,255 380,200"
+          fill="#fff"
+        />
+      `;
+    }
+
+    else if (type === "adidas") {
+
+      inner = `
+        <rect width="600" height="400" fill="#fff"/>
+
+        <polygon points="150,290 220,130 270,130 220,290" fill="#111"/>
+        <polygon points="240,290 310,130 360,130 310,290" fill="#111"/>
+        <polygon points="330,290 400,130 450,130 400,290" fill="#111"/>
+
+        <text
+          x="300"
+          y="340"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="35"
+          font-weight="bold"
+          fill="#111"
+        >
+          adidas
+        </text>
+      `;
+    }
+
+    // -------- TAKIMLAR --------
+
+    else if (type === "barcelona") {
+
+      inner = `
+        <rect width="600" height="400" fill="#a50044"/>
+        <rect x="0" width="150" height="400" fill="#004d98"/>
+        <rect x="300" width="150" height="400" fill="#004d98"/>
+
+        <circle cx="300" cy="200" r="92" fill="#f4c300"/>
+        <circle cx="300" cy="200" r="72" fill="#a50044"/>
+        <text
+          x="300"
+          y="216"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="48"
+          font-weight="bold"
+          fill="#fff"
+        >FCB</text>
+      `;
+    }
+
+    else if (type === "realmadrid") {
+
+      inner = `
+        <rect width="600" height="400" fill="#f4f4f4"/>
+        <circle cx="300" cy="205" r="105" fill="#fff" stroke="#243c9a" stroke-width="18"/>
+        <text
+          x="300"
+          y="225"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="100"
+          font-weight="bold"
+          fill="#243c9a"
+        >M</text>
+      `;
+    }
+
+    else if (type === "liverpool") {
+
+      inner = `
+        <rect width="600" height="400" fill="#d00027"/>
+
+        <path
+          d="
+          M 300 70
+          L 370 115
+          L 450 105
+          L 420 165
+          L 470 220
+          L 390 215
+          L 300 300
+          L 210 215
+          L 130 220
+          L 180 165
+          L 150 105
+          L 230 115
+          Z
+          "
+          fill="#fff"
+        />
+
+        <text
+          x="300"
+          y="215"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="48"
+          font-weight="900"
+          fill="#d00027"
+        >LFC</text>
+      `;
+    }
+
+    else if (type === "galatasaray") {
+
+      inner = `
+        <rect width="600" height="400" fill="#8b1538"/>
+
+        <circle
+          cx="300"
+          cy="200"
+          r="110"
+          fill="#fcbf00"
+          stroke="#8b1538"
+          stroke-width="18"
+        />
+
+        <text
+          x="300"
+          y="220"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="72"
+          font-weight="900"
+          fill="#8b1538"
+        >GS</text>
+      `;
+    }
+
+    // -------- BASKETBOL --------
+
+    else if (type === "bulls") {
+
+      inner = `
+        <rect width="600" height="400" fill="#fff"/>
+
+        <circle cx="300" cy="195" r="105" fill="#d71920"/>
+        <circle cx="260" cy="180" r="12" fill="#111"/>
+        <circle cx="340" cy="180" r="12" fill="#111"/>
+
+        <path
+          d="M 240 240 Q 300 280 360 240"
+          fill="none"
+          stroke="#111"
+          stroke-width="13"
+        />
+
+        <text
+          x="300"
+          y="345"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="38"
+          font-weight="bold"
+          fill="#111"
+        >BULLS</text>
+      `;
+    }
+
+    else if (type === "lakers") {
+
+      inner = `
+        <rect width="600" height="400" fill="#552583"/>
+
+        <circle cx="300" cy="200" r="112" fill="#fdb927"/>
+
+        <text
+          x="300"
+          y="193"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="42"
+          font-weight="900"
+          fill="#552583"
+        >LA</text>
+
+        <text
+          x="300"
+          y="250"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="35"
+          font-weight="900"
+          fill="#552583"
+        >LAKERS</text>
+      `;
+    }
+
+    else if (type === "celtics") {
+
+      inner = `
+        <rect width="600" height="400" fill="#007a33"/>
+
+        <circle cx="300" cy="200" r="110" fill="#fff"/>
+
+        <text
+          x="300"
+          y="225"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="86"
+          font-weight="900"
+          fill="#007a33"
+        >☘</text>
+
+        <text
+          x="300"
+          y="315"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="33"
+          font-weight="900"
+          fill="#007a33"
+        >CELTICS</text>
+      `;
+    }
+
+    // -------- OYUNLAR --------
+
+    else if (type === "minecraft") {
+
+      inner = `
+        <rect width="600" height="400" fill="#6a9c48"/>
+
+        <rect x="125" y="80" width="350" height="240" fill="#3c3c3c"/>
+        <rect x="165" y="115" width="65" height="65" fill="#111"/>
+        <rect x="370" y="115" width="65" height="65" fill="#111"/>
+        <rect x="245" y="205" width="110" height="70" fill="#111"/>
+
+        <text
+          x="300"
+          y="55"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="30"
+          font-weight="900"
+          fill="#fff"
+        >MINECRAFT</text>
+      `;
+    }
+
+    else if (type === "fortnite") {
+
+      inner = `
+        <rect width="600" height="400" fill="#4a2f91"/>
+
+        <text
+          x="300"
+          y="215"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="70"
+          font-weight="900"
+          fill="#fff"
+          transform="rotate(-7 300 200)"
+        >FORTNITE</text>
+      `;
+    }
+
+    else if (type === "roblox") {
+
+      inner = `
+        <rect width="600" height="400" fill="#e2231a"/>
+
+        <rect
+          x="210"
+          y="100"
+          width="180"
+          height="180"
+          rx="30"
+          fill="#fff"
+          transform="rotate(20 300 190)"
+        />
+
+        <rect
+          x="265"
+          y="155"
+          width="70"
+          height="70"
+          fill="#e2231a"
+          transform="rotate(20 300 190)"
+        />
+      `;
+    }
+
+    else if (type === "amongus") {
+
+      inner = `
+        <rect width="600" height="400" fill="#191919"/>
+
+        <path
+          d="
+          M 240 95
+          C 180 125 160 205 195 265
+          L 235 305
+          L 365 305
+          L 410 265
+          C 440 205 420 125 360 95
+          Z
+          "
+          fill="#d82d2f"
+        />
+
+        <path
+          d="
+          M 285 120
+          L 380 145
+          L 355 205
+          L 275 185
+          Z
+          "
+          fill="#bcecff"
+        />
+      `;
+    }
+
+    else {
+      inner = `
+        <rect width="600" height="400" fill="#333"/>
+        <text
+          x="300"
+          y="220"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="60"
+          font-weight="900"
+          fill="#fff"
+        >?</text>
+      `;
+    }
+
+    const svg = `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="600"
+        height="400"
+        viewBox="0 0 600 400"
+      >
+        ${inner}
+      </svg>
+    `;
+
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
   }
 
-  function updateReveal() {
-    const stages = {
-      1: 85,
-      2: 60,
-      3: 35,
-      4: 10,
-      5: 0
+  // ============================================================
+  // GÖRÜNTÜ KONUMLANDIRMA
+  // ============================================================
+
+  function randomizeSpot() {
+
+    const x = Math.floor(Math.random() * 68) + 8;
+    const y = Math.floor(Math.random() * 58) + 8;
+
+    spotWindow.style.left = `${x}%`;
+    spotWindow.style.top = `${y}%`;
+  }
+
+  function setRevealLevel(level) {
+
+    revealLevel = level;
+
+    const configs = {
+      1: {
+        size: 24,
+        text: "%10",
+        hint: false
+      },
+      2: {
+        size: 34,
+        text: "%25",
+        hint: true
+      },
+      3: {
+        size: 48,
+        text: "%50",
+        hint: true
+      },
+      4: {
+        size: 68,
+        text: "%75",
+        hint: true
+      },
+      5: {
+        size: 100,
+        text: "%100",
+        hint: true
+      }
     };
 
-    const rightInset = stages[revealStage] ?? 0;
+    const config = configs[level];
 
-    guessImageEl.style.clipPath =
-      `inset(0 ${rightInset}% 0 0)`;
+    spotWindow.style.width = `${config.size}%`;
+    spotWindow.style.height = `${config.size * 0.68}%`;
 
-    if (revealStage >= 2) {
-      hintEl.textContent = "İpucu: " + questions[currentQuestion].hint;
+    zoomText.textContent =
+      `Görünen alan: ${config.text}`;
+
+    if (level >= 2) {
+      hintText.textContent =
+        `İpucu: ${currentQuestion.hint || "Biraz daha dikkatli bak."}`;
+    } else {
+      hintText.textContent = "Henüz ipucu yok.";
+    }
+
+    if (level >= 5) {
+      spotWindow.style.borderColor =
+        "rgba(57, 217, 138, .8)";
+
+      spotWindow.style.boxShadow =
+        "none";
+
+      zoomText.textContent = "Tam görsel";
     }
   }
 
-  function startTimer() {
-    clearInterval(timer);
+  // ============================================================
+  // SORU HAVUZU
+  // ============================================================
 
-    timeLeft = 15;
+  function buildQuestionPool() {
 
-    timerTextEl.textContent = timeLeft;
-    timerFillEl.style.width = "100%";
+    let pool = DATA[selectedCategory]
+      ? [...DATA[selectedCategory]]
+      : [];
 
-    timer = setInterval(() => {
-      if (questionFinished) return;
+    pool = shuffle(pool);
 
-      timeLeft--;
+    // Soru sayısından azsa tekrar kullanılabilir
+    if (pool.length < TOTAL_QUESTIONS) {
 
-      timerTextEl.textContent = timeLeft;
-      timerFillEl.style.width = `${(timeLeft / 15) * 100}%`;
+      const original = [...pool];
 
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        revealMore();
+      while (pool.length < TOTAL_QUESTIONS) {
+
+        pool = pool.concat(shuffle(original));
       }
-    }, 1000);
+    }
+
+    return pool.slice(0, TOTAL_QUESTIONS);
   }
 
-  function revealMore() {
-    if (questionFinished) return;
+  // ============================================================
+  // ZORLUK
+  // ============================================================
 
-    revealStage++;
+  function applyDifficulty() {
 
-    if (revealStage <= 4) {
-      updateReveal();
+    switch (selectedDifficulty) {
 
-      resultEl.textContent = "Biraz daha görmen gerekiyor.";
-      resultEl.className = "result wrong";
+      case "easy":
+        timeLeft = 18;
+        break;
 
-      timeLeft = 10;
-      timerTextEl.textContent = timeLeft;
-      timerFillEl.style.width = "100%";
+      case "medium":
+        timeLeft = 15;
+        break;
 
-      clearInterval(timer);
+      case "hard":
+        timeLeft = 12;
+        break;
 
-      timer = setInterval(() => {
-        if (questionFinished) return;
+      case "impossible":
+        timeLeft = 9;
+        break;
 
-        timeLeft--;
-
-        timerTextEl.textContent = timeLeft;
-        timerFillEl.style.width = `${(timeLeft / 10) * 100}%`;
-
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          revealMore();
-        }
-      }, 1000);
-
-    } else {
-      clearInterval(timer);
-      updateReveal();
-
-      const answer = questions[currentQuestion].answer;
-
-      resultEl.textContent = `Cevap: ${answer}`;
-      resultEl.className = "result wrong";
-
-      finishQuestion();
+      default:
+        timeLeft = 15;
     }
   }
 
-  function submitAnswer() {
-    if (questionFinished) return;
+  // ============================================================
+  // OYUNU BAŞLAT
+  // ============================================================
 
-    const guess = normalize(answerInputEl.value);
-
-    if (!guess) {
-      resultEl.textContent = "Bir cevap yaz.";
-      resultEl.className = "result wrong";
-      return;
-    }
-
-    const q = questions[currentQuestion];
-
-    const validAnswers = [
-      normalize(q.answer),
-      ...q.aliases.map(a => normalize(a))
-    ];
-
-    if (validAnswers.includes(guess)) {
-      clearInterval(timer);
-
-      let points = 0;
-
-      if (revealStage === 1) points = 1000;
-      else if (revealStage === 2) points = 750;
-      else if (revealStage === 3) points = 500;
-      else if (revealStage === 4) points = 250;
-
-      score += points;
-      correct++;
-
-      scoreEl.textContent = score;
-
-      resultEl.textContent =
-        `Doğru! +${points} puan`;
-
-      resultEl.className = "result correct";
-
-      updateReveal();
-
-      finishQuestion();
-    } else {
-      resultEl.textContent = "Yanlış tahmin. Biraz daha ipucu açılıyor.";
-      resultEl.className = "result wrong";
-
-      revealMore();
-    }
-  }
-
-  function finishQuestion() {
-    questionFinished = true;
-
-    answerInputEl.disabled = true;
-
-    clearInterval(timer);
-
-    nextButtonEl.style.display = "block";
-  }
-
-  function nextQuestion() {
-    currentQuestion++;
-
-    if (currentQuestion >= questions.length) {
-      endGame();
-      return;
-    }
-
-    loadQuestion();
-  }
+  startButton.addEventListener("click", startGame);
 
   function startGame() {
-    score = 0;
-    correct = 0;
-    currentQuestion = 0;
 
-    scoreEl.textContent = score;
+    score = 0;
+    correctAnswers = 0;
+    currentIndex = 0;
+
+    topScore.textContent = "0";
+
+    gameQuestions = buildQuestionPool();
 
     startScreen.classList.add("hidden");
-    endScreen.classList.add("hidden");
+    resultScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
 
     loadQuestion();
   }
 
-  function endGame() {
+  // ============================================================
+  // SORU YÜKLE
+  // ============================================================
+
+  function loadQuestion() {
+
+    clearInterval(timer);
+
+    currentQuestion = gameQuestions[currentIndex];
+
+    answerLocked = false;
+
+    revealLevel = 1;
+
+    roundNumber.textContent = currentIndex + 1;
+
+    const categoryNames = {
+      flags: "🌍 Bayraklar",
+      brands: "🏷️ Markalar",
+      football: "⚽ Futbol",
+      basketball: "🏀 Basketbol",
+      games: "🎮 Oyunlar"
+    };
+
+    categoryBadge.textContent =
+      categoryNames[selectedCategory] || "🎯 SpotGuess";
+
+    const titleNames = {
+      flags: "Bu hangi ülke?",
+      brands: "Bu hangi marka?",
+      football: "Bu hangi takım?",
+      basketball: "Bu hangi takım?",
+      games: "Bu hangi oyun?"
+    };
+
+    document.getElementById("questionTitle").textContent =
+      titleNames[selectedCategory] || "Bu nedir?";
+
+    imageFull.src =
+      makeSvg(currentQuestion.type, currentQuestion);
+
+    randomizeSpot();
+
+    setRevealLevel(1);
+
+    feedback.textContent = "";
+    feedback.className = "feedback";
+
+    nextButton.classList.add("hidden");
+
+    answerInput.value = "";
+    answerInput.disabled = false;
+
+    applyDifficulty();
+
+    timerText.textContent = timeLeft;
+    timerFill.style.width = "100%";
+
+    answerInput.focus();
+
+    startTimer();
+  }
+
+  // ============================================================
+  // TIMER
+  // ============================================================
+
+  function startTimer() {
+
+    clearInterval(timer);
+
+    const maxTime = timeLeft;
+
+    timer = setInterval(() => {
+
+      if (answerLocked) return;
+
+      timeLeft--;
+
+      timerText.textContent = timeLeft;
+
+      timerFill.style.width =
+        `${Math.max(0, (timeLeft / maxTime) * 100)}%`;
+
+      if (timeLeft <= 0) {
+
+        clearInterval(timer);
+
+        revealNextStage("Süre bitti.");
+      }
+
+    }, 1000);
+  }
+
+  // ============================================================
+  // GÖRSELİ AÇ
+  // ============================================================
+
+  function revealNextStage(message = "") {
+
+    if (answerLocked) return;
+
+    if (revealLevel < 4) {
+
+      revealLevel++;
+
+      setRevealLevel(revealLevel);
+
+      feedback.textContent =
+        message +
+        " Daha fazla açıldı. Tekrar dene.";
+
+      feedback.className = "feedback wrong";
+
+      timeLeft =
+        selectedDifficulty === "easy" ? 10 :
+        selectedDifficulty === "medium" ? 8 :
+        selectedDifficulty === "hard" ? 7 : 5;
+
+      timerText.textContent = timeLeft;
+
+      timerFill.style.width = "100%";
+
+      clearInterval(timer);
+      startTimer();
+
+      return;
+    }
+
+    // Son aşama
+    setRevealLevel(5);
+
+    answerLocked = true;
+    answerInput.disabled = true;
+
+    clearInterval(timer);
+
+    feedback.textContent =
+      `Cevap: ${currentQuestion.name}`;
+
+    feedback.className = "feedback wrong";
+
+    nextButton.classList.remove("hidden");
+  }
+
+  // ============================================================
+  // CEVAP KONTROLÜ
+  // ============================================================
+
+  guessButton.addEventListener("click", submitAnswer);
+
+  answerInput.addEventListener("keydown", event => {
+
+    if (event.key === "Enter") {
+
+      submitAnswer();
+    }
+
+  });
+
+  function submitAnswer() {
+
+    if (answerLocked) return;
+
+    const value = normalize(answerInput.value);
+
+    if (!value) {
+
+      feedback.textContent =
+        "Önce bir tahmin yaz.";
+
+      feedback.className = "feedback wrong";
+
+      return;
+    }
+
+    const possibleAnswers = [
+      normalize(currentQuestion.name),
+      ...(currentQuestion.aliases || []).map(normalize)
+    ];
+
+    if (possibleAnswers.includes(value)) {
+
+      const points = getPoints();
+
+      score += points;
+
+      correctAnswers++;
+
+      topScore.textContent = score;
+
+      setRevealLevel(5);
+
+      answerLocked = true;
+
+      answerInput.disabled = true;
+
+      clearInterval(timer);
+
+      feedback.textContent =
+        `✅ Doğru! +${points} puan`;
+
+      feedback.className = "feedback correct";
+
+      nextButton.classList.remove("hidden");
+
+      return;
+    }
+
+    feedback.textContent =
+      "❌ Yanlış tahmin.";
+
+    feedback.className = "feedback wrong";
+
+    revealNextStage();
+  }
+
+  // ============================================================
+  // PUAN
+  // ============================================================
+
+  function getPoints() {
+
+    if (revealLevel === 1) return 1000;
+    if (revealLevel === 2) return 750;
+    if (revealLevel === 3) return 500;
+    if (revealLevel === 4) return 250;
+
+    return 0;
+  }
+
+  // ============================================================
+  // SONRAKİ
+  // ============================================================
+
+  nextButton.addEventListener("click", nextQuestion);
+
+  function nextQuestion() {
+
+    currentIndex++;
+
+    if (currentIndex >= gameQuestions.length) {
+
+      finishGame();
+
+      return;
+    }
+
+    loadQuestion();
+  }
+
+  // ============================================================
+  // OYUN SONU
+  // ============================================================
+
+  function finishGame() {
+
     clearInterval(timer);
 
     gameScreen.classList.add("hidden");
-    endScreen.classList.remove("hidden");
+    resultScreen.classList.remove("hidden");
 
-    document.getElementById("finalScore").textContent = score;
-    document.getElementById("finalCorrect").textContent = correct;
-    document.getElementById("finalTotal").textContent = questions.length;
+    finalScore.textContent = score;
+    finalCorrect.textContent = correctAnswers;
+    finalQuestions.textContent = gameQuestions.length;
+
+    const percent =
+      Math.round((correctAnswers / gameQuestions.length) * 100);
+
+    finalPercent.textContent =
+      `%${percent}`;
+
+    shareScore.textContent = score;
   }
 
-  function restartGame() {
-    endScreen.classList.add("hidden");
+  // ============================================================
+  // TEKRAR OYNA
+  // ============================================================
+
+  restartButton.addEventListener("click", () => {
+
+    resultScreen.classList.add("hidden");
+    gameScreen.classList.remove("hidden");
+
+    startGame();
+  });
+
+  // ============================================================
+  // ANA MENÜ
+  // ============================================================
+
+  backHomeButton.addEventListener("click", () => {
+
+    clearInterval(timer);
+
+    resultScreen.classList.add("hidden");
+    gameScreen.classList.add("hidden");
     startScreen.classList.remove("hidden");
-  }
 
-  function handleEnter(event) {
-    if (event.key === "Enter") {
-      submitAnswer();
-    }
-  }
+  });
+
 </script>
 
 </body>
