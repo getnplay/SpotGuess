@@ -250,16 +250,20 @@
       justify-content:center;
     }
 
-    .art{
-      position:absolute;
-      width:72%;
-      max-width:560px;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%);
-      user-select:none;
-      pointer-events:none;
-    }
+   .art{
+  position:absolute;
+  width:72%;
+  max-width:560px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  user-select:none;
+  pointer-events:none;
+
+  /* SADECE SEÇİLEN KISIM GÖRÜNSÜN */
+  clip-path: inset(40% 40% 40% 40%);
+  transition: clip-path .35s ease;
+}
 
     .white-mask{
       position:absolute;
@@ -511,9 +515,7 @@
     <div class="canvas-wrap">
 
       <img id="art" class="art" alt="Tahmin görseli">
-
-      <!-- Geri kalan her şeyi beyaza kapatıyoruz -->
-      <div id="mask" class="white-mask"></div>
+     
 
       <!-- Açık pencere -->
       <div id="reveal" class="reveal"></div>
@@ -1244,27 +1246,30 @@
      RASTGELE AÇIK BÖLGE
   ============================ */
 
-  function generateRegion(){
-    let width =
-      revealLevel===1 ? 19 :
-      revealLevel===2 ? 30 :
-      revealLevel===3 ? 44 :
-      62;
+function generateRegion(){
 
-    let height =
-      revealLevel===1 ? 16 :
-      revealLevel===2 ? 25 :
-      revealLevel===3 ? 36 :
-      52;
+  const width =
+    revealLevel === 1 ? 16 :
+    revealLevel === 2 ? 26 :
+    revealLevel === 3 ? 42 :
+    65;
 
-    const x =
-      Math.random()*(92-width);
+  const height =
+    revealLevel === 1 ? 16 :
+    revealLevel === 2 ? 25 :
+    revealLevel === 3 ? 38 :
+    58;
 
-    const y =
-      Math.random()*(88-height);
+  const x = Math.random() * (100 - width);
+  const y = Math.random() * (100 - height);
 
-    return {x,y,width,height};
-  }
+  return {
+    x,
+    y,
+    width,
+    height
+  };
+}
 
   function applyReveal(){
     currentRegion = generateRegion();
@@ -1361,43 +1366,36 @@
     clip-path içinde reveal boşluğu oluşturuyoruz.
   */
 
-  function applyRevealClean(){
+function applyRevealClean(){
 
-    const r=currentRegion;
+  const r = currentRegion;
 
-    reveal.style.left=`${r.x}%`;
-    reveal.style.top=`${r.y}%`;
-    reveal.style.width=`${r.width}%`;
-    reveal.style.height=`${r.height}%`;
+  /*
+    Görselin tamamını değil,
+    sadece seçilen bölgesini göster.
+  */
 
-    const x1=r.x;
-    const y1=r.y;
-    const x2=r.x+r.width;
-    const y2=r.y+r.height;
+  art.style.clipPath = `
+    inset(
+      ${r.y}%
+      ${100 - r.x - r.width}%
+      ${100 - r.y - r.height}%
+      ${r.x}%
+    )
+  `;
 
-    mask.style.clipPath = `
-      polygon(
-        0 0,
-        100% 0,
-        100% ${y1}%,
-        ${x2}% ${y1}%,
-        ${x2}% ${y2}%,
-        100% ${y2}%,
-        100% 100%,
-        0 100%,
-        0 ${y2}%,
-        ${x1}% ${y2}%,
-        ${x1}% ${y1}%,
-        0 ${y1}%
-      )
-    `;
+  /*
+    Açık kısmın etrafında ince çerçeve.
+  */
 
-    revealInfo.textContent =
-      `Görünen alan: ${Math.round(
-        r.width*r.height/7
-      )}%`;
-  }
+  reveal.style.left = `${r.x}%`;
+  reveal.style.top = `${r.y}%`;
+  reveal.style.width = `${r.width}%`;
+  reveal.style.height = `${r.height}%`;
 
+  revealInfo.textContent =
+    `Görünen alan: ${Math.round(r.width * r.height / 100)}%`;
+}
   /* ============================
      TIMER
   ============================ */
