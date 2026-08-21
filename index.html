@@ -1,2121 +1,1951 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SpotGuess - Görselin küçük bir kısmından ne olduğunu tahmin et.">
-  <title>SpotGuess</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpotGuess</title>
 
-  <style>
-    :root {
-      --text: #111827;
-      --muted: #667085;
-      --border: #e5e7eb;
-      --purple: #7c3aed;
-      --blue: #2563eb;
-      --pink: #ec4899;
-      --green: #16a34a;
-      --red: #dc2626;
-      --bg: #ffffff;
-    }
+<style>
+  :root {
+    --text: #111827;
+    --muted: #667085;
+    --border: #e5e7eb;
+    --purple: #7c3aed;
+    --blue: #2563eb;
+    --pink: #ec4899;
+    --green: #16a34a;
+    --red: #dc2626;
+  }
 
-    * {
-      box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 8% 5%, rgba(124, 58, 237, .10), transparent 25%),
-        radial-gradient(circle at 92% 8%, rgba(37, 99, 235, .10), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, .08), transparent 30%),
-        #fff;
-    }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 10% 5%, rgba(124,58,237,.10), transparent 25%),
+      radial-gradient(circle at 90% 8%, rgba(37,99,235,.10), transparent 25%),
+      radial-gradient(circle at 50% 100%, rgba(236,72,153,.08), transparent 30%),
+      #fff;
+  }
 
-    button,
-    input {
-      font: inherit;
-    }
+  button,
+  input {
+    font: inherit;
+  }
 
-    button {
-      cursor: pointer;
-    }
+  button {
+    cursor: pointer;
+  }
 
-    .app {
-      width: min(1080px, 94%);
-      margin: auto;
-      padding: 24px 0 50px;
-    }
+  .app {
+    width: min(1080px, 94%);
+    margin: auto;
+    padding: 24px 0 50px;
+  }
 
-    .hidden {
-      display: none !important;
-    }
+  .hidden {
+    display: none !important;
+  }
 
-    /* HEADER */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 22px;
-    }
+  .logo {
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+  }
 
-    .logo {
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
-    }
+  .logo span {
+    background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-    .logo span {
-      background: linear-gradient(
-        90deg,
-        var(--purple),
-        var(--blue),
-        var(--pink)
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+  .score-pill {
+    background: rgba(255,255,255,.96);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 15px;
+    font-weight: 900;
+    box-shadow: 0 8px 25px rgba(15,23,42,.05);
+  }
 
-    .score-pill {
-      background: rgba(255,255,255,.95);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px 15px;
-      font-weight: 900;
-      box-shadow: 0 8px 25px rgba(15,23,42,.05);
-    }
+  .screen {
+    background:
+      radial-gradient(circle at 10% 10%, rgba(124,58,237,.08), transparent 27%),
+      radial-gradient(circle at 90% 8%, rgba(37,99,235,.08), transparent 27%),
+      rgba(255,255,255,.96);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 30px;
+    box-shadow: 0 25px 70px rgba(15,23,42,.08);
+  }
 
-    /* SCREEN */
+  /* HOME */
 
-    .screen {
-      background:
-        radial-gradient(circle at 10% 10%, rgba(124,58,237,.08), transparent 27%),
-        radial-gradient(circle at 90% 8%, rgba(37,99,235,.08), transparent 27%),
-        rgba(255,255,255,.95);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 30px;
-      box-shadow: 0 25px 70px rgba(15,23,42,.08);
-    }
+  .hero {
+    text-align: center;
+    padding: 8px 0 22px;
+  }
 
-    /* HOME */
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(48px, 8vw, 78px);
+    letter-spacing: -5px;
+    background: linear-gradient(
+      90deg,
+      #111827,
+      #7c3aed,
+      #2563eb,
+      #ec4899
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 
-    .hero {
-      text-align: center;
-      padding: 8px 0 22px;
-    }
+  .hero p {
+    max-width: 680px;
+    margin: 14px auto 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(48px, 8vw, 78px);
-      letter-spacing: -5px;
-      background:
-        linear-gradient(
-          90deg,
-          #111827,
-          #7c3aed,
-          #2563eb,
-          #ec4899
-        );
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+  .section-title {
+    margin: 28px 0 12px;
+    font-size: 18px;
+    font-weight: 900;
+  }
 
-    .hero p {
-      max-width: 680px;
-      margin: 14px auto 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 11px;
+  }
 
-    .section-title {
-      margin: 28px 0 12px;
-      font-size: 18px;
-      font-weight: 900;
-    }
+  .category {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255,255,255,.96);
+    padding: 18px 10px;
+    font-weight: 900;
+    color: var(--text);
+    transition: .18s ease;
+  }
 
+  .category:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 26px rgba(15,23,42,.08);
+  }
+
+  .category.active {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(135deg,var(--purple),var(--blue));
+    box-shadow: 0 12px 28px rgba(99,102,241,.25);
+  }
+
+  .category-icon {
+    display: block;
+    font-size: 29px;
+    margin-bottom: 8px;
+  }
+
+  .difficulty-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 11px;
+  }
+
+  .difficulty {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: white;
+    padding: 14px 10px;
+    font-weight: 900;
+    transition: .18s;
+  }
+
+  .difficulty:hover {
+    transform: translateY(-2px);
+  }
+
+  .difficulty.active {
+    background: #111827;
+    color: white;
+    border-color: #111827;
+  }
+
+  .start-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+  }
+
+  .primary {
+    border: 0;
+    border-radius: 16px;
+    padding: 15px 26px;
+    background: linear-gradient(135deg,#111827,#374151);
+    color: white;
+    font-weight: 900;
+    box-shadow: 0 12px 25px rgba(15,23,42,.15);
+    transition: .18s;
+  }
+
+  .primary:hover {
+    transform: translateY(-2px);
+  }
+
+  .secondary {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 20px;
+    background: white;
+    color: var(--text);
+    font-weight: 900;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .info-chip {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 12px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  /* GAME */
+
+  .game-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .round {
+    color: var(--muted);
+    font-weight: 900;
+  }
+
+  .badge {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 13px;
+    font-size: 13px;
+    font-weight: 900;
+  }
+
+  .question {
+    text-align: center;
+    margin: 5px 0;
+    font-size: clamp(29px,5vw,42px);
+  }
+
+  .question-sub {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .timer-top {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 7px;
+  }
+
+  .timer {
+    height: 10px;
+    background: #eceff3;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 22px;
+  }
+
+  .timer-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg,#111827,#4b5563);
+    transition: width .15s linear;
+  }
+
+  /* GÖRSEL */
+
+  .image-container {
+    width: min(800px,100%);
+    aspect-ratio: 4 / 3;
+    margin: auto;
+    background: white;
+    border: 1px solid #e0e3e7;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .art-area {
+    position: absolute;
+    width: 72%;
+    height: 72%;
+    left: 14%;
+    top: 14%;
+    overflow: hidden;
+    background: white;
+  }
+
+  .real-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /*
+    Dört beyaz panel.
+    Ortadaki boşlukta görsel görünür.
+  */
+
+  .mask {
+    position: absolute;
+    background: white;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .mask-top {
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  .mask-bottom {
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .mask-left {
+    left: 0;
+  }
+
+  .mask-right {
+    right: 0;
+  }
+
+  .reveal-info {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    background: rgba(255,255,255,.97);
+    border: 1px solid #d9dde3;
+    padding: 7px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 900;
+    z-index: 5;
+  }
+
+  .hint {
+    min-height: 25px;
+    text-align: center;
+    margin: 16px 0 11px;
+    color: var(--muted);
+    font-weight: 800;
+  }
+
+  .answer-row {
+    width: min(800px,100%);
+    margin: auto;
+    display: flex;
+    gap: 10px;
+  }
+
+  .answer {
+    flex: 1;
+    min-width: 0;
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #d0d5dd;
+    outline: none;
+    background: white;
+    color: var(--text);
+  }
+
+  .answer:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(124,58,237,.10);
+  }
+
+  .feedback {
+    min-height: 29px;
+    text-align: center;
+    margin-top: 14px;
+    font-weight: 900;
+  }
+
+  .correct {
+    color: var(--green);
+  }
+
+  .wrong {
+    color: var(--red);
+  }
+
+  .next-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  /* RESULT */
+
+  .result {
+    text-align: center;
+    padding: 32px 0;
+  }
+
+  .result h2 {
+    margin: 0;
+    font-size: 48px;
+  }
+
+  .big-score {
+    font-size: 80px;
+    font-weight: 900;
+    margin: 8px 0;
+    background: linear-gradient(90deg,var(--purple),var(--blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .result-line {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .result-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width:900px) {
     .category-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 11px;
-    }
-
-    .category {
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(255,255,255,.95);
-      padding: 18px 10px;
-      font-weight: 900;
-      color: var(--text);
-      transition: .18s ease;
-    }
-
-    .category:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 26px rgba(15,23,42,.08);
-    }
-
-    .category.active {
-      color: #fff;
-      border-color: transparent;
-      background: linear-gradient(135deg,var(--purple),var(--blue));
-      box-shadow: 0 12px 28px rgba(99,102,241,.25);
-    }
-
-    .category-icon {
-      display: block;
-      font-size: 29px;
-      margin-bottom: 8px;
+      grid-template-columns: repeat(2,1fr);
     }
 
     .difficulty-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 11px;
+      grid-template-columns: repeat(2,1fr);
+    }
+  }
+
+  @media (max-width:600px) {
+    .screen {
+      padding: 18px;
+      border-radius: 20px;
     }
 
-    .difficulty {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: white;
-      padding: 14px 10px;
-      font-weight: 900;
-      transition: .18s;
-    }
-
-    .difficulty:hover {
-      transform: translateY(-2px);
-    }
-
-    .difficulty.active {
-      background: #111827;
-      color: white;
-      border-color: #111827;
-    }
-
-    .start-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 28px;
-    }
-
-    .primary {
-      border: 0;
-      border-radius: 16px;
-      padding: 15px 26px;
-      background: linear-gradient(135deg,#111827,#374151);
-      color: white;
-      font-weight: 900;
-      box-shadow: 0 12px 25px rgba(15,23,42,.15);
-      transition: .18s;
-    }
-
-    .primary:hover {
-      transform: translateY(-2px);
-    }
-
-    .secondary {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px 20px;
-      background: white;
-      color: var(--text);
-      font-weight: 900;
-    }
-
-    .info-row {
-      display: flex;
-      justify-content: center;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .info-chip {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 12px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    /* GAME */
-
-    .game-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .round {
-      color: var(--muted);
-      font-weight: 900;
-    }
-
-    .badge {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 13px;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .question {
-      text-align: center;
-      margin: 5px 0;
-      font-size: clamp(29px,5vw,42px);
-    }
-
-    .question-sub {
-      text-align: center;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    /* TIMER */
-
-    .timer-top {
-      display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 7px;
-    }
-
-    .timer {
-      height: 10px;
-      background: #eceff3;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 22px;
-    }
-
-    .timer-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg,#111827,#4b5563);
-      transition: width .15s linear;
-    }
-
-    /* IMAGE */
-
-    .image-container {
-      width: min(800px,100%);
-      aspect-ratio: 4 / 3;
-      margin: auto;
-      background: #fff;
-      border: 1px solid #e0e3e7;
-      border-radius: 24px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /*
-      Görselin kendisi burada.
-      Arka plan beyaz.
-    */
-
-    .logo-image {
-      position: absolute;
-      width: 72%;
-      height: 72%;
-      object-fit: contain;
-
-      user-select: none;
-      pointer-events: none;
-
-      /*
-        Başlangıçta hiçbir şey görünmesin.
-        JS hemen gerçek bölgeyi ayarlıyor.
-      */
-      clip-path: inset(50% 50% 50% 50%);
-
-      transition: clip-path .35s ease;
-    }
-
-    .reveal-info {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      background: rgba(255,255,255,.96);
-      border: 1px solid #d9dde3;
-      padding: 7px 10px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 900;
-      z-index: 5;
-    }
-
-    /* ANSWER */
-
-    .hint {
-      min-height: 25px;
-      text-align: center;
-      margin: 16px 0 11px;
-      color: var(--muted);
-      font-weight: 800;
+    .logo {
+      font-size: 26px;
     }
 
     .answer-row {
-      width: min(800px,100%);
-      margin: auto;
-      display: flex;
-      gap: 10px;
+      flex-direction: column;
     }
 
-    .answer {
-      flex: 1;
-      min-width: 0;
-      padding: 15px;
-      border-radius: 15px;
-      border: 1px solid #d0d5dd;
-      outline: none;
-      background: white;
-      color: var(--text);
+    .image-container {
+      aspect-ratio: 1 / 1;
     }
 
-    .answer:focus {
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.10);
+    .art-area {
+      width: 84%;
+      height: 84%;
+      left: 8%;
+      top: 8%;
     }
-
-    .feedback {
-      min-height: 29px;
-      text-align: center;
-      margin-top: 14px;
-      font-weight: 900;
-    }
-
-    .correct {
-      color: var(--green);
-    }
-
-    .wrong {
-      color: var(--red);
-    }
-
-    .next-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-    }
-
-    /* RESULT */
-
-    .result {
-      text-align: center;
-      padding: 32px 0;
-    }
-
-    .result h2 {
-      margin: 0;
-      font-size: 48px;
-    }
-
-    .big-score {
-      font-size: 80px;
-      font-weight: 900;
-      margin: 8px 0;
-      background: linear-gradient(90deg,var(--purple),var(--blue));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .result-line {
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-
-    .result-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width:900px) {
-      .category-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
-
-      .difficulty-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
-    }
-
-    @media (max-width:600px) {
-      .app {
-        width: 94%;
-      }
-
-      .screen {
-        padding: 18px;
-        border-radius: 20px;
-      }
-
-      .logo {
-        font-size: 26px;
-      }
-
-      .answer-row {
-        flex-direction: column;
-      }
-
-      .image-container {
-        aspect-ratio: 1 / 1;
-      }
-
-      .logo-image {
-        width: 82%;
-        height: 82%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <header>
-    <div class="logo">
-      Spot<span>Guess</span>
+<header>
+  <div class="logo">Spot<span>Guess</span></div>
+
+  <div class="score-pill">
+    🏆 <span id="topScore">0</span>
+  </div>
+</header>
+
+
+<!-- ANA MENÜ -->
+
+<section id="homeScreen" class="screen">
+
+  <div class="hero">
+    <h1>SpotGuess</h1>
+
+    <p>
+      Bir bayrağın, logonun veya oyun görselinin
+      sadece küçük bir bölümünü gör.
+      Ne olduğunu tahmin et.
+    </p>
+  </div>
+
+  <div class="section-title">Kategori seç</div>
+
+  <div class="category-grid">
+
+    <button class="category active" data-category="flags">
+      <span class="category-icon">🌍</span>
+      Bayraklar
+    </button>
+
+    <button class="category" data-category="brands">
+      <span class="category-icon">🏷️</span>
+      Logolar
+    </button>
+
+    <button class="category" data-category="football">
+      <span class="category-icon">⚽</span>
+      Spor Takımları
+    </button>
+
+    <button class="category" data-category="games">
+      <span class="category-icon">🎮</span>
+      Oyunlar
+    </button>
+
+  </div>
+
+  <div class="section-title">Zorluk</div>
+
+  <div class="difficulty-grid">
+
+    <button class="difficulty active" data-difficulty="easy">
+      🟢 Kolay
+    </button>
+
+    <button class="difficulty" data-difficulty="medium">
+      🟡 Orta
+    </button>
+
+    <button class="difficulty" data-difficulty="hard">
+      🔴 Zor
+    </button>
+
+    <button class="difficulty" data-difficulty="impossible">
+      💀 İmkânsız
+    </button>
+
+  </div>
+
+  <div class="start-wrap">
+    <button id="startButton" class="primary">
+      Oyuna Başla
+    </button>
+  </div>
+
+  <div class="info-row">
+    <div class="info-chip">10 soru</div>
+    <div class="info-chip">Süreli</div>
+    <div class="info-chip">Rastgele bölge</div>
+    <div class="info-chip">1000 puan</div>
+  </div>
+
+</section>
+
+
+<!-- OYUN -->
+
+<section id="gameScreen" class="screen hidden">
+
+  <div class="game-top">
+
+    <div class="round">
+      Soru <span id="roundNumber">1</span> / 10
     </div>
 
-    <div class="score-pill">
-      🏆 <span id="topScore">0</span>
-    </div>
-  </header>
-
-
-  <!-- ================= ANA MENÜ ================= -->
-
-  <section id="homeScreen" class="screen">
-
-    <div class="hero">
-      <h1>SpotGuess</h1>
-
-      <p>
-        Bir görselin sadece küçük bir bölümünü gör.
-        Ne olduğunu tahmin et. Ne kadar erken bilirsen
-        o kadar fazla puan kazan.
-      </p>
+    <div id="categoryBadge" class="badge">
+      🌍 Bayraklar
     </div>
 
+  </div>
 
-    <div class="section-title">
-      Kategori seç
-    </div>
+  <h2 id="questionTitle" class="question">
+    Bu hangi bayrak?
+  </h2>
 
+  <div class="question-sub">
+    Sadece açık olan bölgeyi görüyorsun.
+  </div>
 
-    <div class="category-grid">
+  <div class="timer-top">
+    <span>Zaman</span>
+    <span><strong id="timerText">18</strong> saniye</span>
+  </div>
 
-      <button
-        class="category active"
-        data-category="flags">
-        <span class="category-icon">🌍</span>
-        Bayraklar
-      </button>
-
-      <button
-        class="category"
-        data-category="brands">
-        <span class="category-icon">🏷️</span>
-        Logolar
-      </button>
-
-      <button
-        class="category"
-        data-category="football">
-        <span class="category-icon">⚽</span>
-        Spor Takımları
-      </button>
-
-      <button
-        class="category"
-        data-category="games">
-        <span class="category-icon">🎮</span>
-        Oyunlar
-      </button>
-
-    </div>
+  <div class="timer">
+    <div id="timerFill" class="timer-fill"></div>
+  </div>
 
 
-    <div class="section-title">
-      Zorluk
-    </div>
+  <div class="image-container">
 
-
-    <div class="difficulty-grid">
-
-      <button
-        class="difficulty active"
-        data-difficulty="easy">
-        🟢 Kolay
-      </button>
-
-      <button
-        class="difficulty"
-        data-difficulty="medium">
-        🟡 Orta
-      </button>
-
-      <button
-        class="difficulty"
-        data-difficulty="hard">
-        🔴 Zor
-      </button>
-
-      <button
-        class="difficulty"
-        data-difficulty="impossible">
-        💀 İmkânsız
-      </button>
-
-    </div>
-
-
-    <div class="start-wrap">
-      <button
-        id="startButton"
-        class="primary">
-        Oyuna Başla
-      </button>
-    </div>
-
-
-    <div class="info-row">
-      <div class="info-chip">10 soru</div>
-      <div class="info-chip">Süreli</div>
-      <div class="info-chip">Rastgele bölge</div>
-      <div class="info-chip">1000 puana kadar</div>
-    </div>
-
-  </section>
-
-
-  <!-- ================= OYUN ================= -->
-
-  <section id="gameScreen" class="screen hidden">
-
-    <div class="game-top">
-
-      <div class="round">
-        Soru <span id="roundNumber">1</span> / 10
-      </div>
-
-      <div
-        id="categoryBadge"
-        class="badge">
-        🌍 Bayraklar
-      </div>
-
-    </div>
-
-
-    <h2
-      id="questionTitle"
-      class="question">
-      Bu hangi bayrak?
-    </h2>
-
-
-    <div class="question-sub">
-      Sadece görünen küçük parçayı kullanarak tahmin et.
-    </div>
-
-
-    <div class="timer-top">
-      <span>Zaman</span>
-
-      <span>
-        <strong id="timerText">18</strong> saniye
-      </span>
-    </div>
-
-
-    <div class="timer">
-
-      <div
-        id="timerFill"
-        class="timer-fill">
-      </div>
-
-    </div>
-
-
-    <div class="image-container">
+    <div class="art-area">
 
       <img
-        id="logoImage"
-        class="logo-image"
+        id="realImage"
+        class="real-image"
         alt="Tahmin görseli"
-        draggable="false">
+      >
 
-      <div
-        id="revealInfo"
-        class="reveal-info">
-        Görünen alan: %5
-      </div>
+      <div id="maskTop" class="mask mask-top"></div>
+      <div id="maskBottom" class="mask mask-bottom"></div>
+      <div id="maskLeft" class="mask mask-left"></div>
+      <div id="maskRight" class="mask mask-right"></div>
 
     </div>
 
-
-    <div
-      id="hint"
-      class="hint">
-      Henüz ipucu yok.
+    <div id="revealInfo" class="reveal-info">
+      Görünen alan: %5
     </div>
 
+  </div>
 
-    <div class="answer-row">
 
-      <input
-        id="answerInput"
-        class="answer"
-        type="text"
-        autocomplete="off"
-        placeholder="Tahminini yaz...">
+  <div id="hint" class="hint">
+    Henüz ipucu yok.
+  </div>
 
-      <button
-        id="guessButton"
-        class="primary">
-        Tahmin Et
+  <div class="answer-row">
+
+    <input
+      id="answerInput"
+      class="answer"
+      type="text"
+      autocomplete="off"
+      placeholder="Tahminini yaz..."
+    >
+
+    <button id="guessButton" class="primary">
+      Tahmin Et
+    </button>
+
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+
+  <div class="next-wrap">
+    <button id="nextButton" class="secondary hidden">
+      Sonraki Soru →
+    </button>
+  </div>
+
+</section>
+
+
+<!-- SONUÇ -->
+
+<section id="resultScreen" class="screen hidden">
+
+  <div class="result">
+
+    <h2>Oyun Bitti</h2>
+
+    <div id="bigScore" class="big-score">0</div>
+
+    <div class="result-line">
+      Doğru:
+      <strong id="correctCount">0</strong> / 10
+      <br>
+      Başarı:
+      <strong id="successPercent">%0</strong>
+    </div>
+
+    <div class="result-buttons">
+
+      <button id="againButton" class="primary">
+        Tekrar Oyna
+      </button>
+
+      <button id="homeButton" class="secondary">
+        Ana Menü
       </button>
 
     </div>
 
+  </div>
 
-    <div
-      id="feedback"
-      class="feedback">
-    </div>
-
-
-    <div class="next-wrap">
-
-      <button
-        id="nextButton"
-        class="secondary hidden">
-        Sonraki Soru →
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= SONUÇ ================= -->
-
-  <section id="resultScreen" class="screen hidden">
-
-    <div class="result">
-
-      <h2>Oyun Bitti</h2>
-
-      <div
-        id="bigScore"
-        class="big-score">
-        0
-      </div>
-
-      <div class="result-line">
-        Doğru:
-        <strong id="correctCount">0</strong> / 10
-        <br>
-        Başarı:
-        <strong id="successPercent">%0</strong>
-      </div>
-
-      <div class="result-buttons">
-
-        <button
-          id="againButton"
-          class="primary">
-          Tekrar Oyna
-        </button>
-
-        <button
-          id="homeButton"
-          class="secondary">
-          Ana Menü
-        </button>
-
-      </div>
-
-    </div>
-
-  </section>
+</section>
 
 </div>
 
 
 <script>
 
-  /*
-   * ============================================================
-   * SPOTGUESS
-   * ============================================================
-   *
-   * Dosya yapısı:
-   *
-   * images/
-   *   flags/
-   *   logos/
-   *   sportsteams/
-   *   videogames/
-   *
-   * Repo'ndaki gerçek dosya adları aşağıdaki şekilde kullanıldı.
-   */
+/* ==========================================================
+   SORU HAVUZU
+   ==========================================================
+
+   BU DOSYA YOLLARI REPO'NDAKİ GERÇEK DOSYALARDIR.
+
+   Bayraklar:
+   images/flags/
+
+   Logolar:
+   images/logos/
+
+   Spor:
+   images/sportsteams/
+
+   Oyunlar:
+   images/videogames/
+========================================================== */
 
 
-  const QUESTION_BANK = {
+const QUESTION_BANK = {
 
-    /* ---------------- BAYRAKLAR ---------------- */
+  flags: [
 
-flags: [
-  {
-    answer: "Avustralya",
-    aliases: ["australia", "avustralya"],
-    image: "images/flags/australia.svg",
-    hint: "Okyanusya'da bulunan bir ülke."
-  },
-  {
-    answer: "Belçika",
-    aliases: ["belcika", "belçika", "belgium"],
-    image: "images/flags/belgium.svg",
-    hint: "Batı Avrupa'da küçük bir ülke."
-  },
-  {
-    answer: "Brezilya",
-    aliases: ["brezilya", "brazil"],
-    image: "images/flags/brazil.svg",
-    hint: "Güney Amerika'nın büyük ülkelerinden biri."
-  },
-  {
-    answer: "Kanada",
-    aliases: ["kanada", "canada"],
-    image: "images/flags/canada.svg",
-    hint: "Kuzey Amerika'da bulunur."
-  },
-  {
-    answer: "Fransa",
-    aliases: ["fransa", "france"],
-    image: "images/flags/france.svg",
-    hint: "Batı Avrupa'da bulunur."
-  },
-  {
-    answer: "Almanya",
-    aliases: ["almanya", "germany"],
-    image: "images/flags/germany.svg",
-    hint: "Orta Avrupa'da bulunur."
-  },
-  {
-    answer: "Hindistan",
-    aliases: ["hindistan", "india"],
-    image: "images/flags/india.svg",
-    hint: "Güney Asya'da bulunur."
-  },
-  {
-    answer: "İrlanda",
-    aliases: ["irlanda", "ireland"],
-    image: "images/flags/ireland.svg",
-    hint: "Avrupa'da bir ada ülkesi."
-  },
-  {
-    answer: "İtalya",
-    aliases: ["italya", "italy"],
-    image: "images/flags/italy.svg",
-    hint: "Akdeniz'deki çizme şeklindeki ülke."
-  },
-  {
-    answer: "Japonya",
-    aliases: ["japonya", "japan"],
-    image: "images/flags/japan.svg",
-    hint: "Doğu Asya'da bir ada ülkesi."
-  },
-  {
-    answer: "Meksika",
-    aliases: ["meksika", "mexico"],
-    image: "images/flags/mexico.svg",
-    hint: "Kuzey Amerika'da bulunur."
-  },
-  {
-    answer: "Nijerya",
-    aliases: ["nijerya", "nigeria"],
-    image: "images/flags/nigeria.svg",
-    hint: "Batı Afrika'da bulunur."
-  },
-  {
-    answer: "Güney Kore",
-    aliases: ["guney kore", "güney kore", "south korea"],
-    image: "images/flags/south_korea.svg",
-    hint: "Doğu Asya'da bulunur."
-  },
-  {
-    answer: "İspanya",
-    aliases: ["ispanya", "spain"],
-    image: "images/flags/spain.svg",
-    hint: "İber Yarımadası'nda bulunur."
-  },
-  {
-    answer: "İsveç",
-    aliases: ["isvec", "isveç", "sweden"],
-    image: "images/flags/sweden.svg",
-    hint: "Kuzey Avrupa'da bulunur."
-  },
-  {
-    answer: "İsviçre",
-    aliases: ["isvicre", "isviçre", "switzerland"],
-    image: "images/flags/switzerland.svg",
-    hint: "Alpler ile tanınır."
-  },
-  {
-    answer: "Amerika Birleşik Devletleri",
-    aliases: ["abd", "amerika", "usa", "united states"],
-    image: "images/flags/usa.svg",
-    hint: "Kuzey Amerika'da bulunan federal devlet."
+    {
+      answer: "Avustralya",
+      aliases: ["australia", "avustralya"],
+      image: "images/flags/australia.svg",
+      hint: "Okyanusya'da bulunan bir ülke."
+    },
+
+    {
+      answer: "Belçika",
+      aliases: ["belcika", "belçika", "belgium"],
+      image: "images/flags/belgium.svg",
+      hint: "Batı Avrupa'da bulunan küçük bir ülke."
+    },
+
+    {
+      answer: "Brezilya",
+      aliases: ["brezilya", "brazil"],
+      image: "images/flags/brazil.svg",
+      hint: "Güney Amerika'nın büyük ülkelerinden biri."
+    },
+
+    {
+      answer: "Kanada",
+      aliases: ["kanada", "canada"],
+      image: "images/flags/canada.svg",
+      hint: "Kuzey Amerika'da bulunur."
+    },
+
+    {
+      answer: "Fransa",
+      aliases: ["fransa", "france"],
+      image: "images/flags/france.svg",
+      hint: "Batı Avrupa'da bulunan bir ülke."
+    },
+
+    {
+      answer: "Almanya",
+      aliases: ["almanya", "germany"],
+      image: "images/flags/germany.svg",
+      hint: "Orta Avrupa'daki ülkelerden biri."
+    },
+
+    {
+      answer: "Hindistan",
+      aliases: ["hindistan", "india"],
+      image: "images/flags/india.svg",
+      hint: "Güney Asya'da bulunur."
+    },
+
+    {
+      answer: "İrlanda",
+      aliases: ["irlanda", "ireland"],
+      image: "images/flags/ireland.svg",
+      hint: "Avrupa'da bir ada ülkesi."
+    },
+
+    {
+      answer: "İtalya",
+      aliases: ["italya", "italy"],
+      image: "images/flags/italy.svg",
+      hint: "Akdeniz'deki ülke."
+    },
+
+    {
+      answer: "Japonya",
+      aliases: ["japonya", "japan"],
+      image: "images/flags/japan.svg",
+      hint: "Doğu Asya'da ada ülkesi."
+    },
+
+    {
+      answer: "Meksika",
+      aliases: ["meksika", "mexico"],
+      image: "images/flags/mexico.svg",
+      hint: "Kuzey Amerika'da bulunur."
+    },
+
+    {
+      answer: "Nijerya",
+      aliases: ["nijerya", "nigeria"],
+      image: "images/flags/nigeria.svg",
+      hint: "Batı Afrika'da bulunan ülke."
+    },
+
+    {
+      answer: "Güney Kore",
+      aliases: ["guney kore", "güney kore", "south korea"],
+      image: "images/flags/south_korea.svg",
+      hint: "Doğu Asya'da bulunur."
+    },
+
+    {
+      answer: "İspanya",
+      aliases: ["ispanya", "spain"],
+      image: "images/flags/spain.svg",
+      hint: "İber Yarımadası'nda bulunur."
+    },
+
+    {
+      answer: "İsveç",
+      aliases: ["isvec", "isveç", "sweden"],
+      image: "images/flags/sweden.svg",
+      hint: "Kuzey Avrupa'da bulunur."
+    },
+
+    {
+      answer: "İsviçre",
+      aliases: ["isvicre", "isviçre", "switzerland"],
+      image: "images/flags/switzerland.svg",
+      hint: "Alpler ile tanınır."
+    },
+
+    {
+      answer: "Amerika Birleşik Devletleri",
+      aliases: ["abd", "amerika", "usa", "united states"],
+      image: "images/flags/usa.svg",
+      hint: "Kuzey Amerika'da bulunur."
+    }
+
+  ],
+
+
+  brands: [
+
+    {
+      answer: "Cascade Bank",
+      aliases: ["cascade bank"],
+      image: "images/logos/cascade_bank.svg",
+      hint: "Finans sektöründen bir marka."
+    },
+
+    {
+      answer: "Ember Energy",
+      aliases: ["ember energy"],
+      image: "images/logos/ember_energy.svg",
+      hint: "Enerji alanından bir marka."
+    },
+
+    {
+      answer: "Frostline Foods",
+      aliases: ["frostline foods"],
+      image: "images/logos/frostline_foods.svg",
+      hint: "Gıda alanından bir marka."
+    },
+
+    {
+      answer: "Harbor Insurance",
+      aliases: ["harbor insurance"],
+      image: "images/logos/harbor_insurance.svg",
+      hint: "Sigorta alanından bir marka."
+    },
+
+    {
+      answer: "Lumen Tech",
+      aliases: ["lumen tech"],
+      image: "images/logos/lumen_tech.svg",
+      hint: "Teknoloji alanından bir marka."
+    },
+
+    {
+      answer: "Marble Media",
+      aliases: ["marble media"],
+      image: "images/logos/marble_media.svg",
+      hint: "Medya alanından bir marka."
+    },
+
+    {
+      answer: "Nimbus Airlines",
+      aliases: ["nimbus airlines"],
+      image: "images/logos/nimbus_airlines.svg",
+      hint: "Havacılık alanından bir marka."
+    },
+
+    {
+      answer: "Orbit Coffee",
+      aliases: ["orbit coffee"],
+      image: "images/logos/orbit_coffee.svg",
+      hint: "Kahve alanından bir marka."
+    },
+
+    {
+      answer: "Quartz Studios",
+      aliases: ["quartz studios"],
+      image: "images/logos/quartz_studios.svg",
+      hint: "Yaratıcı medya alanından bir marka."
+    },
+
+    {
+      answer: "Solstice Sports",
+      aliases: ["solstice sports"],
+      image: "images/logos/solstice_sports.svg",
+      hint: "Spor alanından bir marka."
+    },
+
+    {
+      answer: "Vertex Fitness",
+      aliases: ["vertex fitness"],
+      image: "images/logos/vertex_fitness.svg",
+      hint: "Fitness alanından bir marka."
+    },
+
+    {
+      answer: "Zenith Motors",
+      aliases: ["zenith motors"],
+      image: "images/logos/zenith_motors.svg",
+      hint: "Otomotiv alanından bir marka."
+    }
+
+  ],
+
+
+  football: [
+
+    {
+      answer: "Blue Titans",
+      aliases: ["blue titans"],
+      image: "images/sportsteams/blue_titans.svg",
+      hint: "Mavi renkli bir takım."
+    },
+
+    {
+      answer: "Copper Vipers",
+      aliases: ["copper vipers"],
+      image: "images/sportsteams/copper_vipers.svg",
+      hint: "Yılan temalı takım."
+    },
+
+    {
+      answer: "Crimson Hawks",
+      aliases: ["crimson hawks"],
+      image: "images/sportsteams/crimson_hawks.svg",
+      hint: "Şahin temalı takım."
+    },
+
+    {
+      answer: "Emberstone United",
+      aliases: ["emberstone united"],
+      image: "images/sportsteams/emberstone_united.svg",
+      hint: "United isimli takım."
+    },
+
+    {
+      answer: "Golden Wolves",
+      aliases: ["golden wolves"],
+      image: "images/sportsteams/golden_wolves.svg",
+      hint: "Kurt temalı takım."
+    },
+
+    {
+      answer: "Ironclad FC",
+      aliases: ["ironclad fc"],
+      image: "images/sportsteams/ironclad_fc.svg",
+      hint: "FC kısaltmalı takım."
+    },
+
+    {
+      answer: "Northside Bears",
+      aliases: ["northside bears"],
+      image: "images/sportsteams/northside_bears.svg",
+      hint: "Ayı temalı takım."
+    },
+
+    {
+      answer: "Pinecrest Owls",
+      aliases: ["pinecrest owls"],
+      image: "images/sportsteams/pinecrest_owls.svg",
+      hint: "Baykuş temalı takım."
+    },
+
+    {
+      answer: "River City Sharks",
+      aliases: ["river city sharks"],
+      image: "images/sportsteams/river_city_sharks.svg",
+      hint: "Köpekbalığı temalı takım."
+    },
+
+    {
+      answer: "Silverline Rangers",
+      aliases: ["silverline rangers"],
+      image: "images/sportsteams/silverline_rangers.svg",
+      hint: "Rangers isimli takım."
+    },
+
+    {
+      answer: "Storm Riders",
+      aliases: ["storm riders"],
+      image: "images/sportsteams/storm_riders.svg",
+      hint: "Fırtına temalı takım."
+    },
+
+    {
+      answer: "Summit Eagles",
+      aliases: ["summit eagles"],
+      image: "images/sportsteams/summit_eagles.svg",
+      hint: "Kartal temalı takım."
+    }
+
+  ],
+
+
+  games: [
+
+    {
+      answer: "Arcane Depths",
+      aliases: ["arcane depths"],
+      image: "images/videogames/arcane_depths.svg",
+      hint: "Derinlik ve keşif temalı oyun."
+    },
+
+    {
+      answer: "Dragons Hollow",
+      aliases: ["dragons hollow", "dragon hollow"],
+      image: "images/videogames/dragons_hollow.svg",
+      hint: "Ejderha temalı oyun."
+    },
+
+    {
+      answer: "Mystic Blade Saga",
+      aliases: ["mystic blade saga"],
+      image: "images/videogames/mystic_blade_saga.svg",
+      hint: "Fantastik ve kılıç temalı oyun."
+    },
+
+    {
+      answer: "Neon Drift",
+      aliases: ["neon drift"],
+      image: "images/videogames/neon_drift.svg",
+      hint: "Neon ve hız temalı oyun."
+    },
+
+    {
+      answer: "Pixel Racer X",
+      aliases: ["pixel racer x"],
+      image: "images/videogames/pixel_racer_x.svg",
+      hint: "Piksel ve yarış temalı oyun."
+    },
+
+    {
+      answer: "Quantum Strike",
+      aliases: ["quantum strike"],
+      image: "images/videogames/quantum_strike.svg",
+      hint: "Bilim kurgu ve aksiyon temalı oyun."
+    },
+
+    {
+      answer: "Ruins of Alderin",
+      aliases: ["ruins of alderin"],
+      image: "images/videogames/ruins_of_alderin.svg",
+      hint: "Macera temalı oyun."
+    },
+
+    {
+      answer: "Shadow Realm Chronicles",
+      aliases: ["shadow realm chronicles"],
+      image: "images/videogames/shadow_realm_chronicles.svg",
+      hint: "Karanlık fantastik dünya temalı oyun."
+    },
+
+    {
+      answer: "Skyfall Legends",
+      aliases: ["skyfall legends"],
+      image: "images/videogames/skyfall_legends.svg",
+      hint: "Fantastik kahramanlık temalı oyun."
+    },
+
+    {
+      answer: "Starforge Odyssey",
+      aliases: ["starforge odyssey"],
+      image: "images/videogames/starforge_odyssey.svg",
+      hint: "Uzay temalı oyun."
+    },
+
+    {
+      answer: "Turbo Kart Frenzy",
+      aliases: ["turbo kart frenzy"],
+      image: "images/videogames/turbo_kart_frenzy.svg",
+      hint: "Kart yarışı temalı oyun."
+    },
+
+    {
+      answer: "Voidwalker",
+      aliases: ["voidwalker"],
+      image: "images/videogames/voidwalker.svg",
+      hint: "Bilim kurgu temalı oyun."
+    }
+
+  ]
+
+};
+
+
+/* ==========================================================
+   DURUM
+========================================================== */
+
+let selectedCategory = "flags";
+let selectedDifficulty = "easy";
+
+let questions = [];
+let currentIndex = 0;
+
+let score = 0;
+let correctAnswers = 0;
+
+let revealLevel = 1;
+let currentRegion = null;
+
+let timer = null;
+let timeLeft = 0;
+
+let locked = false;
+
+
+/* ==========================================================
+   ELEMENTLER
+========================================================== */
+
+const homeScreen = document.getElementById("homeScreen");
+const gameScreen = document.getElementById("gameScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const topScore = document.getElementById("topScore");
+const roundNumber = document.getElementById("roundNumber");
+const categoryBadge = document.getElementById("categoryBadge");
+const questionTitle = document.getElementById("questionTitle");
+
+const artArea = document.querySelector(".art-area");
+const realImage = document.getElementById("realImage");
+
+const maskTop = document.getElementById("maskTop");
+const maskBottom = document.getElementById("maskBottom");
+const maskLeft = document.getElementById("maskLeft");
+const maskRight = document.getElementById("maskRight");
+
+const revealInfo = document.getElementById("revealInfo");
+const timerText = document.getElementById("timerText");
+const timerFill = document.getElementById("timerFill");
+
+const hint = document.getElementById("hint");
+const answerInput = document.getElementById("answerInput");
+const feedback = document.getElementById("feedback");
+const nextButton = document.getElementById("nextButton");
+
+
+/* ==========================================================
+   KATEGORİ SEÇ
+========================================================== */
+
+document.querySelectorAll(".category").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(".category")
+      .forEach(item => item.classList.remove("active"));
+
+    button.classList.add("active");
+
+    selectedCategory =
+      button.dataset.category;
+
+  });
+
+});
+
+
+/* ==========================================================
+   ZORLUK SEÇ
+========================================================== */
+
+document.querySelectorAll(".difficulty").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document.querySelectorAll(".difficulty")
+      .forEach(item => item.classList.remove("active"));
+
+    button.classList.add("active");
+
+    selectedDifficulty =
+      button.dataset.difficulty;
+
+  });
+
+});
+
+
+/* ==========================================================
+   NORMALIZE
+========================================================== */
+
+function normalize(text) {
+
+  return text
+    .toLocaleLowerCase("tr-TR")
+    .trim()
+    .replace(/ı/g, "i")
+    .replace(/ş/g, "s")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c");
+
+}
+
+
+/* ==========================================================
+   SHUFFLE
+========================================================== */
+
+function shuffle(array) {
+
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+
+    const j =
+      Math.floor(Math.random() * (i + 1));
+
+    [result[i], result[j]] =
+      [result[j], result[i]];
+
   }
-],
 
-    /* ---------------- LOGOLAR ---------------- */
+  return result;
 
-    brands: [
-
-      {
-        answer: "Cascade Bank",
-        aliases: ["cascade bank"],
-        image: "images/logos/cascade_bank.svg",
-        hint: "Finans sektöründen kurgusal bir marka."
-      },
-
-      {
-        answer: "Ember Energy",
-        aliases: ["ember energy"],
-        image: "images/logos/ember_energy.svg",
-        hint: "Enerji alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Frostline Foods",
-        aliases: ["frostline foods"],
-        image: "images/logos/frostline_foods.svg",
-        hint: "Gıda alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Harbor Insurance",
-        aliases: ["harbor insurance"],
-        image: "images/logos/harbor_insurance.svg",
-        hint: "Sigorta sektöründen kurgusal bir marka."
-      },
-
-      {
-        answer: "Lumen Tech",
-        aliases: ["lumen tech"],
-        image: "images/logos/lumen_tech.svg",
-        hint: "Teknoloji alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Marble Media",
-        aliases: ["marble media"],
-        image: "images/logos/marble_media.svg",
-        hint: "Medya alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Nimbus Airlines",
-        aliases: ["nimbus airlines"],
-        image: "images/logos/nimbus_airlines.svg",
-        hint: "Havacılık alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Orbit Coffee",
-        aliases: ["orbit coffee"],
-        image: "images/logos/orbit_coffee.svg",
-        hint: "Kahve sektöründen kurgusal bir marka."
-      },
-
-      {
-        answer: "Quartz Studios",
-        aliases: ["quartz studios"],
-        image: "images/logos/quartz_studios.svg",
-        hint: "Yaratıcı medya alanından kurgusal bir marka."
-      },
-
-      {
-        answer: "Solstice Sports",
-        aliases: ["solstice sports"],
-        image: "images/logos/solstice_sports.svg",
-        hint: "Spor alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Vertex Fitness",
-        aliases: ["vertex fitness"],
-        image: "images/logos/vertex_fitness.svg",
-        hint: "Fitness alanında kurgusal bir marka."
-      },
-
-      {
-        answer: "Zenith Motors",
-        aliases: ["zenith motors"],
-        image: "images/logos/zenith_motors.svg",
-        hint: "Otomotiv alanından kurgusal bir marka."
-      }
-
-    ],
+}
 
 
-    /* ---------------- SPOR TAKIMLARI ---------------- */
+/* ==========================================================
+   ZAMAN
+========================================================== */
 
-    football: [
+function getTime() {
 
-      {
-        answer: "Blue Titans",
-        aliases: ["blue titans"],
-        image: "images/sportsteams/blue_titans.svg",
-        hint: "Mavi renkli kurgusal bir takım."
-      },
+  if (selectedDifficulty === "easy") return 18;
+  if (selectedDifficulty === "medium") return 14;
+  if (selectedDifficulty === "hard") return 11;
 
-      {
-        answer: "Copper Vipers",
-        aliases: ["copper vipers"],
-        image: "images/sportsteams/copper_vipers.svg",
-        hint: "Yılan temalı kurgusal takım."
-      },
+  return 8;
 
-      {
-        answer: "Crimson Hawks",
-        aliases: ["crimson hawks"],
-        image: "images/sportsteams/crimson_hawks.svg",
-        hint: "Şahin temalı kurgusal takım."
-      },
-
-      {
-        answer: "Emberstone United",
-        aliases: ["emberstone united"],
-        image: "images/sportsteams/emberstone_united.svg",
-        hint: "United isimli kurgusal takım."
-      },
-
-      {
-        answer: "Golden Wolves",
-        aliases: ["golden wolves"],
-        image: "images/sportsteams/golden_wolves.svg",
-        hint: "Kurt temalı kurgusal takım."
-      },
-
-      {
-        answer: "Ironclad FC",
-        aliases: ["ironclad fc"],
-        image: "images/sportsteams/ironclad_fc.svg",
-        hint: "FC kısaltmalı kurgusal takım."
-      },
-
-      {
-        answer: "Northside Bears",
-        aliases: ["northside bears"],
-        image: "images/sportsteams/northside_bears.svg",
-        hint: "Ayı temalı kurgusal takım."
-      },
-
-      {
-        answer: "Pinecrest Owls",
-        aliases: ["pinecrest owls"],
-        image: "images/sportsteams/pinecrest_owls.svg",
-        hint: "Baykuş temalı kurgusal takım."
-      },
-
-      {
-        answer: "River City Sharks",
-        aliases: ["river city sharks"],
-        image: "images/sportsteams/river_city_sharks.svg",
-        hint: "Köpekbalığı temalı kurgusal takım."
-      },
-
-      {
-        answer: "Silverline Rangers",
-        aliases: ["silverline rangers"],
-        image: "images/sportsteams/silverline_rangers.svg",
-        hint: "Rangers isimli kurgusal takım."
-      },
-
-      {
-        answer: "Storm Riders",
-        aliases: ["storm riders"],
-        image: "images/sportsteams/storm_riders.svg",
-        hint: "Fırtına temalı kurgusal takım."
-      },
-
-      {
-        answer: "Summit Eagles",
-        aliases: ["summit eagles"],
-        image: "images/sportsteams/summit_eagles.svg",
-        hint: "Kartal temalı kurgusal takım."
-      }
-
-    ],
+}
 
 
-    /* ---------------- OYUNLAR ---------------- */
+/* ==========================================================
+   İLK BÖLGE BOYUTU
+========================================================== */
 
-    games: [
+function getInitialSize() {
 
-      {
-        answer: "Arcane Depths",
-        aliases: ["arcane depths"],
-        image: "images/videogames/arcane_depths.svg",
-        hint: "Derinlik ve keşif temalı kurgusal oyun."
-      },
+  if (selectedDifficulty === "easy") return 24;
+  if (selectedDifficulty === "medium") return 17;
+  if (selectedDifficulty === "hard") return 11;
 
-      {
-        answer: "Dragons Hollow",
-        aliases: ["dragons hollow", "dragon hollow"],
-        image: "images/videogames/dragons_hollow.svg",
-        hint: "Ejderha temalı kurgusal oyun."
-      },
+  return 7;
 
-      {
-        answer: "Mystic Blade Saga",
-        aliases: ["mystic blade saga"],
-        image: "images/videogames/mystic_blade_saga.svg",
-        hint: "Kılıç ve fantastik dünya temalı oyun."
-      },
+}
 
-      {
-        answer: "Neon Drift",
-        aliases: ["neon drift"],
-        image: "images/videogames/neon_drift.svg",
-        hint: "Neon ve hız temalı oyun."
-      },
 
-      {
-        answer: "Pixel Racer X",
-        aliases: ["pixel racer x"],
-        image: "images/videogames/pixel_racer_x.svg",
-        hint: "Piksel ve yarış temalı oyun."
-      },
+/* ==========================================================
+   RASTGELE BÖLGE
+========================================================== */
 
-      {
-        answer: "Quantum Strike",
-        aliases: ["quantum strike"],
-        image: "images/videogames/quantum_strike.svg",
-        hint: "Bilim kurgu ve aksiyon temalı oyun."
-      },
+function createRandomRegion() {
 
-      {
-        answer: "Ruins of Alderin",
-        aliases: ["ruins of alderin"],
-        image: "images/videogames/ruins_of_alderin.svg",
-        hint: "Harabe ve macera temalı oyun."
-      },
+  const size = getInitialSize();
 
-      {
-        answer: "Shadow Realm Chronicles",
-        aliases: ["shadow realm chronicles"],
-        image: "images/videogames/shadow_realm_chronicles.svg",
-        hint: "Karanlık fantastik dünya temalı oyun."
-      },
+  /*
+    Arada biraz güvenli alan bırakıyoruz,
+    tamamen kenara yapışmasın.
+  */
 
-      {
-        answer: "Skyfall Legends",
-        aliases: ["skyfall legends"],
-        image: "images/videogames/skyfall_legends.svg",
-        hint: "Gökyüzü ve kahramanlık temalı oyun."
-      },
+  const x =
+    Math.random() * (96 - size) + 2;
 
-      {
-        answer: "Starforge Odyssey",
-        aliases: ["starforge odyssey"],
-        image: "images/videogames/starforge_odyssey.svg",
-        hint: "Uzay temalı kurgusal oyun."
-      },
+  const y =
+    Math.random() * (96 - size) + 2;
 
-      {
-        answer: "Turbo Kart Frenzy",
-        aliases: ["turbo kart frenzy"],
-        image: "images/videogames/turbo_kart_frenzy.svg",
-        hint: "Hızlı kart yarışları temalı oyun."
-      },
-
-      {
-        answer: "Voidwalker",
-        aliases: ["voidwalker"],
-        image: "images/videogames/voidwalker.svg",
-        hint: "Boşluk ve bilim kurgu temalı oyun."
-      }
-
-    ]
-
+  return {
+    x,
+    y,
+    width: size,
+    height: size
   };
 
+}
 
-  /* ============================================================
-     DURUM
-  ============================================================ */
 
-  let selectedCategory = "flags";
-  let selectedDifficulty = "easy";
+/* ==========================================================
+   BEYAZ MASKELERİ AYARLA
+========================================================== */
 
-  let questions = [];
-  let currentIndex = 0;
+function applyReveal() {
 
-  let score = 0;
-  let correctAnswers = 0;
+  if (!currentRegion) return;
 
-  let revealLevel = 1;
-  let currentRegion = null;
+  const r = currentRegion;
 
-  let timer = null;
-  let timeLeft = 0;
+  const top = r.y;
+  const bottom = 100 - r.y - r.height;
+  const left = r.x;
+  const right = 100 - r.x - r.width;
 
-  let locked = false;
+  /*
+    Üst tarafı kapat
+  */
 
+  maskTop.style.height =
+    `${top}%`;
 
-  /* ============================================================
-     ELEMENTLER
-  ============================================================ */
+  /*
+    Alt tarafı kapat
+  */
 
-  const homeScreen =
-    document.getElementById("homeScreen");
+  maskBottom.style.height =
+    `${bottom}%`;
 
-  const gameScreen =
-    document.getElementById("gameScreen");
+  /*
+    Sol tarafı kapat
+  */
 
-  const resultScreen =
-    document.getElementById("resultScreen");
+  maskLeft.style.top =
+    `${top}%`;
 
-  const topScore =
-    document.getElementById("topScore");
+  maskLeft.style.bottom =
+    `${bottom}%`;
 
-  const roundNumber =
-    document.getElementById("roundNumber");
+  maskLeft.style.width =
+    `${left}%`;
 
-  const categoryBadge =
-    document.getElementById("categoryBadge");
+  /*
+    Sağ tarafı kapat
+  */
 
-  const questionTitle =
-    document.getElementById("questionTitle");
+  maskRight.style.top =
+    `${top}%`;
 
-  const logoImage =
-    document.getElementById("logoImage");
+  maskRight.style.bottom =
+    `${bottom}%`;
 
-  const revealInfo =
-    document.getElementById("revealInfo");
+  maskRight.style.width =
+    `${right}%`;
 
-  const timerText =
-    document.getElementById("timerText");
+  /*
+    Bilgi
+  */
 
-  const timerFill =
-    document.getElementById("timerFill");
+  const area =
+    Math.max(
+      1,
+      Math.round(
+        (r.width * r.height) / 100
+      )
+    );
 
-  const hint =
-    document.getElementById("hint");
+  revealInfo.textContent =
+    `Görünen alan: %${area}`;
 
-  const answerInput =
-    document.getElementById("answerInput");
+}
 
-  const feedback =
-    document.getElementById("feedback");
 
-  const nextButton =
-    document.getElementById("nextButton");
+/* ==========================================================
+   TIMER
+========================================================== */
 
+function startTimer() {
 
-  /* ============================================================
-     KATEGORİ
-  ============================================================ */
+  clearInterval(timer);
 
-  document
-    .querySelectorAll(".category")
-    .forEach(button => {
+  timeLeft = getTime();
 
-      button.addEventListener("click", () => {
+  timerText.textContent =
+    timeLeft;
 
-        document
-          .querySelectorAll(".category")
-          .forEach(item => {
-            item.classList.remove("active");
-          });
+  timerFill.style.width =
+    "100%";
 
-        button.classList.add("active");
+  timer = setInterval(() => {
 
-        selectedCategory =
-          button.dataset.category;
+    if (locked) return;
 
-      });
-
-    });
-
-
-  /* ============================================================
-     ZORLUK
-  ============================================================ */
-
-  document
-    .querySelectorAll(".difficulty")
-    .forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        document
-          .querySelectorAll(".difficulty")
-          .forEach(item => {
-            item.classList.remove("active");
-          });
-
-        button.classList.add("active");
-
-        selectedDifficulty =
-          button.dataset.difficulty;
-
-      });
-
-    });
-
-
-  /* ============================================================
-     YARDIMCI
-  ============================================================ */
-
-  function normalize(text) {
-
-    return text
-      .toLocaleLowerCase("tr-TR")
-      .trim()
-      .replace(/ı/g,"i")
-      .replace(/ş/g,"s")
-      .replace(/ğ/g,"g")
-      .replace(/ü/g,"u")
-      .replace(/ö/g,"o")
-      .replace(/ç/g,"c");
-
-  }
-
-
-  function shuffle(array) {
-
-    const result = [...array];
-
-    for (
-      let i = result.length - 1;
-      i > 0;
-      i--
-    ) {
-
-      const j =
-        Math.floor(
-          Math.random() * (i + 1)
-        );
-
-      [
-        result[i],
-        result[j]
-      ] = [
-        result[j],
-        result[i]
-      ];
-
-    }
-
-    return result;
-  }
-
-
-  function getTime() {
-
-    if (
-      selectedDifficulty === "easy"
-    ) {
-      return 18;
-    }
-
-    if (
-      selectedDifficulty === "medium"
-    ) {
-      return 14;
-    }
-
-    if (
-      selectedDifficulty === "hard"
-    ) {
-      return 11;
-    }
-
-    return 8;
-  }
-
-
-  function getInitialSize() {
-
-    if (
-      selectedDifficulty === "easy"
-    ) {
-      return 24;
-    }
-
-    if (
-      selectedDifficulty === "medium"
-    ) {
-      return 17;
-    }
-
-    if (
-      selectedDifficulty === "hard"
-    ) {
-      return 11;
-    }
-
-    return 7;
-  }
-
-
-  /* ============================================================
-     RASTGELE BÖLGE
-  ============================================================ */
-
-  function createRandomRegion() {
-
-    const size =
-      getInitialSize();
-
-    const x =
-      Math.random() *
-      (100 - size);
-
-    const y =
-      Math.random() *
-      (100 - size);
-
-    return {
-      x: x,
-      y: y,
-      width: size,
-      height: size
-    };
-
-  }
-
-
-  /* ============================================================
-     GÖRSELİ SADECE BÖLGEDE GÖSTER
-  ============================================================ */
-
-  function applyReveal() {
-
-    if (!currentRegion) {
-      return;
-    }
-
-    const r =
-      currentRegion;
-
-    const top =
-      r.y;
-
-    const right =
-      100 - r.x - r.width;
-
-    const bottom =
-      100 - r.y - r.height;
-
-    const left =
-      r.x;
-
-    logoImage.style.clipPath =
-      `inset(
-        ${top}%
-        ${right}%
-        ${bottom}%
-        ${left}%
-      )`;
-
-    const area =
-      Math.max(
-        1,
-        Math.round(
-          (r.width * r.height) / 100
-        )
-      );
-
-    revealInfo.textContent =
-      `Görünen alan: %${area}`;
-
-  }
-
-
-  /* ============================================================
-     TIMER
-  ============================================================ */
-
-  function startTimer() {
-
-    clearInterval(timer);
-
-    timeLeft =
-      getTime();
+    timeLeft--;
 
     timerText.textContent =
       timeLeft;
 
     timerFill.style.width =
-      "100%";
+      `${Math.max(
+        0,
+        (timeLeft / getTime()) * 100
+      )}%`;
 
-    timer =
-      setInterval(() => {
+    if (timeLeft <= 0) {
 
-        if (locked) {
-          return;
-        }
+      clearInterval(timer);
 
-        timeLeft--;
+      revealMore("Süre bitti.");
 
-        timerText.textContent =
-          timeLeft;
+    }
 
-        timerFill.style.width =
-          `${Math.max(
-            0,
-            (timeLeft / getTime()) * 100
-          )}%`;
+  }, 1000);
 
-        if (timeLeft <= 0) {
+}
 
-          clearInterval(timer);
 
-          revealMore("Süre bitti.");
+/* ==========================================================
+   PUAN
+========================================================== */
 
-        }
+function getPoints() {
 
-      }, 1000);
+  if (revealLevel === 1) return 1000;
+  if (revealLevel === 2) return 750;
+  if (revealLevel === 3) return 500;
+
+  return 250;
+
+}
+
+
+/* ==========================================================
+   OYUN BAŞLAT
+========================================================== */
+
+document
+  .getElementById("startButton")
+  .addEventListener("click", startGame);
+
+
+function startGame() {
+
+  const pool =
+    QUESTION_BANK[selectedCategory];
+
+  if (!pool || pool.length === 0) {
+
+    alert("Bu kategoride soru yok.");
+    return;
 
   }
 
+  questions = [];
 
-  /* ============================================================
-     PUAN
-  ============================================================ */
+  while (questions.length < 10) {
 
-  function getPoints() {
-
-    if (revealLevel === 1) {
-      return 1000;
-    }
-
-    if (revealLevel === 2) {
-      return 750;
-    }
-
-    if (revealLevel === 3) {
-      return 500;
-    }
-
-    return 250;
-
-  }
-
-
-  /* ============================================================
-     OYUNU BAŞLAT
-  ============================================================ */
-
-  document
-    .getElementById("startButton")
-    .addEventListener(
-      "click",
-      startGame
+    questions.push(
+      ...shuffle(pool)
     );
 
+  }
 
-  function startGame() {
+  questions =
+    questions.slice(0, 10);
 
-    const pool =
-      QUESTION_BANK[selectedCategory];
+  currentIndex = 0;
+  score = 0;
+  correctAnswers = 0;
 
-    if (
-      !pool ||
-      pool.length === 0
-    ) {
+  topScore.textContent =
+    "0";
 
-      alert(
-        "Bu kategoride henüz soru yok."
-      );
+  homeScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
 
-      return;
+  loadQuestion();
 
-    }
+}
+
+
+/* ==========================================================
+   KATEGORİ İSMİ
+========================================================== */
+
+function getCategoryName() {
+
+  const names = {
+
+    flags: "🌍 Bayraklar",
+    brands: "🏷️ Logolar",
+    football: "⚽ Spor Takımları",
+    games: "🎮 Oyunlar"
+
+  };
+
+  return names[selectedCategory];
+
+}
+
+
+function getQuestionTitle() {
+
+  const titles = {
+
+    flags: "Bu hangi bayrak?",
+    brands: "Bu hangi logo?",
+    football: "Bu hangi takım?",
+    games: "Bu hangi oyun?"
+
+  };
+
+  return titles[selectedCategory];
+
+}
+
+
+/* ==========================================================
+   SORU YÜKLE
+========================================================== */
+
+function loadQuestion() {
+
+  clearInterval(timer);
+
+  locked = false;
+  revealLevel = 1;
+
+  const question =
+    questions[currentIndex];
+
+  roundNumber.textContent =
+    currentIndex + 1;
+
+  categoryBadge.textContent =
+    getCategoryName();
+
+  questionTitle.textContent =
+    getQuestionTitle();
+
+  hint.textContent =
+    "Henüz ipucu yok.";
+
+  feedback.textContent =
+    "";
+
+  feedback.className =
+    "feedback";
+
+  answerInput.value =
+    "";
+
+  answerInput.disabled =
+    false;
+
+  nextButton.classList.add("hidden");
+
+  /*
+    Eski resmi temizle.
+  */
+
+  realImage.removeAttribute("src");
+
+  /*
+    Yeni resmi yükle.
+  */
+
+  realImage.onload = () => {
+
+    currentRegion =
+      createRandomRegion();
+
+    applyReveal();
+
+  };
+
+  realImage.onerror = () => {
+
+    feedback.textContent =
+      "Görsel yüklenemedi: " +
+      question.image;
+
+    feedback.className =
+      "feedback wrong";
+
+  };
+
+  realImage.src =
+    question.image;
+
+  startTimer();
+
+  setTimeout(() => {
+    answerInput.focus();
+  }, 100);
+
+}
+
+
+/* ==========================================================
+   DAHA FAZLA GÖR
+========================================================== */
+
+function revealMore(message = "") {
+
+  if (locked) return;
+
+  if (revealLevel < 4) {
+
+    revealLevel++;
 
     /*
-      10 soruluk oyun oluştur.
+      Aynı merkezin etrafında büyü.
     */
 
-    questions = [];
+    const old =
+      currentRegion;
 
-    while (
-      questions.length < 10
-    ) {
+    const factor =
+      revealLevel === 2 ? 1.7 :
+      revealLevel === 3 ? 2.4 :
+      3.3;
 
-      questions.push(
-        ...shuffle(pool)
+    let width =
+      Math.min(
+        old.width * factor,
+        88
       );
 
-    }
+    let height =
+      Math.min(
+        old.height * factor,
+        88
+      );
 
-    questions =
-      questions.slice(0,10);
+    let x =
+      old.x -
+      (width - old.width) / 2;
 
-    currentIndex = 0;
-    score = 0;
-    correctAnswers = 0;
+    let y =
+      old.y -
+      (height - old.height) / 2;
+
+    x = Math.max(
+      0,
+      Math.min(x, 100 - width)
+    );
+
+    y = Math.max(
+      0,
+      Math.min(y, 100 - height)
+    );
+
+    currentRegion = {
+      x,
+      y,
+      width,
+      height
+    };
+
+    applyReveal();
+
+    hint.textContent =
+      `İpucu: ${
+        questions[currentIndex].hint
+      }`;
+
+    feedback.textContent =
+      `${message} Daha fazla açıldı.`;
+
+    feedback.className =
+      "feedback wrong";
+
+    startTimer();
+
+  } else {
+
+    finishQuestion();
+
+  }
+
+}
+
+
+/* ==========================================================
+   CEVAP
+========================================================== */
+
+document
+  .getElementById("guessButton")
+  .addEventListener("click", submitAnswer);
+
+
+answerInput.addEventListener("keydown", event => {
+
+  if (event.key === "Enter") {
+    submitAnswer();
+  }
+
+});
+
+
+function submitAnswer() {
+
+  if (locked) return;
+
+  const question =
+    questions[currentIndex];
+
+  const guess =
+    normalize(
+      answerInput.value
+    );
+
+  if (!guess) {
+
+    feedback.textContent =
+      "Bir tahmin yaz.";
+
+    feedback.className =
+      "feedback wrong";
+
+    return;
+
+  }
+
+  const accepted = [
+    normalize(question.answer),
+    ...(question.aliases || [])
+      .map(normalize)
+  ];
+
+  if (accepted.includes(guess)) {
+
+    clearInterval(timer);
+
+    locked = true;
+    answerInput.disabled = true;
+
+    const gained =
+      getPoints();
+
+    score += gained;
+    correctAnswers++;
 
     topScore.textContent =
-      "0";
+      score;
 
-    homeScreen.classList.add(
-      "hidden"
-    );
+    /*
+      Doğru cevaptan sonra tamamını göster.
+    */
 
-    resultScreen.classList.add(
-      "hidden"
-    );
+    currentRegion = {
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100
+    };
 
-    gameScreen.classList.remove(
-      "hidden"
-    );
+    applyReveal();
+
+    feedback.textContent =
+      `✅ Doğru! +${gained} puan`;
+
+    feedback.className =
+      "feedback correct";
+
+    nextButton.classList.remove("hidden");
+
+    return;
+
+  }
+
+  feedback.textContent =
+    "❌ Yanlış. Bölge büyüyor.";
+
+  feedback.className =
+    "feedback wrong";
+
+  revealMore();
+
+}
+
+
+/* ==========================================================
+   SORU BİTİR
+========================================================== */
+
+function finishQuestion() {
+
+  clearInterval(timer);
+
+  locked = true;
+  answerInput.disabled = true;
+
+  currentRegion = {
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100
+  };
+
+  applyReveal();
+
+  feedback.textContent =
+    `Cevap: ${
+      questions[currentIndex].answer
+    }`;
+
+  feedback.className =
+    "feedback wrong";
+
+  nextButton.classList.remove("hidden");
+
+}
+
+
+/* ==========================================================
+   NEXT
+========================================================== */
+
+nextButton.addEventListener("click", () => {
+
+  currentIndex++;
+
+  if (currentIndex >= questions.length) {
+
+    finishGame();
+
+  } else {
 
     loadQuestion();
 
   }
 
+});
 
-  /* ============================================================
-     KATEGORİ METNİ
-  ============================================================ */
 
-  function getCategoryName() {
+/* ==========================================================
+   OYUN SONU
+========================================================== */
 
-    const names = {
+function finishGame() {
 
-      flags: "🌍 Bayraklar",
+  clearInterval(timer);
 
-      brands: "🏷️ Logolar",
+  gameScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
 
-      football: "⚽ Spor Takımları",
+  document.getElementById("bigScore")
+    .textContent = score;
 
-      games: "🎮 Oyunlar"
+  document.getElementById("correctCount")
+    .textContent = correctAnswers;
 
-    };
-
-    return names[selectedCategory];
-
-  }
-
-
-  function getQuestionTitle() {
-
-    const titles = {
-
-      flags: "Bu hangi bayrak?",
-
-      brands: "Bu hangi logo?",
-
-      football: "Bu hangi takım?",
-
-      games: "Bu hangi oyun?"
-
-    };
-
-    return titles[selectedCategory];
-
-  }
-
-
-  /* ============================================================
-     SORU YÜKLE
-  ============================================================ */
-
-  function loadQuestion() {
-
-    clearInterval(timer);
-
-    locked = false;
-
-    revealLevel = 1;
-
-    const question =
-      questions[currentIndex];
-
-    roundNumber.textContent =
-      currentIndex + 1;
-
-    categoryBadge.textContent =
-      getCategoryName();
-
-    questionTitle.textContent =
-      getQuestionTitle();
-
-    hint.textContent =
-      "Henüz ipucu yok.";
-
-    feedback.textContent =
-      "";
-
-    feedback.className =
-      "feedback";
-
-    answerInput.value =
-      "";
-
-    answerInput.disabled =
-      false;
-
-    nextButton.classList.add(
-      "hidden"
-    );
-
-    /*
-      Önce resmi yükle.
-      Yüklendiğinde random bölgeyi göster.
-    */
-
-    logoImage.onload = () => {
-
-      currentRegion =
-        createRandomRegion();
-
-      applyReveal();
-
-    };
-
-    logoImage.onerror = () => {
-
-      feedback.textContent =
-        "Bu görsel bulunamadı: " +
-        question.image;
-
-      feedback.className =
-        "feedback wrong";
-
-    };
-
-    logoImage.src =
-      question.image;
-
-    startTimer();
-
-    setTimeout(() => {
-      answerInput.focus();
-    },100);
-
-  }
-
-
-  /* ============================================================
-     DAHA FAZLA GÖSTER
-  ============================================================ */
-
-  function revealMore(message = "") {
-
-    if (locked) {
-      return;
-    }
-
-    if (revealLevel < 4) {
-
-      revealLevel++;
-
-      /*
-        Aynı bölgenin merkezini koru.
-        Sadece alanı büyüt.
-      */
-
-      const old =
-        currentRegion;
-
-      let factor;
-
-      if (revealLevel === 2) {
-        factor = 1.65;
-      } else if (revealLevel === 3) {
-        factor = 2.35;
-      } else {
-        factor = 3.3;
-      }
-
-      let newWidth =
-        Math.min(
-          old.width * factor,
-          88
-        );
-
-      let newHeight =
-        Math.min(
-          old.height * factor,
-          88
-        );
-
-      let newX =
-        old.x -
-        ((newWidth - old.width) / 2);
-
-      let newY =
-        old.y -
-        ((newHeight - old.height) / 2);
-
-      newX =
-        Math.max(
-          0,
-          Math.min(
-            newX,
-            100 - newWidth
-          )
-        );
-
-      newY =
-        Math.max(
-          0,
-          Math.min(
-            newY,
-            100 - newHeight
-          )
-        );
-
-      currentRegion = {
-        x: newX,
-        y: newY,
-        width: newWidth,
-        height: newHeight
-      };
-
-      applyReveal();
-
-      hint.textContent =
-        `İpucu: ${
-          questions[currentIndex].hint
-        }`;
-
-      feedback.textContent =
-        `${message} Daha fazla açıldı.`;
-
-      feedback.className =
-        "feedback wrong";
-
-      startTimer();
-
-    } else {
-
-      finishQuestion();
-
-    }
-
-  }
-
-
-  /* ============================================================
-     CEVAP
-  ============================================================ */
-
-  document
-    .getElementById("guessButton")
-    .addEventListener(
-      "click",
-      submitAnswer
-    );
-
-
-  answerInput.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        submitAnswer();
-
-      }
-
-    }
-  );
-
-
-  function submitAnswer() {
-
-    if (locked) {
-      return;
-    }
-
-    const question =
-      questions[currentIndex];
-
-    const guess =
-      normalize(
-        answerInput.value
-      );
-
-    if (!guess) {
-
-      feedback.textContent =
-        "Bir tahmin yaz.";
-
-      feedback.className =
-        "feedback wrong";
-
-      return;
-
-    }
-
-    const accepted = [
-      normalize(question.answer),
-      ...(question.aliases || [])
-        .map(normalize)
-    ];
-
-    if (
-      accepted.includes(guess)
-    ) {
-
-      clearInterval(timer);
-
-      locked = true;
-
-      answerInput.disabled =
-        true;
-
-      const gained =
-        getPoints();
-
-      score +=
-        gained;
-
-      correctAnswers++;
-
-      topScore.textContent =
-        score;
-
-      /*
-        Doğru olduğunda tamamını göster.
-      */
-
-      logoImage.style.clipPath =
-        "inset(0 0 0 0)";
-
-      revealInfo.textContent =
-        "Tam görsel";
-
-      feedback.textContent =
-        `✅ Doğru! +${gained} puan`;
-
-      feedback.className =
-        "feedback correct";
-
-      nextButton.classList.remove(
-        "hidden"
-      );
-
-      return;
-
-    }
-
-    feedback.textContent =
-      "❌ Yanlış. Daha fazla açıyoruz.";
-
-    feedback.className =
-      "feedback wrong";
-
-    revealMore();
-
-  }
-
-
-  /* ============================================================
-     SORU BİTİR
-  ============================================================ */
-
-  function finishQuestion() {
-
-    clearInterval(timer);
-
-    locked = true;
-
-    answerInput.disabled =
-      true;
-
-    logoImage.style.clipPath =
-      "inset(0 0 0 0)";
-
-    revealInfo.textContent =
-      "Tam görsel";
-
-    feedback.textContent =
-      `Cevap: ${
-        questions[currentIndex].answer
-      }`;
-
-    feedback.className =
-      "feedback wrong";
-
-    nextButton.classList.remove(
-      "hidden"
-    );
-
-  }
-
-
-  /* ============================================================
-     SONRAKİ SORU
-  ============================================================ */
-
-  nextButton.addEventListener(
-    "click",
-    () => {
-
-      currentIndex++;
-
-      if (
-        currentIndex >=
-        questions.length
-      ) {
-
-        finishGame();
-
-      } else {
-
-        loadQuestion();
-
-      }
-
-    }
-  );
-
-
-  /* ============================================================
-     SONUÇ
-  ============================================================ */
-
-  function finishGame() {
-
-    clearInterval(timer);
-
-    gameScreen.classList.add(
-      "hidden"
-    );
-
-    resultScreen.classList.remove(
-      "hidden"
-    );
-
-    document.getElementById(
-      "bigScore"
-    ).textContent =
-      score;
-
-    document.getElementById(
-      "correctCount"
-    ).textContent =
-      correctAnswers;
-
-    document.getElementById(
-      "successPercent"
-    ).textContent =
+  document.getElementById("successPercent")
+    .textContent =
       "%" +
       Math.round(
         (correctAnswers / questions.length) * 100
       );
 
+}
+
+
+/* ==========================================================
+   TEKRAR
+========================================================== */
+
+document
+  .getElementById("againButton")
+  .addEventListener("click", () => {
+
+    resultScreen.classList.add("hidden");
+    gameScreen.classList.remove("hidden");
+
+    startGame();
+
+  });
+
+
+/* ==========================================================
+   ANA MENÜ
+========================================================== */
+
+document
+  .getElementById("homeButton")
+  .addEventListener("click", () => {
+
+    clearInterval(timer);
+
+    resultScreen.classList.add("hidden");
+    gameScreen.classList.add("hidden");
+    homeScreen.classList.remove("hidden");
+
+  });
+
+
+/* ==========================================================
+   BOYUT DEĞİŞİNCE
+========================================================== */
+
+window.addEventListener("resize", () => {
+
+  if (
+    currentRegion &&
+    !gameScreen.classList.contains("hidden")
+  ) {
+
+    applyReveal();
+
   }
 
-
-  /* ============================================================
-     TEKRAR
-  ============================================================ */
-
-  document
-    .getElementById("againButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        resultScreen.classList.add(
-          "hidden"
-        );
-
-        gameScreen.classList.remove(
-          "hidden"
-        );
-
-        startGame();
-
-      }
-    );
-
-
-  /* ============================================================
-     ANA MENÜ
-  ============================================================ */
-
-  document
-    .getElementById("homeButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        clearInterval(timer);
-
-        resultScreen.classList.add(
-          "hidden"
-        );
-
-        gameScreen.classList.add(
-          "hidden"
-        );
-
-        homeScreen.classList.remove(
-          "hidden"
-        );
-
-      }
-    );
-
-
-  /* ============================================================
-     EKRAN BOYUTU DEĞİŞİNCE
-  ============================================================ */
-
-  window.addEventListener(
-    "resize",
-    () => {
-
-      if (
-        currentRegion &&
-        !gameScreen.classList.contains("hidden")
-      ) {
-
-        applyReveal();
-
-      }
-
-    }
-  );
+});
 
 </script>
 
