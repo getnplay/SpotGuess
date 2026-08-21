@@ -1,498 +1,392 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SpotGuess</title>
 
   <style>
-    :root {
-      --bg: #0b0d12;
-      --card: #141821;
-      --card2: #1b202c;
-      --border: #2a3040;
-      --text: #f5f7fb;
-      --muted: #9da6b8;
-      --accent: #6d5dfc;
-      --accent2: #8b7fff;
-      --green: #39d98a;
-      --red: #ff6b7a;
-      --yellow: #ffcc66;
+    :root{
+      --bg:#ffffff;
+      --panel:#f7f7f8;
+      --panel2:#f0f0f2;
+      --text:#111111;
+      --muted:#666;
+      --border:#dedee2;
+      --accent:#111111;
+      --green:#15803d;
+      --red:#c62828;
     }
 
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial,Helvetica,sans-serif;
     }
 
-    body {
-      margin: 0;
-      background:
-        radial-gradient(circle at top, #171b2a 0%, var(--bg) 45%);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
+    button,input{font:inherit}
+
+    .app{
+      width:min(1050px,94%);
+      margin:auto;
+      padding:24px 0 40px;
     }
 
-    button,
-    input {
-      font: inherit;
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:24px;
     }
 
-    button {
-      cursor: pointer;
+    .logo{
+      font-size:32px;
+      font-weight:900;
+      letter-spacing:-1.5px;
     }
 
-    .app {
-      width: min(1100px, 94%);
-      margin: 0 auto;
-      padding: 24px 0 40px;
+    .logo span{
+      color:#777;
     }
 
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      margin-bottom: 28px;
+    .score-pill{
+      padding:10px 15px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:#fafafa;
+      font-weight:800;
     }
 
-    .logo {
-      font-size: 30px;
-      font-weight: 900;
-      letter-spacing: -1.5px;
+    .screen{
+      border:1px solid var(--border);
+      border-radius:26px;
+      background:#fff;
+      padding:28px;
     }
 
-    .logo span {
-      color: var(--accent2);
+    .hidden{display:none!important}
+
+    /* HOME */
+
+    .hero{
+      text-align:center;
+      padding:12px 0 20px;
     }
 
-    .score-pill {
-      background: rgba(109, 93, 252, 0.12);
-      border: 1px solid rgba(109, 93, 252, 0.3);
-      padding: 10px 15px;
-      border-radius: 14px;
-      font-weight: 800;
+    .hero h1{
+      margin:0;
+      font-size:clamp(42px,8vw,74px);
+      letter-spacing:-4px;
     }
 
-    .screen {
-      background: rgba(20, 24, 33, 0.95);
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 28px;
-      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.25);
+    .hero h1 span{color:#777}
+
+    .hero p{
+      max-width:650px;
+      margin:14px auto 0;
+      color:var(--muted);
+      line-height:1.7;
     }
 
-    .hidden {
-      display: none !important;
+    .section-title{
+      margin:24px 0 12px;
+      font-weight:900;
     }
 
-    .hero {
-      text-align: center;
-      padding: 18px 0 8px;
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
     }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(38px, 7vw, 70px);
-      letter-spacing: -3px;
+    .category{
+      border:1px solid var(--border);
+      border-radius:17px;
+      background:#fff;
+      padding:16px 10px;
+      cursor:pointer;
+      transition:.15s;
+      font-weight:800;
     }
 
-    .hero h1 span {
-      color: var(--accent2);
+    .category:hover{
+      transform:translateY(-2px);
+      border-color:#999;
     }
 
-    .hero p {
-      color: var(--muted);
-      max-width: 680px;
-      margin: 14px auto 0;
-      line-height: 1.7;
-      font-size: 17px;
+    .category.active{
+      background:#111;
+      color:#fff;
+      border-color:#111;
     }
 
-    .section-title {
-      margin-top: 34px;
-      margin-bottom: 14px;
-      font-size: 18px;
-      font-weight: 800;
+    .category-icon{
+      display:block;
+      font-size:28px;
+      margin-bottom:8px;
     }
 
-    .category-grid,
-    .difficulty-grid {
-      display: grid;
-      gap: 12px;
+    .difficulty-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
     }
 
-    .category-grid {
-      grid-template-columns: repeat(5, 1fr);
+    .difficulty{
+      border:1px solid var(--border);
+      border-radius:15px;
+      background:#fff;
+      padding:14px 10px;
+      cursor:pointer;
+      font-weight:800;
     }
 
-    .difficulty-grid {
-      grid-template-columns: repeat(4, 1fr);
+    .difficulty.active{
+      background:#111;
+      color:#fff;
+      border-color:#111;
     }
 
-    .choice {
-      background: var(--card2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 18px 12px;
-      border-radius: 18px;
-      transition: 0.18s ease;
-      text-align: center;
+    .start-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top:28px;
     }
 
-    .choice:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
+    .primary{
+      border:0;
+      border-radius:15px;
+      background:#111;
+      color:#fff;
+      padding:15px 24px;
+      font-weight:900;
+      cursor:pointer;
     }
 
-    .choice.selected {
-      background: rgba(109, 93, 252, 0.14);
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 2px rgba(109, 93, 252, 0.08);
+    .secondary{
+      border:1px solid var(--border);
+      border-radius:15px;
+      background:#f2f2f3;
+      color:#111;
+      padding:15px 20px;
+      font-weight:900;
+      cursor:pointer;
     }
 
-    .choice-icon {
-      font-size: 31px;
-      display: block;
-      margin-bottom: 8px;
+    /* GAME */
+
+    .game-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
     }
 
-    .difficulty .choice-icon {
-      font-size: 24px;
+    .round{
+      color:var(--muted);
+      font-weight:800;
     }
 
-    .start-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 28px;
+    .badge{
+      border:1px solid var(--border);
+      background:#f4f4f4;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:13px;
+      font-weight:900;
     }
 
-    .primary-btn,
-    .secondary-btn {
-      border: 0;
-      border-radius: 16px;
-      padding: 15px 22px;
-      font-weight: 900;
-      transition: 0.15s ease;
+    .question{
+      text-align:center;
+      margin:6px 0 6px;
+      font-size:clamp(28px,5vw,42px);
     }
 
-    .primary-btn {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-      min-width: 190px;
+    .question-sub{
+      text-align:center;
+      color:var(--muted);
+      margin-bottom:20px;
     }
 
-    .secondary-btn {
-      background: var(--card2);
-      border: 1px solid var(--border);
-      color: white;
+    .timer-row{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:13px;
+      margin-bottom:7px;
     }
 
-    .primary-btn:hover,
-    .secondary-btn:hover {
-      transform: translateY(-1px);
+    .timer{
+      height:10px;
+      background:#ececee;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:20px;
     }
 
-    .game-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
+    .timer-fill{
+      height:100%;
+      width:100%;
+      background:#111;
+      transition:width .15s linear;
     }
 
-    .round {
-      color: var(--muted);
-      font-weight: 700;
+    .canvas-wrap{
+      width:min(760px,100%);
+      aspect-ratio:4/3;
+      margin:auto;
+      background:#fff;
+      border:1px solid #d8d8dc;
+      border-radius:22px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .category-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 9px 13px;
-      font-size: 13px;
-      font-weight: 800;
+    .art{
+      position:absolute;
+      width:72%;
+      max-width:560px;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      user-select:none;
+      pointer-events:none;
     }
 
-    .game-title {
-      text-align: center;
-      margin: 8px 0 6px;
-      font-size: clamp(26px, 5vw, 42px);
+    .white-mask{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:2;
     }
 
-    .game-subtitle {
-      text-align: center;
-      color: var(--muted);
-      margin-bottom: 18px;
+    .reveal{
+      position:absolute;
+      z-index:3;
+      border:2px solid #111;
+      pointer-events:none;
+      transition:.35s ease;
     }
 
-    .timer-wrap {
-      margin-bottom: 20px;
+    .reveal-info{
+      position:absolute;
+      z-index:4;
+      left:12px;
+      bottom:12px;
+      padding:7px 10px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      background:rgba(255,255,255,.95);
+      font-size:12px;
+      font-weight:900;
     }
 
-    .timer-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: var(--muted);
+    .hint{
+      min-height:24px;
+      text-align:center;
+      margin:15px 0 10px;
+      color:var(--muted);
+      font-weight:800;
     }
 
-    .timer {
-      width: 100%;
-      height: 10px;
-      background: #242938;
-      border-radius: 999px;
-      overflow: hidden;
+    .answer-row{
+      width:min(760px,100%);
+      margin:auto;
+      display:flex;
+      gap:10px;
     }
 
-    .timer-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
-      transition: width .2s linear;
+    .answer{
+      flex:1;
+      min-width:0;
+      border:1px solid #ccc;
+      border-radius:15px;
+      padding:15px;
+      outline:none;
     }
 
-    .image-box {
-      width: min(760px, 100%);
-      height: min(460px, 58vw);
-      min-height: 300px;
-      margin: 0 auto;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      background: #0b0e14;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+    .answer:focus{
+      border-color:#111;
     }
 
-    .image-stage {
-      position: relative;
-      width: 82%;
-      max-width: 640px;
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-      border-radius: 18px;
-      background: #171b25;
-      border: 1px solid rgba(255,255,255,0.05);
+    .feedback{
+      min-height:28px;
+      text-align:center;
+      margin-top:14px;
+      font-weight:900;
     }
 
-    .image-full {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      user-select: none;
-      pointer-events: none;
+    .correct{color:var(--green)}
+    .wrong{color:var(--red)}
+
+    .next-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top:12px;
     }
 
-    .spot-window {
-      position: absolute;
-      width: 34%;
-      height: 34%;
-      min-width: 105px;
-      min-height: 80px;
-      border: 2px solid rgba(255,255,255,.55);
-      box-shadow:
-        0 0 0 9999px rgba(0,0,0,.76),
-        0 0 28px rgba(255,255,255,.12);
-      border-radius: 12px;
-      transition:
-        width .4s ease,
-        height .4s ease,
-        left .4s ease,
-        top .4s ease;
+    /* RESULT */
+
+    .result{
+      text-align:center;
+      padding:30px 0;
     }
 
-    .zoom-text {
-      position: absolute;
-      bottom: 12px;
-      left: 12px;
-      background: rgba(0,0,0,.6);
-      border: 1px solid rgba(255,255,255,.1);
-      padding: 7px 10px;
-      border-radius: 10px;
-      font-size: 12px;
-      color: white;
-      backdrop-filter: blur(8px);
+    .result h2{
+      margin:0;
+      font-size:45px;
     }
 
-    .hint {
-      min-height: 25px;
-      margin: 17px 0 11px;
-      text-align: center;
-      color: var(--muted);
-      font-weight: 700;
+    .big-score{
+      font-size:76px;
+      font-weight:900;
+      margin:10px 0 15px;
     }
 
-    .input-row {
-      display: flex;
-      gap: 10px;
-      max-width: 760px;
-      margin: 0 auto;
+    .result-text{
+      color:var(--muted);
+      margin-bottom:24px;
+      line-height:1.6;
     }
 
-    .answer-input {
-      flex: 1;
-      min-width: 0;
-      background: #0e1117;
-      border: 1px solid var(--border);
-      color: white;
-      border-radius: 16px;
-      padding: 15px 16px;
-      outline: none;
-    }
-
-    .answer-input:focus {
-      border-color: var(--accent2);
-      box-shadow: 0 0 0 3px rgba(109, 93, 252, .1);
-    }
-
-    .feedback {
-      text-align: center;
-      min-height: 30px;
-      margin-top: 16px;
-      font-weight: 900;
-      font-size: 17px;
-    }
-
-    .correct {
-      color: var(--green);
-    }
-
-    .wrong {
-      color: var(--red);
-    }
-
-    .next-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-    }
-
-    .results {
-      text-align: center;
-    }
-
-    .results h2 {
-      font-size: 44px;
-      margin: 8px 0;
-    }
-
-    .result-score {
-      font-size: 64px;
-      font-weight: 900;
-      color: var(--accent2);
-      margin: 8px 0 20px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      max-width: 650px;
-      margin: 0 auto 26px;
-    }
-
-    .stat-card {
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 17px;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 7px;
-    }
-
-    .stat-value {
-      font-size: 27px;
-      font-weight: 900;
-    }
-
-    .share-box {
-      margin: 0 auto 22px;
-      max-width: 600px;
-      background: #0d1016;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .share-box strong {
-      color: white;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #70788a;
-      font-size: 12px;
-      margin-top: 16px;
-    }
-
-    @media (max-width: 900px) {
-      .category-grid {
-        grid-template-columns: repeat(3, 1fr);
+    @media(max-width:850px){
+      .category-grid{
+        grid-template-columns:repeat(3,1fr);
       }
 
-      .difficulty-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .difficulty-grid{
+        grid-template-columns:repeat(2,1fr);
       }
     }
 
-    @media (max-width: 650px) {
-      .app {
-        width: 94%;
+    @media(max-width:600px){
+      .screen{
+        padding:18px;
+        border-radius:20px;
       }
 
-      .screen {
-        padding: 18px;
-        border-radius: 22px;
+      .category-grid{
+        grid-template-columns:repeat(2,1fr);
       }
 
-      .topbar {
-        margin-bottom: 16px;
+      .answer-row{
+        flex-direction:column;
       }
 
-      .logo {
-        font-size: 25px;
+      .canvas-wrap{
+        aspect-ratio:1/1;
       }
 
-      .category-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .difficulty-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .input-row {
-        flex-direction: column;
-      }
-
-      .image-box {
-        height: 68vw;
-        min-height: 270px;
-      }
-
-      .image-stage {
-        width: 92%;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
+      .art{
+        width:78%;
       }
     }
   </style>
@@ -502,179 +396,149 @@
 
 <div class="app">
 
-  <div class="topbar">
+  <header>
     <div class="logo">Spot<span>Guess</span></div>
 
     <div class="score-pill">
       🏆 <span id="topScore">0</span>
     </div>
-  </div>
+  </header>
 
-  <!-- ================= START SCREEN ================= -->
-  <section id="startScreen" class="screen">
+  <!-- ANA MENÜ -->
+  <section id="homeScreen" class="screen">
 
     <div class="hero">
       <h1>Spot<span>Guess</span></h1>
       <p>
-        Bir görselin sadece küçük bir kısmını gör.
+        Görselin sadece küçük bir kısmını gör.
         Ne olduğunu tahmin et.
-        Ne kadar az ipucuyla bilirsen o kadar çok puan kazan.
+        Ne kadar erken bilirsen o kadar fazla puan kazan.
       </p>
     </div>
 
-    <div class="section-title">
-      Kategori seç
-    </div>
+    <div class="section-title">Kategori seç</div>
 
     <div class="category-grid">
 
-      <button class="choice category-choice selected"
-              data-category="flags">
-        <span class="choice-icon">🌍</span>
+      <button class="category active" data-category="flags">
+        <span class="category-icon">🌍</span>
         Bayraklar
       </button>
 
-      <button class="choice category-choice"
-              data-category="brands">
-        <span class="choice-icon">🏷️</span>
+      <button class="category" data-category="brands">
+        <span class="category-icon">🏷️</span>
         Markalar
       </button>
 
-      <button class="choice category-choice"
-              data-category="football">
-        <span class="choice-icon">⚽</span>
+      <button class="category" data-category="football">
+        <span class="category-icon">⚽</span>
         Futbol
       </button>
 
-      <button class="choice category-choice"
-              data-category="basketball">
-        <span class="choice-icon">🏀</span>
+      <button class="category" data-category="basketball">
+        <span class="category-icon">🏀</span>
         Basketbol
       </button>
 
-      <button class="choice category-choice"
-              data-category="games">
-        <span class="choice-icon">🎮</span>
+      <button class="category" data-category="games">
+        <span class="category-icon">🎮</span>
         Oyunlar
       </button>
 
     </div>
 
-    <div class="section-title">
-      Zorluk seç
-    </div>
+    <div class="section-title">Zorluk</div>
 
     <div class="difficulty-grid">
 
-      <button class="choice difficulty-choice selected"
-              data-difficulty="easy">
-        <span class="choice-icon">🟢</span>
-        Kolay
+      <button class="difficulty active" data-difficulty="easy">
+        🟢 Kolay
       </button>
 
-      <button class="choice difficulty-choice"
-              data-difficulty="medium">
-        <span class="choice-icon">🟡</span>
-        Orta
+      <button class="difficulty" data-difficulty="medium">
+        🟡 Orta
       </button>
 
-      <button class="choice difficulty-choice"
-              data-difficulty="hard">
-        <span class="choice-icon">🔴</span>
-        Zor
+      <button class="difficulty" data-difficulty="hard">
+        🔴 Zor
       </button>
 
-      <button class="choice difficulty-choice"
-              data-difficulty="impossible">
-        <span class="choice-icon">💀</span>
-        İmkânsız
+      <button class="difficulty" data-difficulty="impossible">
+        💀 İmkânsız
       </button>
 
     </div>
 
     <div class="start-wrap">
-      <button class="primary-btn" id="startButton">
+      <button id="startBtn" class="primary">
         Oyuna Başla
       </button>
     </div>
 
-    <div class="footer-note">
-      10 soru · 15 saniye · Erken bilirsen daha çok puan
-    </div>
-
   </section>
 
-  <!-- ================= GAME SCREEN ================= -->
+
+  <!-- OYUN -->
   <section id="gameScreen" class="screen hidden">
 
-    <div class="game-head">
-
+    <div class="game-top">
       <div class="round">
-        Soru <span id="roundNumber">1</span> / 10
+        Soru <span id="round">1</span> / 10
       </div>
 
-      <div class="category-badge" id="categoryBadge">
+      <div class="badge" id="badge">
         🌍 Bayraklar
       </div>
-
     </div>
 
-    <h2 class="game-title" id="questionTitle">
-      Bu nedir?
+    <h2 id="questionTitle" class="question">
+      Bu hangi ülke?
     </h2>
 
-    <div class="game-subtitle">
-      Görselin sadece bir kısmını görüyorsun.
+    <div class="question-sub">
+      Sadece açık olan kısmı incele.
     </div>
 
-    <div class="timer-wrap">
-
-      <div class="timer-top">
-        <span>Zaman</span>
-        <span><strong id="timerText">15</strong> saniye</span>
-      </div>
-
-      <div class="timer">
-        <div class="timer-fill" id="timerFill"></div>
-      </div>
-
+    <div class="timer-row">
+      <span>Zaman</span>
+      <span><strong id="time">15</strong> saniye</span>
     </div>
 
-    <div class="image-box">
+    <div class="timer">
+      <div id="timerFill" class="timer-fill"></div>
+    </div>
 
-      <div class="image-stage">
+    <div class="canvas-wrap">
 
-        <img
-          id="imageFull"
-          class="image-full"
-          alt="Tahmin görseli"
-        >
+      <img id="art" class="art" alt="Tahmin görseli">
 
-        <div id="spotWindow" class="spot-window"></div>
+      <!-- Geri kalan her şeyi beyaza kapatıyoruz -->
+      <div id="mask" class="white-mask"></div>
 
-        <div class="zoom-text" id="zoomText">
-          Görünen alan: %10
-        </div>
+      <!-- Açık pencere -->
+      <div id="reveal" class="reveal"></div>
 
+      <div id="revealInfo" class="reveal-info">
+        Görünen alan: %8
       </div>
 
     </div>
 
-    <div class="hint" id="hintText">
+    <div id="hint" class="hint">
       Henüz ipucu yok.
     </div>
 
-    <div class="input-row">
+    <div class="answer-row">
 
       <input
-        id="answerInput"
-        class="answer-input"
+        id="answer"
+        class="answer"
         type="text"
         autocomplete="off"
         placeholder="Tahminini yaz..."
       >
 
-      <button class="primary-btn" id="guessButton">
+      <button id="guessBtn" class="primary">
         Tahmin Et
       </button>
 
@@ -683,59 +547,36 @@
     <div id="feedback" class="feedback"></div>
 
     <div class="next-wrap">
-      <button
-        id="nextButton"
-        class="secondary-btn hidden">
+      <button id="nextBtn" class="secondary hidden">
         Sonraki Soru →
       </button>
     </div>
 
   </section>
 
-  <!-- ================= RESULT SCREEN ================= -->
+
+  <!-- SONUÇ -->
   <section id="resultScreen" class="screen hidden">
 
-    <div class="results">
+    <div class="result">
 
       <h2>Oyun Bitti</h2>
 
-      <div class="result-score" id="finalScore">
-        0
-      </div>
+      <div id="bigScore" class="big-score">0</div>
 
-      <div class="stats-grid">
-
-        <div class="stat-card">
-          <div class="stat-label">Doğru</div>
-          <div class="stat-value" id="finalCorrect">0</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Toplam Soru</div>
-          <div class="stat-value" id="finalQuestions">10</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-label">Başarı</div>
-          <div class="stat-value" id="finalPercent">%0</div>
-        </div>
-
-      </div>
-
-      <div class="share-box">
-        <strong>Sonuç kartın:</strong><br>
-        SpotGuess'te <strong id="shareScore">0</strong> puan aldım.
+      <div class="result-text">
+        Doğru: <strong id="correctCount">0</strong> / 10
         <br>
-        Bakalım sen kaç yapacaksın?
+        Başarı: <strong id="successPercent">%0</strong>
       </div>
 
-      <button class="primary-btn" id="restartButton">
+      <button id="againBtn" class="primary">
         Tekrar Oyna
       </button>
 
-      <div style="height:10px"></div>
+      <br><br>
 
-      <button class="secondary-btn" id="backHomeButton">
+      <button id="homeBtn" class="secondary">
         Ana Menü
       </button>
 
@@ -745,1365 +586,1149 @@
 
 </div>
 
-<script>
-  // ============================================================
-  // VERİLER
-  // ============================================================
 
-  const DATA = {
+<script>
+  /*
+    NOT:
+    Aşağıdaki görseller özgün SVG tasarımlarıdır.
+    Gerçek marka/logoların birebir kopyası değildir.
+  */
+
+  const QUESTIONS = {
 
     flags: [
       {
-        name: "Türkiye",
-        aliases: ["turkiye", "türkiye", "turkey"],
-        emoji: "🇹🇷",
-        colors: ["#e30a17", "#ffffff"],
-        type: "turkey"
+        answer:"Türkiye",
+        aliases:["turkiye","türkiye","turkey"],
+        hint:"Bayrağında ay ve yıldız bulunur.",
+        svg: createFlagTurkey()
       },
       {
-        name: "Japonya",
-        aliases: ["japonya", "japan"],
-        emoji: "🇯🇵",
-        colors: ["#ffffff", "#bc002d"],
-        type: "japan"
+        answer:"Japonya",
+        aliases:["japonya","japan"],
+        hint:"Asya'da bir ada ülkesi.",
+        svg: createFlagJapan()
       },
       {
-        name: "Fransa",
-        aliases: ["fransa", "france"],
-        emoji: "🇫🇷",
-        colors: ["#0055a4", "#ffffff", "#ef4135"],
-        type: "tricolor"
+        answer:"Fransa",
+        aliases:["fransa","france"],
+        hint:"Avrupa'da üç dikey renkli bölgesi var.",
+        svg: createFlagFrance()
       },
       {
-        name: "Almanya",
-        aliases: ["almanya", "germany"],
-        emoji: "🇩🇪",
-        colors: ["#000000", "#dd0000", "#ffce00"],
-        type: "horizontal"
+        answer:"Almanya",
+        aliases:["almanya","germany"],
+        hint:"Bayrağı üç yatay şeritten oluşur.",
+        svg: createFlagGermany()
       },
       {
-        name: "İtalya",
-        aliases: ["italya", "italy"],
-        emoji: "🇮🇹",
-        colors: ["#009246", "#ffffff", "#ce2b37"],
-        type: "tricolor"
+        answer:"İtalya",
+        aliases:["italya","italy"],
+        hint:"Akdeniz'de çizme şeklindeki ülke.",
+        svg: createFlagItaly()
       },
       {
-        name: "Hollanda",
-        aliases: ["hollanda", "netherlands"],
-        emoji: "🇳🇱",
-        colors: ["#ae1c28", "#ffffff", "#21468b"],
-        type: "horizontal"
-      },
-      {
-        name: "Yunanistan",
-        aliases: ["yunanistan", "greece"],
-        emoji: "🇬🇷",
-        colors: ["#0d5eaf", "#ffffff"],
-        type: "greece"
-      },
-      {
-        name: "Kanada",
-        aliases: ["kanada", "canada"],
-        emoji: "🇨🇦",
-        colors: ["#d80621", "#ffffff"],
-        type: "canada"
-      },
-      {
-        name: "İsviçre",
-        aliases: ["isvicre", "isviçre", "switzerland"],
-        emoji: "🇨🇭",
-        colors: ["#d52b1e", "#ffffff"],
-        type: "switzerland"
-      },
-      {
-        name: "Brezilya",
-        aliases: ["brezilya", "brazil"],
-        emoji: "🇧🇷",
-        colors: ["#009c3b", "#ffdf00", "#002776"],
-        type: "brazil"
+        answer:"Kanada",
+        aliases:["kanada","canada"],
+        hint:"Ortada akçaağaç yaprağı bulunur.",
+        svg: createFlagCanada()
       }
     ],
 
     brands: [
       {
-        name: "Apple",
-        aliases: ["apple"],
-        emoji: "🍎",
-        type: "apple"
+        answer:"Beşiktaş",
+        aliases:["bjk","besiktas","beşiktaş"],
+        hint:"İstanbul merkezli bir spor kulübü.",
+        svg: createClubBlackWhite()
       },
       {
-        name: "Nike",
-        aliases: ["nike"],
-        emoji: "✔️",
-        type: "nike"
+        answer:"Nike",
+        aliases:["nike"],
+        hint:"Spor giyim markası.",
+        svg: createNikeInspired()
       },
       {
-        name: "Coca-Cola",
-        aliases: ["coca cola", "coca-cola", "cocacola"],
-        emoji: "🥤",
-        type: "coke"
+        answer:"YouTube",
+        aliases:["youtube"],
+        hint:"Video platformu.",
+        svg: createVideoInspired()
       },
       {
-        name: "YouTube",
-        aliases: ["youtube"],
-        emoji: "▶️",
-        type: "youtube"
+        answer:"Spotify",
+        aliases:["spotify"],
+        hint:"Müzik dinleme platformu.",
+        svg: createMusicInspired()
       },
       {
-        name: "Adidas",
-        aliases: ["adidas"],
-        emoji: "👟",
-        type: "adidas"
+        answer:"Adidas",
+        aliases:["adidas"],
+        hint:"Üç şeritli spor markası.",
+        svg: createThreeStripeInspired()
       }
     ],
 
     football: [
       {
-        name: "Barcelona",
-        aliases: ["barcelona", "fc barcelona", "barca"],
-        emoji: "🔵🔴",
-        type: "barcelona"
+        answer:"Beşiktaş",
+        aliases:["bjk","besiktas","beşiktaş"],
+        hint:"İstanbul'un siyah-beyaz kulübü.",
+        svg: createClubBlackWhite()
       },
       {
-        name: "Real Madrid",
-        aliases: ["real madrid", "real"],
-        emoji: "👑",
-        type: "realmadrid"
+        answer:"Galatasaray",
+        aliases:["galatasaray","gs"],
+        hint:"Sarı-kırmızı renklerle bilinir.",
+        svg: createClubYellowRed()
       },
       {
-        name: "Liverpool",
-        aliases: ["liverpool"],
-        emoji: "🔴",
-        type: "liverpool"
+        answer:"Fenerbahçe",
+        aliases:["fenerbahce","fenerbahçe","fb"],
+        hint:"Sarı-lacivert renklerle bilinir.",
+        svg: createClubBlueYellow()
       },
       {
-        name: "Galatasaray",
-        aliases: ["galatasaray", "gs"],
-        emoji: "🟡🔴",
-        type: "galatasaray"
+        answer:"Barcelona",
+        aliases:["barcelona","barca","barça"],
+        hint:"Katalonya ile özdeşleşen futbol kulübü.",
+        svg: createClubBlueRed()
       }
     ],
 
     basketball: [
       {
-        name: "Chicago Bulls",
-        aliases: ["chicago bulls", "bulls"],
-        emoji: "🐂",
-        type: "bulls"
+        answer:"Chicago Bulls",
+        aliases:["bulls","chicago bulls"],
+        hint:"Kırmızı-siyah renkleriyle bilinir.",
+        svg: createBasketRed()
       },
       {
-        name: "Los Angeles Lakers",
-        aliases: ["los angeles lakers", "lakers", "la lakers"],
-        emoji: "💜💛",
-        type: "lakers"
+        answer:"Los Angeles Lakers",
+        aliases:["lakers","los angeles lakers"],
+        hint:"Mor-sarı renkli NBA takımı.",
+        svg: createBasketPurple()
       },
       {
-        name: "Boston Celtics",
-        aliases: ["boston celtics", "celtics"],
-        emoji: "☘️",
-        type: "celtics"
+        answer:"Boston Celtics",
+        aliases:["celtics","boston celtics"],
+        hint:"Yeşil renkli NBA takımı.",
+        svg: createBasketGreen()
       }
     ],
 
     games: [
       {
-        name: "Minecraft",
-        aliases: ["minecraft"],
-        emoji: "⛏️",
-        type: "minecraft"
+        answer:"Minecraft",
+        aliases:["minecraft"],
+        hint:"Bloklardan oluşan bir oyun dünyası.",
+        svg: createGameMinecraft()
       },
       {
-        name: "Fortnite",
-        aliases: ["fortnite"],
-        emoji: "🎮",
-        type: "fortnite"
+        answer:"Fortnite",
+        aliases:["fortnite"],
+        hint:"Battle royale türündeki popüler oyun.",
+        svg: createGameBattle()
       },
       {
-        name: "Roblox",
-        aliases: ["roblox"],
-        emoji: "🟥",
-        type: "roblox"
+        answer:"Roblox",
+        aliases:["roblox"],
+        hint:"Kullanıcıların oyunlar oluşturabildiği platform.",
+        svg: createGameBlock()
       },
       {
-        name: "Among Us",
-        aliases: ["among us"],
-        emoji: "👨‍🚀",
-        type: "amongus"
+        answer:"Among Us",
+        aliases:["among us"],
+        hint:"Renkli astronotların olduğu sosyal çıkarım oyunu.",
+        svg: createGameCrew()
       }
     ]
   };
 
-  // ============================================================
-  // DURUM
-  // ============================================================
+  let category = "flags";
+  let difficulty = "easy";
 
-  const TOTAL_QUESTIONS = 10;
-
-  let selectedCategory = "flags";
-  let selectedDifficulty = "easy";
-
-  let gameQuestions = [];
-  let currentIndex = 0;
+  let questions = [];
+  let current = 0;
   let score = 0;
-  let correctAnswers = 0;
-
-  let currentQuestion = null;
-
-  let timeLeft = 15;
-  let timer = null;
-
-  let answerLocked = false;
-
-  // görünür alan seviyesi
-  // 1 = çok küçük
-  // 2 = küçük
-  // 3 = orta
-  // 4 = büyük
-  // 5 = tamamı
+  let correct = 0;
   let revealLevel = 1;
+  let timer = null;
+  let time = 15;
+  let locked = false;
+  let currentRegion = null;
 
-  // ============================================================
-  // DOM
-  // ============================================================
-
-  const startScreen = document.getElementById("startScreen");
+  const homeScreen = document.getElementById("homeScreen");
   const gameScreen = document.getElementById("gameScreen");
   const resultScreen = document.getElementById("resultScreen");
 
-  const topScore = document.getElementById("topScore");
+  const art = document.getElementById("art");
+  const mask = document.getElementById("mask");
+  const reveal = document.getElementById("reveal");
 
-  const startButton = document.getElementById("startButton");
-
-  const roundNumber = document.getElementById("roundNumber");
-  const categoryBadge = document.getElementById("categoryBadge");
-
-  const imageFull = document.getElementById("imageFull");
-  const spotWindow = document.getElementById("spotWindow");
-  const zoomText = document.getElementById("zoomText");
-
-  const timerText = document.getElementById("timerText");
+  const roundEl = document.getElementById("round");
+  const timeEl = document.getElementById("time");
   const timerFill = document.getElementById("timerFill");
-
-  const hintText = document.getElementById("hintText");
-
-  const answerInput = document.getElementById("answerInput");
-  const guessButton = document.getElementById("guessButton");
-
+  const revealInfo = document.getElementById("revealInfo");
+  const hint = document.getElementById("hint");
+  const answer = document.getElementById("answer");
   const feedback = document.getElementById("feedback");
-  const nextButton = document.getElementById("nextButton");
+  const nextBtn = document.getElementById("nextBtn");
+  const topScore = document.getElementById("topScore");
+  const badge = document.getElementById("badge");
+  const questionTitle = document.getElementById("questionTitle");
 
-  const finalScore = document.getElementById("finalScore");
-  const finalCorrect = document.getElementById("finalCorrect");
-  const finalQuestions = document.getElementById("finalQuestions");
-  const finalPercent = document.getElementById("finalPercent");
-  const shareScore = document.getElementById("shareScore");
+  /* ===========================
+     SVG YARDIMCI
+  =========================== */
 
-  const restartButton = document.getElementById("restartButton");
-  const backHomeButton = document.getElementById("backHomeButton");
+  function svg(inner){
+    return "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 600 400"
+             width="600"
+             height="400">
+          ${inner}
+        </svg>
+      `);
+  }
 
-  // ============================================================
-  // KATEGORİ
-  // ============================================================
+  function createFlagTurkey(){
+    return svg(`
+      <rect width="600" height="400" fill="#c91524"/>
+      <circle cx="255" cy="200" r="88" fill="#fff"/>
+      <circle cx="292" cy="200" r="69" fill="#c91524"/>
+      <polygon points="
+        405,125
+        421,179
+        478,181
+        433,214
+        450,270
+        405,237
+        360,270
+        377,214
+        332,181
+        389,179"
+        fill="#fff"/>
+    `);
+  }
 
-  document.querySelectorAll(".category-choice").forEach(button => {
-    button.addEventListener("click", () => {
+  function createFlagJapan(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <circle cx="300" cy="200" r="105" fill="#c91524"/>
+    `);
+  }
 
-      document
-        .querySelectorAll(".category-choice")
-        .forEach(btn => btn.classList.remove("selected"));
+  function createFlagFrance(){
+    return svg(`
+      <rect width="200" height="400" fill="#123f98"/>
+      <rect x="200" width="200" height="400" fill="#fff"/>
+      <rect x="400" width="200" height="400" fill="#ef3340"/>
+    `);
+  }
 
-      button.classList.add("selected");
+  function createFlagGermany(){
+    return svg(`
+      <rect width="600" height="133" fill="#111"/>
+      <rect y="133" width="600" height="134" fill="#d9272e"/>
+      <rect y="267" width="600" height="133" fill="#f6c515"/>
+    `);
+  }
 
-      selectedCategory = button.dataset.category;
+  function createFlagItaly(){
+    return svg(`
+      <rect width="200" height="400" fill="#009246"/>
+      <rect x="200" width="200" height="400" fill="#fff"/>
+      <rect x="400" width="200" height="400" fill="#ce2b37"/>
+    `);
+  }
+
+  function createFlagCanada(){
+    return svg(`
+      <rect width="145" height="400" fill="#d81e34"/>
+      <rect x="145" width="310" height="400" fill="#fff"/>
+      <rect x="455" width="145" height="400" fill="#d81e34"/>
+
+      <polygon points="
+        300,70
+        320,138
+        370,120
+        350,170
+        397,198
+        350,220
+        360,290
+        300,252
+        240,290
+        250,220
+        203,198
+        250,170
+        230,120
+        280,138"
+        fill="#d81e34"/>
+    `);
+  }
+
+  /* ===== ÖZGÜN KULÜP TASARIMLARI ===== */
+
+  function createClubBlackWhite(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+
+      <path d="
+        M300 44
+        L420 82
+        L402 274
+        Q300 340 198 274
+        L180 82 Z"
+        fill="#111"/>
+
+      <path d="
+        M300 63
+        L397 95
+        L381 259
+        Q300 310 219 259
+        L203 95 Z"
+        fill="#fff"/>
+
+      <rect x="255" y="71" width="45" height="198" fill="#111"/>
+      <rect x="300" y="71" width="45" height="198" fill="#111"/>
+
+      <circle cx="244" cy="35" r="13" fill="#111"/>
+      <circle cx="300" cy="24" r="13" fill="#111"/>
+      <circle cx="356" cy="35" r="13" fill="#111"/>
+
+      <text x="300" y="210"
+        text-anchor="middle"
+        font-family="Arial"
+        font-weight="900"
+        font-size="50"
+        fill="#111">
+        BG
+      </text>
+    `);
+  }
+
+  function createClubYellowRed(){
+    return svg(`
+      <rect width="600" height="400" fill="#eee"/>
+      <circle cx="300" cy="200" r="120"
+        fill="#e7bd23" stroke="#8e1830" stroke-width="20"/>
+
+      <path d="M240 88 L275 185 L225 240"
+        stroke="#8e1830" stroke-width="22" fill="none"/>
+
+      <path d="M360 88 L325 185 L375 240"
+        stroke="#8e1830" stroke-width="22" fill="none"/>
+
+      <text x="300" y="225"
+        text-anchor="middle"
+        font-size="58"
+        font-family="Arial"
+        font-weight="900"
+        fill="#8e1830">
+        GR
+      </text>
+    `);
+  }
+
+  function createClubBlueYellow(){
+    return svg(`
+      <rect width="600" height="400" fill="#142c8c"/>
+      <circle cx="300" cy="200" r="120"
+        fill="#fff"
+        stroke="#e4b929"
+        stroke-width="18"/>
+
+      <path d="M205 145 Q300 95 395 145"
+        fill="none"
+        stroke="#e4b929"
+        stroke-width="18"/>
+
+      <path d="M215 250 Q300 295 385 250"
+        fill="none"
+        stroke="#e4b929"
+        stroke-width="18"/>
+
+      <text x="300" y="223"
+        text-anchor="middle"
+        font-size="62"
+        font-family="Arial"
+        font-weight="900"
+        fill="#142c8c">
+        FB
+      </text>
+    `);
+  }
+
+  function createClubBlueRed(){
+    return svg(`
+      <rect width="600" height="400" fill="#a90038"/>
+      <rect x="70" width="115" height="400" fill="#173c91"/>
+      <rect x="300" width="115" height="400" fill="#173c91"/>
+      <circle cx="300" cy="200" r="102"
+        fill="#f4c21c"
+        stroke="#173c91"
+        stroke-width="12"/>
+
+      <text x="300" y="222"
+        text-anchor="middle"
+        font-size="58"
+        font-family="Arial"
+        font-weight="900"
+        fill="#a90038">
+        CB
+      </text>
+    `);
+  }
+
+  /* ===== MARKA ESİNLİ ÖZGÜN TASARIM ===== */
+
+  function createNikeInspired(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <path d="
+        M105 250
+        Q230 205 505 105
+        Q360 210 250 264
+        Q165 306 105 283
+        Q85 275 105 250 Z"
+        fill="#111"/>
+    `);
+  }
+
+  function createVideoInspired(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <rect x="110" y="100"
+        width="380" height="200"
+        rx="45"
+        fill="#df1e37"/>
+      <polygon points="270,145 270,255 390,200"
+        fill="#fff"/>
+    `);
+  }
+
+  function createMusicInspired(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <circle cx="300" cy="200" r="110" fill="#1db954"/>
+      <path d="M220 173 Q300 145 380 175"
+        fill="none"
+        stroke="#fff"
+        stroke-width="17"
+        stroke-linecap="round"/>
+      <path d="M232 207 Q300 184 368 210"
+        fill="none"
+        stroke="#fff"
+        stroke-width="17"
+        stroke-linecap="round"/>
+      <path d="M247 240 Q300 222 353 245"
+        fill="none"
+        stroke="#fff"
+        stroke-width="17"
+        stroke-linecap="round"/>
+    `);
+  }
+
+  function createThreeStripeInspired(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <polygon points="145,290 215,110 265,110 195,290" fill="#111"/>
+      <polygon points="240,290 310,110 360,110 290,290" fill="#111"/>
+      <polygon points="335,290 405,110 455,110 385,290" fill="#111"/>
+    `);
+  }
+
+  /* ===== BASKETBOL ===== */
+
+  function createBasketRed(){
+    return svg(`
+      <rect width="600" height="400" fill="#fff"/>
+      <circle cx="300" cy="200" r="112" fill="#d82027"/>
+      <path d="M220 135 Q300 200 380 135"
+        fill="none" stroke="#111" stroke-width="13"/>
+      <path d="M220 265 Q300 200 380 265"
+        fill="none" stroke="#111" stroke-width="13"/>
+      <text x="300" y="217"
+        text-anchor="middle"
+        font-size="56"
+        font-family="Arial"
+        font-weight="900"
+        fill="#111">
+        CHI
+      </text>
+    `);
+  }
+
+  function createBasketPurple(){
+    return svg(`
+      <rect width="600" height="400" fill="#552583"/>
+      <circle cx="300" cy="200" r="110" fill="#fdb927"/>
+      <text x="300" y="214"
+        text-anchor="middle"
+        font-size="60"
+        font-family="Arial"
+        font-weight="900"
+        fill="#552583">
+        LK
+      </text>
+    `);
+  }
+
+  function createBasketGreen(){
+    return svg(`
+      <rect width="600" height="400" fill="#087b40"/>
+      <circle cx="300" cy="200" r="110"
+        fill="#fff"
+        stroke="#111"
+        stroke-width="8"/>
+      <text x="300" y="228"
+        text-anchor="middle"
+        font-size="82"
+        font-family="Arial"
+        font-weight="900"
+        fill="#087b40">
+        C
+      </text>
+    `);
+  }
+
+  /* ===== OYUN ===== */
+
+  function createGameMinecraft(){
+    return svg(`
+      <rect width="600" height="400" fill="#5f9444"/>
+      <rect x="125" y="90"
+        width="350"
+        height="230"
+        fill="#3f3f3f"/>
+
+      <rect x="180" y="135"
+        width="70"
+        height="70" fill="#151515"/>
+
+      <rect x="350" y="135"
+        width="70"
+        height="70" fill="#151515"/>
+
+      <rect x="235" y="225"
+        width="130"
+        height="55" fill="#151515"/>
+
+      <text x="300" y="56"
+        text-anchor="middle"
+        font-family="Arial"
+        font-size="30"
+        font-weight="900"
+        fill="#fff">
+        MINECRAFT
+      </text>
+    `);
+  }
+
+  function createGameBattle(){
+    return svg(`
+      <rect width="600" height="400" fill="#56379b"/>
+      <text x="300" y="220"
+        text-anchor="middle"
+        font-family="Arial"
+        font-size="70"
+        font-weight="900"
+        fill="#fff"
+        transform="rotate(-7 300 200)">
+        BATTLE
+      </text>
+    `);
+  }
+
+  function createGameBlock(){
+    return svg(`
+      <rect width="600" height="400" fill="#e42a22"/>
+      <rect x="210" y="105"
+        width="180"
+        height="180"
+        rx="30"
+        fill="#fff"
+        transform="rotate(20 300 195)"/>
+
+      <rect x="260" y="155"
+        width="80"
+        height="80"
+        fill="#e42a22"
+        transform="rotate(20 300 195)"/>
+    `);
+  }
+
+  function createGameCrew(){
+    return svg(`
+      <rect width="600" height="400" fill="#191919"/>
+
+      <path d="
+        M220 285
+        L205 220
+        Q185 130 245 95
+        Q300 65 355 95
+        Q415 130 395 220
+        L380 285
+        Z"
+        fill="#d63639"/>
+
+      <path d="
+        M250 115
+        L365 135
+        L350 205
+        L265 185
+        Z"
+        fill="#bcecff"/>
+    `);
+  }
+
+  /* ============================
+     SEÇİMLER
+  ============================ */
+
+  document.querySelectorAll(".category").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll(".category")
+        .forEach(x=>x.classList.remove("active"));
+
+      btn.classList.add("active");
+      category = btn.dataset.category;
     });
   });
 
-  // ============================================================
-  // ZORLUK
-  // ============================================================
+  document.querySelectorAll(".difficulty").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      document.querySelectorAll(".difficulty")
+        .forEach(x=>x.classList.remove("active"));
 
-  document.querySelectorAll(".difficulty-choice").forEach(button => {
-    button.addEventListener("click", () => {
-
-      document
-        .querySelectorAll(".difficulty-choice")
-        .forEach(btn => btn.classList.remove("selected"));
-
-      button.classList.add("selected");
-
-      selectedDifficulty = button.dataset.difficulty;
+      btn.classList.add("active");
+      difficulty = btn.dataset.difficulty;
     });
   });
 
-  // ============================================================
-  // YARDIMCI
-  // ============================================================
+  /* ============================
+     YARDIMCI
+  ============================ */
 
-  function normalize(text) {
-
-    return text
+  function normalize(str){
+    return str
       .toLocaleLowerCase("tr-TR")
       .trim()
-      .replace(/ı/g, "i")
-      .replace(/ş/g, "s")
-      .replace(/ğ/g, "g")
-      .replace(/ü/g, "u")
-      .replace(/ö/g, "o")
-      .replace(/ç/g, "c");
-
+      .replace(/ı/g,"i")
+      .replace(/ş/g,"s")
+      .replace(/ğ/g,"g")
+      .replace(/ü/g,"u")
+      .replace(/ö/g,"o")
+      .replace(/ç/g,"c");
   }
 
-  function shuffle(array) {
-
-    const copy = [...array];
-
-    for (let i = copy.length - 1; i > 0; i--) {
-
-      const j = Math.floor(Math.random() * (i + 1));
-
-      [copy[i], copy[j]] = [copy[j], copy[i]];
+  function shuffle(arr){
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
     }
-
-    return copy;
+    return a;
   }
 
-  // ============================================================
-  // SVG GÖRSEL ÜRETİMİ
-  // ============================================================
-
-  function makeSvg(type, q) {
-
-    const c = q.colors || [];
-
-    let inner = "";
-
-    if (type === "turkey") {
-
-      inner = `
-        <rect width="600" height="400" fill="#e30a17"/>
-        <circle cx="245" cy="200" r="85" fill="#fff"/>
-        <circle cx="278" cy="200" r="67" fill="#e30a17"/>
-
-        <polygon
-          points="
-            380,135
-            398,181
-            447,184
-            409,215
-            422,263
-            380,237
-            338,263
-            351,215
-            313,184
-            362,181
-          "
-          fill="#fff"
-        />
-      `;
-    }
-
-    else if (type === "japan") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fff"/>
-        <circle cx="300" cy="200" r="100" fill="#bc002d"/>
-      `;
-    }
-
-    else if (type === "tricolor") {
-
-      inner = `
-        <rect width="200" height="400" fill="${c[0]}"/>
-        <rect x="200" width="200" height="400" fill="${c[1]}"/>
-        <rect x="400" width="200" height="400" fill="${c[2]}"/>
-      `;
-    }
-
-    else if (type === "horizontal") {
-
-      inner = `
-        <rect width="600" height="133" fill="${c[0]}"/>
-        <rect y="133" width="600" height="134" fill="${c[1]}"/>
-        <rect y="267" width="600" height="133" fill="${c[2]}"/>
-      `;
-    }
-
-    else if (type === "greece") {
-
-      inner = `
-        <rect width="600" height="400" fill="#0d5eaf"/>
-
-        <rect y="0" width="600" height="42" fill="#fff"/>
-        <rect y="84" width="600" height="42" fill="#fff"/>
-        <rect y="168" width="600" height="42" fill="#fff"/>
-        <rect y="252" width="600" height="42" fill="#fff"/>
-        <rect y="336" width="600" height="42" fill="#fff"/>
-
-        <rect width="220" height="210" fill="#0d5eaf"/>
-        <rect x="92" width="36" height="210" fill="#fff"/>
-        <rect y="87" width="220" height="36" fill="#fff"/>
-      `;
-    }
-
-    else if (type === "canada") {
-
-      inner = `
-        <rect width="150" height="400" fill="#d80621"/>
-        <rect x="150" width="300" height="400" fill="#fff"/>
-        <rect x="450" width="150" height="400" fill="#d80621"/>
-
-        <polygon
-          points="
-            300,65
-            319,132
-            371,119
-            347,167
-            394,194
-            347,218
-            360,290
-            300,250
-            240,290
-            253,218
-            206,194
-            253,167
-            229,119
-            281,132
-          "
-          fill="#d80621"
-        />
-      `;
-    }
-
-    else if (type === "switzerland") {
-
-      inner = `
-        <rect width="600" height="400" fill="#d52b1e"/>
-        <rect x="245" y="70" width="110" height="260" fill="#fff"/>
-        <rect x="170" y="145" width="260" height="110" fill="#fff"/>
-      `;
-    }
-
-    else if (type === "brazil") {
-
-      inner = `
-        <rect width="600" height="400" fill="#009c3b"/>
-
-        <polygon
-          points="300,35 565,200 300,365 35,200"
-          fill="#ffdf00"
-        />
-
-        <circle cx="300" cy="200" r="95" fill="#002776"/>
-        <path
-          d="M 218 185 Q 300 155 382 185"
-          fill="none"
-          stroke="#fff"
-          stroke-width="14"
-        />
-      `;
-    }
-
-    // -------- MARKALAR --------
-
-    else if (type === "apple") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fafafa"/>
-
-        <path
-          d="
-          M 335 122
-          C 305 93, 255 101, 235 135
-          C 205 184, 225 251, 258 291
-          C 273 309, 291 334, 315 331
-          C 336 328, 344 316, 370 316
-          C 396 316, 405 331, 426 328
-          C 453 325, 474 286, 484 262
-          C 445 245, 437 185, 477 159
-          C 456 128, 423 112, 389 109
-          C 360 107, 344 126, 335 122 Z
-          "
-          fill="#111"
-        />
-
-        <path
-          d="
-          M 382 74
-          C 395 59, 417 47, 436 48
-          C 438 69, 431 91, 415 105
-          C 400 119, 377 128, 362 124
-          C 359 104, 367 88, 382 74 Z
-          "
-          fill="#111"
-        />
-      `;
-    }
-
-    else if (type === "nike") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fff"/>
-
-        <path
-          d="
-            M 105 235
-            C 180 210, 265 180, 500 115
-            C 436 165, 355 222, 260 263
-            C 194 292, 134 302, 105 278
-            C 89 266, 91 250, 105 235 Z
-          "
-          fill="#111"
-        />
-      `;
-    }
-
-    else if (type === "coke") {
-
-      inner = `
-        <rect width="600" height="400" fill="#e50914"/>
-
-        <ellipse
-          cx="300"
-          cy="200"
-          rx="215"
-          ry="115"
-          fill="#fff"
-        />
-
-        <ellipse
-          cx="300"
-          cy="200"
-          rx="196"
-          ry="97"
-          fill="#e50914"
-        />
-
-        <text
-          x="300"
-          y="223"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="62"
-          font-weight="bold"
-          fill="#fff"
-        >
-          Coca-Cola
-        </text>
-      `;
-    }
-
-    else if (type === "youtube") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fff"/>
-
-        <rect
-          x="125"
-          y="105"
-          width="350"
-          height="190"
-          rx="45"
-          fill="#ff0033"
-        />
-
-        <polygon
-          points="270,145 270,255 380,200"
-          fill="#fff"
-        />
-      `;
-    }
-
-    else if (type === "adidas") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fff"/>
-
-        <polygon points="150,290 220,130 270,130 220,290" fill="#111"/>
-        <polygon points="240,290 310,130 360,130 310,290" fill="#111"/>
-        <polygon points="330,290 400,130 450,130 400,290" fill="#111"/>
-
-        <text
-          x="300"
-          y="340"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="35"
-          font-weight="bold"
-          fill="#111"
-        >
-          adidas
-        </text>
-      `;
-    }
-
-    // -------- TAKIMLAR --------
-
-    else if (type === "barcelona") {
-
-      inner = `
-        <rect width="600" height="400" fill="#a50044"/>
-        <rect x="0" width="150" height="400" fill="#004d98"/>
-        <rect x="300" width="150" height="400" fill="#004d98"/>
-
-        <circle cx="300" cy="200" r="92" fill="#f4c300"/>
-        <circle cx="300" cy="200" r="72" fill="#a50044"/>
-        <text
-          x="300"
-          y="216"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="48"
-          font-weight="bold"
-          fill="#fff"
-        >FCB</text>
-      `;
-    }
-
-    else if (type === "realmadrid") {
-
-      inner = `
-        <rect width="600" height="400" fill="#f4f4f4"/>
-        <circle cx="300" cy="205" r="105" fill="#fff" stroke="#243c9a" stroke-width="18"/>
-        <text
-          x="300"
-          y="225"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="100"
-          font-weight="bold"
-          fill="#243c9a"
-        >M</text>
-      `;
-    }
-
-    else if (type === "liverpool") {
-
-      inner = `
-        <rect width="600" height="400" fill="#d00027"/>
-
-        <path
-          d="
-          M 300 70
-          L 370 115
-          L 450 105
-          L 420 165
-          L 470 220
-          L 390 215
-          L 300 300
-          L 210 215
-          L 130 220
-          L 180 165
-          L 150 105
-          L 230 115
-          Z
-          "
-          fill="#fff"
-        />
-
-        <text
-          x="300"
-          y="215"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="48"
-          font-weight="900"
-          fill="#d00027"
-        >LFC</text>
-      `;
-    }
-
-    else if (type === "galatasaray") {
-
-      inner = `
-        <rect width="600" height="400" fill="#8b1538"/>
-
-        <circle
-          cx="300"
-          cy="200"
-          r="110"
-          fill="#fcbf00"
-          stroke="#8b1538"
-          stroke-width="18"
-        />
-
-        <text
-          x="300"
-          y="220"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="72"
-          font-weight="900"
-          fill="#8b1538"
-        >GS</text>
-      `;
-    }
-
-    // -------- BASKETBOL --------
-
-    else if (type === "bulls") {
-
-      inner = `
-        <rect width="600" height="400" fill="#fff"/>
-
-        <circle cx="300" cy="195" r="105" fill="#d71920"/>
-        <circle cx="260" cy="180" r="12" fill="#111"/>
-        <circle cx="340" cy="180" r="12" fill="#111"/>
-
-        <path
-          d="M 240 240 Q 300 280 360 240"
-          fill="none"
-          stroke="#111"
-          stroke-width="13"
-        />
-
-        <text
-          x="300"
-          y="345"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="38"
-          font-weight="bold"
-          fill="#111"
-        >BULLS</text>
-      `;
-    }
-
-    else if (type === "lakers") {
-
-      inner = `
-        <rect width="600" height="400" fill="#552583"/>
-
-        <circle cx="300" cy="200" r="112" fill="#fdb927"/>
-
-        <text
-          x="300"
-          y="193"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="42"
-          font-weight="900"
-          fill="#552583"
-        >LA</text>
-
-        <text
-          x="300"
-          y="250"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="35"
-          font-weight="900"
-          fill="#552583"
-        >LAKERS</text>
-      `;
-    }
-
-    else if (type === "celtics") {
-
-      inner = `
-        <rect width="600" height="400" fill="#007a33"/>
-
-        <circle cx="300" cy="200" r="110" fill="#fff"/>
-
-        <text
-          x="300"
-          y="225"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="86"
-          font-weight="900"
-          fill="#007a33"
-        >☘</text>
-
-        <text
-          x="300"
-          y="315"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="33"
-          font-weight="900"
-          fill="#007a33"
-        >CELTICS</text>
-      `;
-    }
-
-    // -------- OYUNLAR --------
-
-    else if (type === "minecraft") {
-
-      inner = `
-        <rect width="600" height="400" fill="#6a9c48"/>
-
-        <rect x="125" y="80" width="350" height="240" fill="#3c3c3c"/>
-        <rect x="165" y="115" width="65" height="65" fill="#111"/>
-        <rect x="370" y="115" width="65" height="65" fill="#111"/>
-        <rect x="245" y="205" width="110" height="70" fill="#111"/>
-
-        <text
-          x="300"
-          y="55"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="30"
-          font-weight="900"
-          fill="#fff"
-        >MINECRAFT</text>
-      `;
-    }
-
-    else if (type === "fortnite") {
-
-      inner = `
-        <rect width="600" height="400" fill="#4a2f91"/>
-
-        <text
-          x="300"
-          y="215"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="70"
-          font-weight="900"
-          fill="#fff"
-          transform="rotate(-7 300 200)"
-        >FORTNITE</text>
-      `;
-    }
-
-    else if (type === "roblox") {
-
-      inner = `
-        <rect width="600" height="400" fill="#e2231a"/>
-
-        <rect
-          x="210"
-          y="100"
-          width="180"
-          height="180"
-          rx="30"
-          fill="#fff"
-          transform="rotate(20 300 190)"
-        />
-
-        <rect
-          x="265"
-          y="155"
-          width="70"
-          height="70"
-          fill="#e2231a"
-          transform="rotate(20 300 190)"
-        />
-      `;
-    }
-
-    else if (type === "amongus") {
-
-      inner = `
-        <rect width="600" height="400" fill="#191919"/>
-
-        <path
-          d="
-          M 240 95
-          C 180 125 160 205 195 265
-          L 235 305
-          L 365 305
-          L 410 265
-          C 440 205 420 125 360 95
-          Z
-          "
-          fill="#d82d2f"
-        />
-
-        <path
-          d="
-          M 285 120
-          L 380 145
-          L 355 205
-          L 275 185
-          Z
-          "
-          fill="#bcecff"
-        />
-      `;
-    }
-
-    else {
-      inner = `
-        <rect width="600" height="400" fill="#333"/>
-        <text
-          x="300"
-          y="220"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="60"
-          font-weight="900"
-          fill="#fff"
-        >?</text>
-      `;
-    }
-
-    const svg = `
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="600"
-        height="400"
-        viewBox="0 0 600 400"
-      >
-        ${inner}
-      </svg>
+  function difficultyTime(){
+    if(difficulty==="easy") return 18;
+    if(difficulty==="medium") return 14;
+    if(difficulty==="hard") return 11;
+    return 8;
+  }
+
+  /* ============================
+     RASTGELE AÇIK BÖLGE
+  ============================ */
+
+  function generateRegion(){
+    let width =
+      revealLevel===1 ? 19 :
+      revealLevel===2 ? 30 :
+      revealLevel===3 ? 44 :
+      62;
+
+    let height =
+      revealLevel===1 ? 16 :
+      revealLevel===2 ? 25 :
+      revealLevel===3 ? 36 :
+      52;
+
+    const x =
+      Math.random()*(92-width);
+
+    const y =
+      Math.random()*(88-height);
+
+    return {x,y,width,height};
+  }
+
+  function applyReveal(){
+    currentRegion = generateRegion();
+
+    reveal.style.left = `${currentRegion.x}%`;
+    reveal.style.top = `${currentRegion.y}%`;
+    reveal.style.width = `${currentRegion.width}%`;
+    reveal.style.height = `${currentRegion.height}%`;
+
+    /*
+      Maske SVG görünümünün dışında kalan
+      her şeyi beyaza çeviriyor.
+    */
+    mask.style.clipPath =
+      `polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 0
+      )`;
+
+    /*
+      Açık pencerenin içini kesiyoruz.
+    */
+    mask.style.background = `
+      linear-gradient(
+        white,
+        white
+      )
     `;
 
-    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    /*
+      CSS mask yerine gerçek beyaz
+      dört blok oluşturuyoruz.
+    */
+
+    const top = currentRegion.y;
+    const left = currentRegion.x;
+    const right =
+      100-(currentRegion.x+currentRegion.width);
+    const bottom =
+      100-(currentRegion.y+currentRegion.height);
+
+    mask.style.clipPath =
+      `polygon(
+        0 0,
+        100% 0,
+        100% ${top}%,
+        ${currentRegion.x+currentRegion.width}% ${top}%,
+        ${currentRegion.x+currentRegion.width}% ${currentRegion.y+currentRegion.height}%,
+        0 ${currentRegion.y+currentRegion.height}%,
+        0 0
+      )`;
+
+    /*
+      Daha güvenilir çözüm:
+      art'ın üstüne beyaz overlay,
+      reveal alanını z-index ile üste çıkarıyoruz.
+    */
+
+    mask.style.left = "0";
+    mask.style.top = "0";
+    mask.style.right = "0";
+    mask.style.bottom = "0";
+
+    mask.style.clipPath =
+      `polygon(
+        0 0,
+        100% 0,
+        100% ${top}%,
+        ${left+currentRegion.width}% ${top}%,
+        ${left+currentRegion.width}% ${top+currentRegion.height}%,
+        0 ${top+currentRegion.height}%,
+        0 100%,
+        100% 100%,
+        100% ${top+currentRegion.height}%,
+        ${left+currentRegion.width}% ${top+currentRegion.height}%,
+        ${left+currentRegion.width}% ${top}%,
+        0 ${top}%,
+        0 0
+      )`;
+
+    revealInfo.textContent =
+      `Görünen alan: ${Math.round(
+        currentRegion.width*currentRegion.height/7
+      )}%`;
   }
 
-  // ============================================================
-  // GÖRÜNTÜ KONUMLANDIRMA
-  // ============================================================
+  /*
+    Yukarıdaki CSS maskesi yerine daha temiz ve
+    garantili yöntem kullanıyoruz:
+    maskeyi dört ayrı beyaz panel gibi göstermek için
+    clip-path içinde reveal boşluğu oluşturuyoruz.
+  */
 
-  function randomizeSpot() {
+  function applyRevealClean(){
 
-    const x = Math.floor(Math.random() * 68) + 8;
-    const y = Math.floor(Math.random() * 58) + 8;
+    const r=currentRegion;
 
-    spotWindow.style.left = `${x}%`;
-    spotWindow.style.top = `${y}%`;
+    reveal.style.left=`${r.x}%`;
+    reveal.style.top=`${r.y}%`;
+    reveal.style.width=`${r.width}%`;
+    reveal.style.height=`${r.height}%`;
+
+    const x1=r.x;
+    const y1=r.y;
+    const x2=r.x+r.width;
+    const y2=r.y+r.height;
+
+    mask.style.clipPath = `
+      polygon(
+        0 0,
+        100% 0,
+        100% ${y1}%,
+        ${x2}% ${y1}%,
+        ${x2}% ${y2}%,
+        100% ${y2}%,
+        100% 100%,
+        0 100%,
+        0 ${y2}%,
+        ${x1}% ${y2}%,
+        ${x1}% ${y1}%,
+        0 ${y1}%
+      )
+    `;
+
+    revealInfo.textContent =
+      `Görünen alan: ${Math.round(
+        r.width*r.height/7
+      )}%`;
   }
 
-  function setRevealLevel(level) {
+  /* ============================
+     TIMER
+  ============================ */
 
-    revealLevel = level;
+  function startTimer(){
 
-    const configs = {
-      1: {
-        size: 24,
-        text: "%10",
-        hint: false
-      },
-      2: {
-        size: 34,
-        text: "%25",
-        hint: true
-      },
-      3: {
-        size: 48,
-        text: "%50",
-        hint: true
-      },
-      4: {
-        size: 68,
-        text: "%75",
-        hint: true
-      },
-      5: {
-        size: 100,
-        text: "%100",
-        hint: true
+    clearInterval(timer);
+
+    time=difficultyTime();
+
+    timeEl.textContent=time;
+    timerFill.style.width="100%";
+
+    timer=setInterval(()=>{
+
+      time--;
+
+      timeEl.textContent=time;
+
+      timerFill.style.width=
+        `${(time/difficultyTime())*100}%`;
+
+      if(time<=0){
+        clearInterval(timer);
+
+        nextReveal("Süre bitti.");
       }
-    };
 
-    const config = configs[level];
-
-    spotWindow.style.width = `${config.size}%`;
-    spotWindow.style.height = `${config.size * 0.68}%`;
-
-    zoomText.textContent =
-      `Görünen alan: ${config.text}`;
-
-    if (level >= 2) {
-      hintText.textContent =
-        `İpucu: ${currentQuestion.hint || "Biraz daha dikkatli bak."}`;
-    } else {
-      hintText.textContent = "Henüz ipucu yok.";
-    }
-
-    if (level >= 5) {
-      spotWindow.style.borderColor =
-        "rgba(57, 217, 138, .8)";
-
-      spotWindow.style.boxShadow =
-        "none";
-
-      zoomText.textContent = "Tam görsel";
-    }
+    },1000);
   }
 
-  // ============================================================
-  // SORU HAVUZU
-  // ============================================================
+  /* ============================
+     PUAN
+  ============================ */
 
-  function buildQuestionPool() {
-
-    let pool = DATA[selectedCategory]
-      ? [...DATA[selectedCategory]]
-      : [];
-
-    pool = shuffle(pool);
-
-    // Soru sayısından azsa tekrar kullanılabilir
-    if (pool.length < TOTAL_QUESTIONS) {
-
-      const original = [...pool];
-
-      while (pool.length < TOTAL_QUESTIONS) {
-
-        pool = pool.concat(shuffle(original));
-      }
-    }
-
-    return pool.slice(0, TOTAL_QUESTIONS);
+  function points(){
+    if(revealLevel===1)return 1000;
+    if(revealLevel===2)return 700;
+    if(revealLevel===3)return 450;
+    return 200;
   }
 
-  // ============================================================
-  // ZORLUK
-  // ============================================================
+  /* ============================
+     OYUNU BAŞLAT
+  ============================ */
 
-  function applyDifficulty() {
+  document.getElementById("startBtn")
+    .addEventListener("click",startGame);
 
-    switch (selectedDifficulty) {
+  function startGame(){
 
-      case "easy":
-        timeLeft = 18;
-        break;
+    const pool=
+      QUESTIONS[category] || [];
 
-      case "medium":
-        timeLeft = 15;
-        break;
-
-      case "hard":
-        timeLeft = 12;
-        break;
-
-      case "impossible":
-        timeLeft = 9;
-        break;
-
-      default:
-        timeLeft = 15;
+    if(pool.length===0){
+      alert("Bu kategoride henüz soru yok.");
+      return;
     }
-  }
 
-  // ============================================================
-  // OYUNU BAŞLAT
-  // ============================================================
+    questions=
+      shuffle(pool);
 
-  startButton.addEventListener("click", startGame);
+    /*
+      10 soruya çıkmak için havuzu döngüyle doldur
+    */
+    while(questions.length<10){
+      questions=
+        questions.concat(shuffle(pool));
+    }
 
-  function startGame() {
+    questions=questions.slice(0,10);
 
-    score = 0;
-    correctAnswers = 0;
-    currentIndex = 0;
+    current=0;
+    score=0;
+    correct=0;
 
-    topScore.textContent = "0";
+    topScore.textContent="0";
 
-    gameQuestions = buildQuestionPool();
-
-    startScreen.classList.add("hidden");
+    homeScreen.classList.add("hidden");
     resultScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
 
     loadQuestion();
   }
 
-  // ============================================================
-  // SORU YÜKLE
-  // ============================================================
+  /* ============================
+     SORU YÜKLE
+  ============================ */
 
-  function loadQuestion() {
+  function loadQuestion(){
 
     clearInterval(timer);
 
-    currentQuestion = gameQuestions[currentIndex];
+    locked=false;
+    revealLevel=1;
 
-    answerLocked = false;
+    const q=questions[current];
 
-    revealLevel = 1;
+    art.src=q.svg;
 
-    roundNumber.textContent = currentIndex + 1;
+    roundEl.textContent=current+1;
 
-    const categoryNames = {
-      flags: "🌍 Bayraklar",
-      brands: "🏷️ Markalar",
-      football: "⚽ Futbol",
-      basketball: "🏀 Basketbol",
-      games: "🎮 Oyunlar"
+    const names={
+      flags:"🌍 Bayraklar",
+      brands:"🏷️ Markalar",
+      football:"⚽ Futbol",
+      basketball:"🏀 Basketbol",
+      games:"🎮 Oyunlar"
     };
 
-    categoryBadge.textContent =
-      categoryNames[selectedCategory] || "🎯 SpotGuess";
-
-    const titleNames = {
-      flags: "Bu hangi ülke?",
-      brands: "Bu hangi marka?",
-      football: "Bu hangi takım?",
-      basketball: "Bu hangi takım?",
-      games: "Bu hangi oyun?"
+    const titles={
+      flags:"Bu hangi ülke?",
+      brands:"Bu hangi marka?",
+      football:"Bu hangi takım?",
+      basketball:"Bu hangi takım?",
+      games:"Bu hangi oyun?"
     };
 
-    document.getElementById("questionTitle").textContent =
-      titleNames[selectedCategory] || "Bu nedir?";
+    badge.textContent=names[category];
+    questionTitle.textContent=titles[category];
 
-    imageFull.src =
-      makeSvg(currentQuestion.type, currentQuestion);
+    hint.textContent="Henüz ipucu yok.";
+    feedback.textContent="";
+    feedback.className="feedback";
 
-    randomizeSpot();
+    answer.value="";
+    answer.disabled=false;
 
-    setRevealLevel(1);
+    nextBtn.classList.add("hidden");
 
-    feedback.textContent = "";
-    feedback.className = "feedback";
+    currentRegion=generateRegion();
+    applyRevealClean();
 
-    nextButton.classList.add("hidden");
-
-    answerInput.value = "";
-    answerInput.disabled = false;
-
-    applyDifficulty();
-
-    timerText.textContent = timeLeft;
-    timerFill.style.width = "100%";
-
-    answerInput.focus();
+    answer.focus();
 
     startTimer();
   }
 
-  // ============================================================
-  // TIMER
-  // ============================================================
+  /* ============================
+     DAHA FAZLA GÖSTER
+  ============================ */
 
-  function startTimer() {
+  function nextReveal(message=""){
 
-    clearInterval(timer);
+    if(locked)return;
 
-    const maxTime = timeLeft;
-
-    timer = setInterval(() => {
-
-      if (answerLocked) return;
-
-      timeLeft--;
-
-      timerText.textContent = timeLeft;
-
-      timerFill.style.width =
-        `${Math.max(0, (timeLeft / maxTime) * 100)}%`;
-
-      if (timeLeft <= 0) {
-
-        clearInterval(timer);
-
-        revealNextStage("Süre bitti.");
-      }
-
-    }, 1000);
-  }
-
-  // ============================================================
-  // GÖRSELİ AÇ
-  // ============================================================
-
-  function revealNextStage(message = "") {
-
-    if (answerLocked) return;
-
-    if (revealLevel < 4) {
+    if(revealLevel<4){
 
       revealLevel++;
 
-      setRevealLevel(revealLevel);
+      currentRegion=generateRegion();
+      applyRevealClean();
 
-      feedback.textContent =
-        message +
-        " Daha fazla açıldı. Tekrar dene.";
+      hint.textContent=
+        `İpucu: ${questions[current].hint}`;
 
-      feedback.className = "feedback wrong";
+      feedback.textContent=
+        `${message} Biraz daha açtık.`;
 
-      timeLeft =
-        selectedDifficulty === "easy" ? 10 :
-        selectedDifficulty === "medium" ? 8 :
-        selectedDifficulty === "hard" ? 7 : 5;
+      feedback.className="feedback wrong";
 
-      timerText.textContent = timeLeft;
-
-      timerFill.style.width = "100%";
-
-      clearInterval(timer);
       startTimer();
 
+    }else{
+
+      finishQuestion(false);
+
+    }
+  }
+
+  /* ============================
+     CEVAP
+  ============================ */
+
+  document.getElementById("guessBtn")
+    .addEventListener("click",checkAnswer);
+
+  answer.addEventListener("keydown",e=>{
+    if(e.key==="Enter")checkAnswer();
+  });
+
+  function checkAnswer(){
+
+    if(locked)return;
+
+    const q=questions[current];
+
+    const user=normalize(answer.value);
+
+    if(!user){
+
+      feedback.textContent=
+        "Önce bir tahmin yaz.";
+
+      feedback.className="feedback wrong";
       return;
     }
 
-    // Son aşama
-    setRevealLevel(5);
+    const accepted=[
+      normalize(q.answer),
+      ...(q.aliases||[]).map(normalize)
+    ];
 
-    answerLocked = true;
-    answerInput.disabled = true;
+    if(accepted.includes(user)){
+
+      clearInterval(timer);
+
+      locked=true;
+      answer.disabled=true;
+
+      const gained=points();
+
+      score+=gained;
+      correct++;
+
+      topScore.textContent=score;
+
+      revealLevel=4;
+
+      currentRegion={
+        x:8,
+        y:8,
+        width:84,
+        height:84
+      };
+
+      applyRevealClean();
+
+      feedback.textContent=
+        `✅ Doğru! +${gained} puan`;
+
+      feedback.className="feedback correct";
+
+      nextBtn.classList.remove("hidden");
+
+    }else{
+
+      feedback.textContent=
+        "❌ Yanlış. Daha fazla açılıyor.";
+
+      feedback.className="feedback wrong";
+
+      nextReveal();
+
+    }
+  }
+
+  /* ============================
+     SORUYU BİTİR
+  ============================ */
+
+  function finishQuestion(){
 
     clearInterval(timer);
 
-    feedback.textContent =
-      `Cevap: ${currentQuestion.name}`;
+    locked=true;
+    answer.disabled=true;
 
-    feedback.className = "feedback wrong";
+    currentRegion={
+      x:0,
+      y:0,
+      width:100,
+      height:100
+    };
 
-    nextButton.classList.remove("hidden");
+    applyRevealClean();
+
+    feedback.textContent=
+      `Cevap: ${questions[current].answer}`;
+
+    feedback.className="feedback wrong";
+
+    nextBtn.classList.remove("hidden");
   }
 
-  // ============================================================
-  // CEVAP KONTROLÜ
-  // ============================================================
+  /* ============================
+     NEXT
+  ============================ */
 
-  guessButton.addEventListener("click", submitAnswer);
+  document.getElementById("nextBtn")
+    .addEventListener("click",()=>{
 
-  answerInput.addEventListener("keydown", event => {
+      current++;
 
-    if (event.key === "Enter") {
+      if(current>=questions.length){
 
-      submitAnswer();
-    }
+        finishGame();
 
-  });
+      }else{
 
-  function submitAnswer() {
+        loadQuestion();
 
-    if (answerLocked) return;
+      }
 
-    const value = normalize(answerInput.value);
+    });
 
-    if (!value) {
+  /* ============================
+     SONUÇ
+  ============================ */
 
-      feedback.textContent =
-        "Önce bir tahmin yaz.";
-
-      feedback.className = "feedback wrong";
-
-      return;
-    }
-
-    const possibleAnswers = [
-      normalize(currentQuestion.name),
-      ...(currentQuestion.aliases || []).map(normalize)
-    ];
-
-    if (possibleAnswers.includes(value)) {
-
-      const points = getPoints();
-
-      score += points;
-
-      correctAnswers++;
-
-      topScore.textContent = score;
-
-      setRevealLevel(5);
-
-      answerLocked = true;
-
-      answerInput.disabled = true;
-
-      clearInterval(timer);
-
-      feedback.textContent =
-        `✅ Doğru! +${points} puan`;
-
-      feedback.className = "feedback correct";
-
-      nextButton.classList.remove("hidden");
-
-      return;
-    }
-
-    feedback.textContent =
-      "❌ Yanlış tahmin.";
-
-    feedback.className = "feedback wrong";
-
-    revealNextStage();
-  }
-
-  // ============================================================
-  // PUAN
-  // ============================================================
-
-  function getPoints() {
-
-    if (revealLevel === 1) return 1000;
-    if (revealLevel === 2) return 750;
-    if (revealLevel === 3) return 500;
-    if (revealLevel === 4) return 250;
-
-    return 0;
-  }
-
-  // ============================================================
-  // SONRAKİ
-  // ============================================================
-
-  nextButton.addEventListener("click", nextQuestion);
-
-  function nextQuestion() {
-
-    currentIndex++;
-
-    if (currentIndex >= gameQuestions.length) {
-
-      finishGame();
-
-      return;
-    }
-
-    loadQuestion();
-  }
-
-  // ============================================================
-  // OYUN SONU
-  // ============================================================
-
-  function finishGame() {
+  function finishGame(){
 
     clearInterval(timer);
 
     gameScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
 
-    finalScore.textContent = score;
-    finalCorrect.textContent = correctAnswers;
-    finalQuestions.textContent = gameQuestions.length;
+    document.getElementById("bigScore")
+      .textContent=score;
 
-    const percent =
-      Math.round((correctAnswers / gameQuestions.length) * 100);
+    document.getElementById("correctCount")
+      .textContent=correct;
 
-    finalPercent.textContent =
-      `%${percent}`;
-
-    shareScore.textContent = score;
+    document.getElementById("successPercent")
+      .textContent=
+        "%" + Math.round((correct/10)*100);
   }
 
-  // ============================================================
-  // TEKRAR OYNA
-  // ============================================================
+  document.getElementById("againBtn")
+    .addEventListener("click",startGame);
 
-  restartButton.addEventListener("click", () => {
+  document.getElementById("homeBtn")
+    .addEventListener("click",()=>{
 
-    resultScreen.classList.add("hidden");
-    gameScreen.classList.remove("hidden");
+      clearInterval(timer);
 
-    startGame();
-  });
+      resultScreen.classList.add("hidden");
+      gameScreen.classList.add("hidden");
+      homeScreen.classList.remove("hidden");
 
-  // ============================================================
-  // ANA MENÜ
-  // ============================================================
-
-  backHomeButton.addEventListener("click", () => {
-
-    clearInterval(timer);
-
-    resultScreen.classList.add("hidden");
-    gameScreen.classList.add("hidden");
-    startScreen.classList.remove("hidden");
-
-  });
+    });
 
 </script>
 
