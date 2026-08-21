@@ -1,177 +1,871 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>SpotGuess — Case File Guessing Game</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpotGuess</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f1117;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .app {
+      width: min(920px, 94%);
+      margin: 30px auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #6c63ff;
+    }
+
+    .score-box {
+      background: #191c25;
+      border: 1px solid #292d39;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: bold;
+    }
+
+    .game-card {
+      background: #171a22;
+      border: 1px solid #292d39;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.25);
+    }
+
+    .round-info {
+      text-align: center;
+      color: #aeb4c2;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 34px;
+      margin: 5px 0 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #aeb4c2;
+      margin-bottom: 25px;
+    }
+
+    .timer {
+      width: 100%;
+      height: 12px;
+      background: #272b35;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .timer-fill {
+      width: 100%;
+      height: 100%;
+      background: #6c63ff;
+      transition: width .2s linear;
+    }
+
+    .timer-text {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 18px;
+      font-size: 20px;
+    }
+
+    .image-area {
+      height: 280px;
+      background: #0d0f14;
+      border-radius: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid #2a2f3b;
+    }
+
+    .guess-image {
+      width: 65%;
+      max-width: 420px;
+      max-height: 220px;
+      object-fit: contain;
+      clip-path: inset(0 85% 0 0);
+      transition: clip-path .45s ease;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .hint {
+      text-align: center;
+      margin: 16px 0;
+      color: #b8bdca;
+      min-height: 24px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      background: #0e1117;
+      color: white;
+      border: 1px solid #343a47;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #6c63ff;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: #6c63ff;
+      color: white;
+    }
+
+    .secondary {
+      background: #272c37;
+      color: white;
+    }
+
+    .result {
+      text-align: center;
+      margin-top: 22px;
+      min-height: 32px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .result.correct {
+      color: #60e38a;
+    }
+
+    .result.wrong {
+      color: #ff7d7d;
+    }
+
+    .next-btn {
+      width: 100%;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .start-screen,
+    .end-screen {
+      text-align: center;
+    }
+
+    .start-screen h1,
+    .end-screen h1 {
+      font-size: 46px;
+      margin-bottom: 10px;
+    }
+
+    .start-screen p,
+    .end-screen p {
+      color: #aeb4c2;
+      line-height: 1.6;
+    }
+
+    .big-btn {
+      margin-top: 20px;
+      padding: 16px 30px;
+      font-size: 17px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .stat {
+      background: #11141b;
+      border: 1px solid #292d39;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .stat-title {
+      color: #9299a8;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 650px) {
+      .game-card {
+        padding: 18px;
+      }
+
+      .title {
+        font-size: 27px;
+      }
+
+      .start-screen h1,
+      .end-screen h1 {
+        font-size: 36px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .image-area {
+        height: 220px;
+      }
+
+      .guess-image {
+        width: 80%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="scanlines" aria-hidden="true"></div>
+<div class="app">
 
-<header class="topbar">
-  <div class="topbar__brand">
-    <span class="topbar__mark">◎</span>
-    <span class="topbar__title">SPOT<em>GUESS</em></span>
+  <div class="topbar">
+    <div class="logo">Spot<span>Guess</span></div>
+    <div class="score-box">
+      Skor: <span id="score">0</span>
+    </div>
   </div>
-  <button id="darkModeToggle" class="iconbtn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
-    <span class="iconbtn__glyph" aria-hidden="true">☾</span>
-  </button>
-</header>
 
-<main class="stage">
+  <div class="game-card">
 
-  <!-- ============ START SCREEN ============ -->
-  <section id="screen-start" class="screen">
-    <div class="dossier">
-      <p class="dossier__eyebrow">CASE FILE // GUESSING PROTOCOL</p>
-      <h1 class="dossier__title">Identify the subject<br>from the fragment.</h1>
-      <p class="dossier__lede">You get a 10% crop and 15 seconds. Every wrong guess exposes more of the evidence — and costs you points. Ten rounds. One file.</p>
+    <!-- START -->
+    <section id="startScreen" class="start-screen">
+      <h1>SpotGuess</h1>
+      <p>
+        Bayrağın sadece küçük bir kısmını gör.<br>
+        Ne olduğunu tahmin et. Ne kadar erken bilirsen o kadar çok puan kazan.
+      </p>
 
-      <div class="panel panel--form">
-        <div class="field">
-          <label class="field__label" for="modeSelect">CATEGORY</label>
-          <div class="chipgroup" id="modeGroup" role="group" aria-label="Choose category">
-            <button class="chip is-active" data-mode="flags" type="button">🏳️ Flags</button>
-            <button class="chip" data-mode="logos" type="button">🏷️ Brand Logos</button>
-            <button class="chip" data-mode="sportsteams" type="button">🏆 Sports Teams</button>
-            <button class="chip" data-mode="videogames" type="button">🎮 Video Games</button>
-          </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-title">Soru</div>
+          <div class="stat-value">10</div>
         </div>
 
-        <div class="field">
-          <label class="field__label" for="difficultySelect">DIFFICULTY</label>
-          <div class="chipgroup" id="difficultyGroup" role="group" aria-label="Choose difficulty">
-            <button class="chip is-active" data-difficulty="all" type="button">All levels</button>
-            <button class="chip" data-difficulty="easy" type="button">Easy</button>
-            <button class="chip" data-difficulty="medium" type="button">Medium</button>
-            <button class="chip" data-difficulty="hard" type="button">Hard</button>
-          </div>
+        <div class="stat">
+          <div class="stat-title">Süre</div>
+          <div class="stat-value">15 sn</div>
         </div>
 
-        <div class="field field--split">
-          <div>
-            <p class="field__label">TIMER / ROUND</p>
-            <p class="field__value" id="timerPreview">15s</p>
-          </div>
-          <div>
-            <p class="field__label">BEST STREAK</p>
-            <p class="field__value" id="bestStreakPreview">0</p>
-          </div>
-        </div>
-
-        <div class="startbtn-row">
-          <button id="startBtn" class="btn btn--primary" type="button">Open case file</button>
-          <button id="dailyBtn" class="btn btn--ghost" type="button">
-            <span>📅 Daily challenge</span>
-            <span id="dailyStatus" class="btn__tag"></span>
-          </button>
+        <div class="stat">
+          <div class="stat-title">Maksimum</div>
+          <div class="stat-value">1000</div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ============ GAME SCREEN ============ -->
-  <section id="screen-game" class="screen screen--hidden">
-    <div class="hud">
-      <div class="hud__item">
-        <span class="hud__label">ROUND</span>
-        <span class="hud__value" id="hudRound">1 / 10</span>
+      <button class="primary big-btn" onclick="startGame()">
+        Oyuna Başla
+      </button>
+    </section>
+
+    <!-- GAME -->
+    <section id="gameScreen" class="hidden">
+
+      <div class="round-info">
+        Soru <span id="roundNumber">1</span> / <span id="totalRounds">10</span>
       </div>
-      <div class="hud__item">
-        <span class="hud__label">SCORE</span>
-        <span class="hud__value" id="hudScore">0</span>
+
+      <h2 class="title">Bu hangi ülke?</h2>
+
+      <div class="subtitle">
+        Görünen kısmından tahmin et.
       </div>
-      <div class="hud__item">
-        <span class="hud__label">STREAK</span>
-        <span class="hud__value" id="hudStreak">0🔥</span>
+
+      <div class="timer">
+        <div id="timerFill" class="timer-fill"></div>
       </div>
-      <div class="hud__item hud__item--mode">
-        <span class="hud__label">FILE</span>
-        <span class="hud__value" id="hudMode">Flags</span>
+
+      <div class="timer-text">
+        <span id="timerText">15</span> saniye
       </div>
-    </div>
 
-    <div class="timerbar-wrap" aria-hidden="true">
-      <div class="timerbar" id="timerBar"></div>
-    </div>
-
-    <div class="evidence">
-      <div class="evidence__corner evidence__corner--tl"></div>
-      <div class="evidence__corner evidence__corner--tr"></div>
-      <div class="evidence__corner evidence__corner--bl"></div>
-      <div class="evidence__corner evidence__corner--br"></div>
-
-      <canvas id="revealCanvas" width="480" height="480" aria-label="Partially revealed image to guess"></canvas>
-
-      <div class="stamp" id="stamp" aria-live="polite"></div>
-
-      <div class="evidence__tag">
-        <span id="revealPercentLabel">10% VISIBLE</span>
-        <span class="evidence__sep">·</span>
-        <span id="revealPointsLabel">1000 PTS</span>
+      <div class="image-area">
+        <img id="guessImage" class="guess-image" alt="Tahmin görseli">
       </div>
-    </div>
 
-    <form id="answerForm" class="answerbar" autocomplete="off">
-      <label class="answerbar__label" for="answerInput">YOUR ANSWER</label>
-      <div class="answerbar__row">
-        <input id="answerInput" name="answer" type="text" placeholder="Type your guess…" autocomplete="off" spellcheck="false">
-        <button type="submit" class="btn btn--primary btn--submit">Submit</button>
+      <div id="hint" class="hint">
+        Henüz ipucu yok.
       </div>
-      <p class="answerbar__feedback" id="feedbackLine" aria-live="polite"></p>
-    </form>
 
-    <div class="nextrow" id="nextRow">
-      <p class="nextrow__answer" id="revealedAnswer"></p>
-      <button id="nextBtn" class="btn btn--primary" type="button">Next round →</button>
-    </div>
-  </section>
+      <div class="input-row">
+        <input
+          id="answerInput"
+          type="text"
+          placeholder="Cevabını yaz..."
+          autocomplete="off"
+          onkeydown="handleEnter(event)"
+        >
 
-  <!-- ============ FINAL SCREEN ============ -->
-  <section id="screen-final" class="screen screen--hidden">
-    <div class="dossier">
-      <p class="dossier__eyebrow">CASE FILE // CLOSED</p>
-      <h1 class="dossier__title" id="finalHeadline">File closed.</h1>
+        <button class="primary" onclick="submitAnswer()">
+          Tahmin Et
+        </button>
+      </div>
 
-      <div class="panel panel--results">
-        <div class="results-grid">
-          <div class="results-cell">
-            <span class="field__label">FINAL SCORE</span>
-            <span class="results-cell__big" id="finalScore">0</span>
-          </div>
-          <div class="results-cell">
-            <span class="field__label">BEST STREAK</span>
-            <span class="results-cell__big" id="finalStreak">0</span>
-          </div>
-          <div class="results-cell">
-            <span class="field__label">SOLVED</span>
-            <span class="results-cell__big" id="finalSolved">0 / 10</span>
-          </div>
-          <div class="results-cell">
-            <span class="field__label">AVG REVEAL</span>
-            <span class="results-cell__big" id="finalAvgReveal">–</span>
-          </div>
+      <div id="result" class="result"></div>
+
+      <button
+        id="nextButton"
+        class="secondary next-btn"
+        onclick="nextQuestion()"
+      >
+        Sonraki Soru
+      </button>
+
+    </section>
+
+    <!-- END -->
+    <section id="endScreen" class="end-screen hidden">
+      <h1>Oyun Bitti</h1>
+
+      <p>
+        Sonucun hazır.
+      </p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-title">Toplam Skor</div>
+          <div id="finalScore" class="stat-value">0</div>
         </div>
 
-        <div class="sharecard" id="shareGrid" aria-label="Round-by-round result"></div>
-
-        <div class="startbtn-row">
-          <button id="shareBtn" class="btn btn--ghost" type="button">📋 Copy shareable result</button>
-          <button id="playAgainBtn" class="btn btn--primary" type="button">Play again</button>
+        <div class="stat">
+          <div class="stat-title">Doğru</div>
+          <div id="finalCorrect" class="stat-value">0</div>
         </div>
-        <p class="copy-toast" id="copyToast">Copied to clipboard.</p>
+
+        <div class="stat">
+          <div class="stat-title">Sorular</div>
+          <div id="finalTotal" class="stat-value">10</div>
+        </div>
       </div>
-    </div>
-  </section>
 
-</main>
+      <button class="primary big-btn" onclick="restartGame()">
+        Tekrar Oyna
+      </button>
+    </section>
 
-<footer class="footbar">
-  <span>Placeholder evidence set — swap <code>images/</code> assets &amp; <code>questions.json</code> for licensed art anytime.</span>
-</footer>
+  </div>
+</div>
 
-<script src="script.js"></script>
+
+<script>
+  /*
+    Prototype version.
+    Görseller SVG olarak kodun içinde oluşturuluyor.
+    Böylece şimdilik ayrıca images klasörüne ihtiyaç yok.
+  */
+
+  const questions = [
+    {
+      answer: "Japonya",
+      aliases: ["japonya", "japan"],
+      hint: "Asya'da bir ada ülkesi.",
+      color1: "#ffffff",
+      color2: "#bc002d",
+      type: "flag"
+    },
+
+    {
+      answer: "Fransa",
+      aliases: ["fransa", "france"],
+      hint: "Avrupa'da, üç renkli bir bayrağı var.",
+      color1: "#0055a4",
+      color2: "#ffffff",
+      color3: "#ef4135",
+      type: "flag3"
+    },
+
+    {
+      answer: "Almanya",
+      aliases: ["almanya", "germany"],
+      hint: "Avrupa'nın merkezindeki büyük ülkelerden biri.",
+      color1: "#000000",
+      color2: "#dd0000",
+      color3: "#ffce00",
+      type: "flag3"
+    },
+
+    {
+      answer: "İtalya",
+      aliases: ["italya", "italy"],
+      hint: "Akdeniz'e uzanan çizme şeklinde bir ülke.",
+      color1: "#009246",
+      color2: "#ffffff",
+      color3: "#ce2b37",
+      type: "flag3"
+    },
+
+    {
+      answer: "Brezilya",
+      aliases: ["brezilya", "brazil"],
+      hint: "Güney Amerika'nın en büyük ülkesi.",
+      color1: "#009c3b",
+      color2: "#ffdf00",
+      color3: "#002776",
+      type: "brazil"
+    },
+
+    {
+      answer: "Türkiye",
+      aliases: ["türkiye", "turkiye", "turkey"],
+      hint: "Bayrağında ay ve yıldız bulunur.",
+      color1: "#e30a17",
+      color2: "#ffffff",
+      type: "turkey"
+    },
+
+    {
+      answer: "İsviçre",
+      aliases: ["isviçre", "isvicre", "switzerland"],
+      hint: "Alpler ile ünlü Avrupa ülkesi.",
+      color1: "#d52b1e",
+      color2: "#ffffff",
+      type: "switzerland"
+    },
+
+    {
+      answer: "Yunanistan",
+      aliases: ["yunanistan", "greece"],
+      hint: "Türkiye'nin batısındaki komşu ülke.",
+      color1: "#0d5eaf",
+      color2: "#ffffff",
+      type: "greece"
+    },
+
+    {
+      answer: "Kanada",
+      aliases: ["kanada", "canada"],
+      hint: "Kuzey Amerika'da, akçaağaç yaprağıyla bilinir.",
+      color1: "#d80621",
+      color2: "#ffffff",
+      type: "canada"
+    },
+
+    {
+      answer: "Hollanda",
+      aliases: ["hollanda", "netherlands"],
+      hint: "Laleler ve kanallarıyla ünlü Avrupa ülkesi.",
+      color1: "#ae1c28",
+      color2: "#ffffff",
+      color3: "#21468b",
+      type: "flag3"
+    }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+  let correct = 0;
+  let timeLeft = 15;
+  let timer = null;
+  let revealStage = 1;
+  let questionFinished = false;
+
+  const totalRounds = questions.length;
+
+  const startScreen = document.getElementById("startScreen");
+  const gameScreen = document.getElementById("gameScreen");
+  const endScreen = document.getElementById("endScreen");
+
+  const scoreEl = document.getElementById("score");
+  const roundNumberEl = document.getElementById("roundNumber");
+  const totalRoundsEl = document.getElementById("totalRounds");
+  const timerTextEl = document.getElementById("timerText");
+  const timerFillEl = document.getElementById("timerFill");
+  const guessImageEl = document.getElementById("guessImage");
+  const hintEl = document.getElementById("hint");
+  const answerInputEl = document.getElementById("answerInput");
+  const resultEl = document.getElementById("result");
+  const nextButtonEl = document.getElementById("nextButton");
+
+  totalRoundsEl.textContent = totalRounds;
+
+  function normalize(text) {
+    return text
+      .toLocaleLowerCase("tr-TR")
+      .trim()
+      .replace(/ı/g, "i")
+      .replace(/ş/g, "s")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c");
+  }
+
+  function createSvg(question) {
+    let svg = "";
+
+    if (question.type === "flag") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="600" height="400" fill="${question.color1}"/>
+          <circle cx="300" cy="200" r="95" fill="${question.color2}"/>
+        </svg>
+      `;
+    }
+
+    if (question.type === "flag3") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="200" height="400" fill="${question.color1}"/>
+          <rect x="200" width="200" height="400" fill="${question.color2}"/>
+          <rect x="400" width="200" height="400" fill="${question.color3}"/>
+        </svg>
+      `;
+    }
+
+    if (question.type === "brazil") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="600" height="400" fill="${question.color1}"/>
+          <polygon
+            points="300,40 560,200 300,360 40,200"
+            fill="${question.color2}"
+          />
+          <circle cx="300" cy="200" r="95" fill="${question.color3}"/>
+        </svg>
+      `;
+    }
+
+    if (question.type === "turkey") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="600" height="400" fill="${question.color1}"/>
+          <circle cx="270" cy="200" r="85" fill="${question.color2}"/>
+          <circle cx="305" cy="200" r="70" fill="${question.color1}"/>
+          <polygon
+            points="390,140 408,184 455,188 419,219 430,267 390,241 350,267 361,219 325,188 372,184"
+            fill="${question.color2}"
+          />
+        </svg>
+      `;
+    }
+
+    if (question.type === "switzerland") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="600" height="400" fill="${question.color1}"/>
+          <rect x="245" y="75" width="110" height="250" fill="${question.color2}"/>
+          <rect x="170" y="145" width="260" height="110" fill="${question.color2}"/>
+        </svg>
+      `;
+    }
+
+    if (question.type === "greece") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="600" height="400" fill="${question.color2}"/>
+          <rect y="0" width="600" height="44" fill="${question.color1}"/>
+          <rect y="88" width="600" height="44" fill="${question.color1}"/>
+          <rect y="176" width="600" height="44" fill="${question.color1}"/>
+          <rect y="264" width="600" height="44" fill="${question.color1}"/>
+          <rect y="352" width="600" height="44" fill="${question.color1}"/>
+        </svg>
+      `;
+    }
+
+    if (question.type === "canada") {
+      svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
+          <rect width="150" height="400" fill="${question.color1}"/>
+          <rect x="150" width="300" height="400" fill="${question.color2}"/>
+          <rect x="450" width="150" height="400" fill="${question.color1}"/>
+          <polygon
+            points="300,70 320,150 370,135 345,180 390,205 345,230 360,290 300,255 240,290 255,230 210,205 255,180 230,135 280,150"
+            fill="${question.color1}"
+          />
+        </svg>
+      `;
+    }
+
+    return "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(svg);
+  }
+
+  function loadQuestion() {
+    const q = questions[currentQuestion];
+
+    roundNumberEl.textContent = currentQuestion + 1;
+
+    guessImageEl.src = createSvg(q);
+
+    revealStage = 1;
+
+    updateReveal();
+
+    answerInputEl.value = "";
+    answerInputEl.disabled = false;
+    answerInputEl.focus();
+
+    resultEl.textContent = "";
+    resultEl.className = "result";
+
+    nextButtonEl.style.display = "none";
+
+    hintEl.textContent = "Henüz ipucu yok.";
+
+    questionFinished = false;
+
+    startTimer();
+  }
+
+  function updateReveal() {
+    const stages = {
+      1: 85,
+      2: 60,
+      3: 35,
+      4: 10,
+      5: 0
+    };
+
+    const rightInset = stages[revealStage] ?? 0;
+
+    guessImageEl.style.clipPath =
+      `inset(0 ${rightInset}% 0 0)`;
+
+    if (revealStage >= 2) {
+      hintEl.textContent = "İpucu: " + questions[currentQuestion].hint;
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+
+    timeLeft = 15;
+
+    timerTextEl.textContent = timeLeft;
+    timerFillEl.style.width = "100%";
+
+    timer = setInterval(() => {
+      if (questionFinished) return;
+
+      timeLeft--;
+
+      timerTextEl.textContent = timeLeft;
+      timerFillEl.style.width = `${(timeLeft / 15) * 100}%`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        revealMore();
+      }
+    }, 1000);
+  }
+
+  function revealMore() {
+    if (questionFinished) return;
+
+    revealStage++;
+
+    if (revealStage <= 4) {
+      updateReveal();
+
+      resultEl.textContent = "Biraz daha görmen gerekiyor.";
+      resultEl.className = "result wrong";
+
+      timeLeft = 10;
+      timerTextEl.textContent = timeLeft;
+      timerFillEl.style.width = "100%";
+
+      clearInterval(timer);
+
+      timer = setInterval(() => {
+        if (questionFinished) return;
+
+        timeLeft--;
+
+        timerTextEl.textContent = timeLeft;
+        timerFillEl.style.width = `${(timeLeft / 10) * 100}%`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          revealMore();
+        }
+      }, 1000);
+
+    } else {
+      clearInterval(timer);
+      updateReveal();
+
+      const answer = questions[currentQuestion].answer;
+
+      resultEl.textContent = `Cevap: ${answer}`;
+      resultEl.className = "result wrong";
+
+      finishQuestion();
+    }
+  }
+
+  function submitAnswer() {
+    if (questionFinished) return;
+
+    const guess = normalize(answerInputEl.value);
+
+    if (!guess) {
+      resultEl.textContent = "Bir cevap yaz.";
+      resultEl.className = "result wrong";
+      return;
+    }
+
+    const q = questions[currentQuestion];
+
+    const validAnswers = [
+      normalize(q.answer),
+      ...q.aliases.map(a => normalize(a))
+    ];
+
+    if (validAnswers.includes(guess)) {
+      clearInterval(timer);
+
+      let points = 0;
+
+      if (revealStage === 1) points = 1000;
+      else if (revealStage === 2) points = 750;
+      else if (revealStage === 3) points = 500;
+      else if (revealStage === 4) points = 250;
+
+      score += points;
+      correct++;
+
+      scoreEl.textContent = score;
+
+      resultEl.textContent =
+        `Doğru! +${points} puan`;
+
+      resultEl.className = "result correct";
+
+      updateReveal();
+
+      finishQuestion();
+    } else {
+      resultEl.textContent = "Yanlış tahmin. Biraz daha ipucu açılıyor.";
+      resultEl.className = "result wrong";
+
+      revealMore();
+    }
+  }
+
+  function finishQuestion() {
+    questionFinished = true;
+
+    answerInputEl.disabled = true;
+
+    clearInterval(timer);
+
+    nextButtonEl.style.display = "block";
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+
+    if (currentQuestion >= questions.length) {
+      endGame();
+      return;
+    }
+
+    loadQuestion();
+  }
+
+  function startGame() {
+    score = 0;
+    correct = 0;
+    currentQuestion = 0;
+
+    scoreEl.textContent = score;
+
+    startScreen.classList.add("hidden");
+    endScreen.classList.add("hidden");
+    gameScreen.classList.remove("hidden");
+
+    loadQuestion();
+  }
+
+  function endGame() {
+    clearInterval(timer);
+
+    gameScreen.classList.add("hidden");
+    endScreen.classList.remove("hidden");
+
+    document.getElementById("finalScore").textContent = score;
+    document.getElementById("finalCorrect").textContent = correct;
+    document.getElementById("finalTotal").textContent = questions.length;
+  }
+
+  function restartGame() {
+    endScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+  }
+
+  function handleEnter(event) {
+    if (event.key === "Enter") {
+      submitAnswer();
+    }
+  }
+</script>
+
 </body>
 </html>
