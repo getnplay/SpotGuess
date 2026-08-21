@@ -11,21 +11,15 @@
       --text: #111827;
       --muted: #667085;
       --border: #e5e7eb;
-      --card: rgba(255, 255, 255, 0.92);
       --purple: #7c3aed;
       --blue: #2563eb;
       --pink: #ec4899;
       --green: #16a34a;
       --red: #dc2626;
-      --gray-bg: #f8fafc;
     }
 
     * {
       box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
@@ -34,9 +28,9 @@
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 10% 5%, rgba(124, 58, 237, 0.08), transparent 25%),
-        radial-gradient(circle at 90% 10%, rgba(37, 99, 235, 0.08), transparent 25%),
-        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.07), transparent 30%),
+        radial-gradient(circle at 8% 5%, rgba(124, 58, 237, 0.09), transparent 24%),
+        radial-gradient(circle at 92% 8%, rgba(37, 99, 235, 0.09), transparent 24%),
+        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.08), transparent 28%),
         #ffffff;
     }
 
@@ -50,74 +44,79 @@
     }
 
     .app {
-      width: min(1100px, 94%);
+      width: min(1050px, 94%);
       margin: 0 auto;
       padding: 24px 0 48px;
-    }
-
-    /* ---------------- HEADER ---------------- */
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 22px;
-    }
-
-    .logo {
-      font-size: 32px;
-      font-weight: 900;
-      letter-spacing: -1.7px;
-    }
-
-    .logo span {
-      background: linear-gradient(90deg, var(--purple), var(--blue), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .score-pill {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.92);
-      padding: 10px 15px;
-      border-radius: 14px;
-      font-weight: 800;
-      box-shadow: 0 8px 25px rgba(15,23,42,.05);
-    }
-
-    /* ---------------- SCREEN ---------------- */
-
-    .screen {
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.08), transparent 28%),
-        radial-gradient(circle at 90% 10%, rgba(14, 165, 233, 0.08), transparent 28%),
-        radial-gradient(circle at 50% 100%, rgba(236, 72, 153, 0.06), transparent 30%),
-        var(--card);
-      box-shadow:
-        0 25px 70px rgba(15, 23, 42, 0.08);
-      backdrop-filter: blur(10px);
-      padding: 30px;
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* ---------------- HOME ---------------- */
+    /* ================= HEADER ================= */
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+    }
+
+    .logo span {
+      background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--blue),
+        var(--pink)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .score-pill {
+      background: rgba(255,255,255,.95);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 15px;
+      font-weight: 900;
+      box-shadow: 0 8px 24px rgba(15,23,42,.05);
+    }
+
+    /* ================= SCREEN ================= */
+
+    .screen {
+      background:
+        radial-gradient(circle at 8% 8%, rgba(124,58,237,.08), transparent 26%),
+        radial-gradient(circle at 92% 8%, rgba(37,99,235,.08), transparent 25%),
+        rgba(255,255,255,.94);
+
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 30px;
+
+      box-shadow:
+        0 25px 70px rgba(15,23,42,.08);
+    }
+
+    /* ================= HOME ================= */
 
     .hero {
       text-align: center;
-      padding: 10px 0 20px;
+      padding: 8px 0 20px;
     }
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(46px, 8vw, 78px);
+      font-size: clamp(48px, 8vw, 78px);
       letter-spacing: -5px;
+
       background:
         linear-gradient(
           90deg,
@@ -126,17 +125,17 @@
           #2563eb,
           #ec4899
         );
+
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
+      color: transparent;
     }
 
     .hero p {
-      max-width: 670px;
+      max-width: 680px;
       margin: 14px auto 0;
       color: var(--muted);
       line-height: 1.7;
-      font-size: 16px;
     }
 
     .section-title {
@@ -154,24 +153,31 @@
     .category {
       border: 1px solid var(--border);
       border-radius: 18px;
-      background: rgba(255,255,255,.92);
-      color: var(--text);
+      background: rgba(255,255,255,.96);
       padding: 18px 10px;
-      font-weight: 800;
+      font-weight: 900;
+      color: var(--text);
       transition: .18s ease;
-      box-shadow: 0 5px 16px rgba(15,23,42,.03);
     }
 
     .category:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 25px rgba(15,23,42,.08);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(15,23,42,.08);
     }
 
     .category.active {
-      color: #fff;
+      color: white;
       border-color: transparent;
-      background: linear-gradient(135deg, var(--purple), var(--blue));
-      box-shadow: 0 12px 28px rgba(99,102,241,.24);
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--purple),
+          var(--blue)
+        );
+
+      box-shadow:
+        0 12px 28px rgba(99,102,241,.25);
     }
 
     .category-icon {
@@ -189,9 +195,9 @@
     .difficulty {
       border: 1px solid var(--border);
       border-radius: 16px;
-      background: rgba(255,255,255,.92);
+      background: white;
       padding: 14px 10px;
-      font-weight: 800;
+      font-weight: 900;
       transition: .18s ease;
     }
 
@@ -214,11 +220,11 @@
     .primary {
       border: 0;
       border-radius: 16px;
-      padding: 15px 24px;
-      background: linear-gradient(135deg, #111827, #374151);
+      padding: 15px 25px;
+      background: linear-gradient(135deg,#111827,#374151);
       color: white;
       font-weight: 900;
-      box-shadow: 0 12px 25px rgba(15,23,42,.16);
+      box-shadow: 0 12px 25px rgba(15,23,42,.15);
       transition: .18s ease;
     }
 
@@ -232,55 +238,54 @@
       padding: 14px 20px;
       background: white;
       color: var(--text);
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .info-row {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 9px;
       margin-top: 20px;
     }
 
     .info-chip {
       padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(255,255,255,.86);
+      background: white;
       border: 1px solid var(--border);
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
     }
 
-    /* ---------------- GAME HEADER ---------------- */
+    /* ================= GAME ================= */
 
     .game-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 13px;
+      margin-bottom: 12px;
     }
 
     .round {
       color: var(--muted);
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .badge {
       padding: 8px 13px;
       border-radius: 999px;
+      background: white;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.95);
       font-size: 13px;
       font-weight: 900;
     }
 
     .question {
       text-align: center;
-      margin: 5px 0;
-      font-size: clamp(28px, 5vw, 42px);
+      font-size: clamp(29px, 5vw, 42px);
+      margin: 4px 0;
       letter-spacing: -1px;
     }
 
@@ -290,128 +295,121 @@
       margin-bottom: 20px;
     }
 
-    /* ---------------- TIMER ---------------- */
+    /* TIMER */
 
     .timer-top {
       display: flex;
       justify-content: space-between;
+      margin-bottom: 7px;
       color: var(--muted);
       font-size: 13px;
-      margin-bottom: 7px;
     }
 
     .timer {
+      width: 100%;
       height: 10px;
-      background: #eceff3;
       border-radius: 999px;
       overflow: hidden;
+      background: #eceff3;
       margin-bottom: 22px;
     }
 
     .timer-fill {
       height: 100%;
       width: 100%;
-      background: linear-gradient(90deg, #111827, #4b5563);
+      background: linear-gradient(
+        90deg,
+        #111827,
+        #4b5563
+      );
       transition: width .15s linear;
     }
 
-    /* ---------------- IMAGE AREA ---------------- */
+    /* ================= IMAGE ================= */
 
     .image-container {
       width: min(790px, 100%);
       aspect-ratio: 4 / 3;
       margin: 0 auto;
+
+      background: white;
+      border: 1px solid #e0e3e7;
       border-radius: 24px;
-      border: 1px solid #dfe3e8;
-      background: #ffffff;
-      position: relative;
+
       overflow: hidden;
+      position: relative;
+
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
     }
 
     /*
-      Bu alan görselin tamamını barındırıyor.
+      Bu çerçeve sadece görselin bulunduğu alan.
+      Sayfanın geri kalanı tamamen beyaz.
     */
+
     .logo-frame {
-      position: relative;
       width: min(76%, 610px);
       aspect-ratio: 3 / 2;
+      position: relative;
       overflow: hidden;
       background: white;
-      border-radius: 12px;
     }
 
     /*
-      Gerçek logo/görsel burada.
-      clip-path ile sadece küçük parçası görünür.
+      GERÇEK GÖRSEL.
+
+      JavaScript clip-path'i değiştirecek.
+      Böylece sadece seçilen bölüm görünür.
     */
+
     .logo-image {
       position: absolute;
       inset: 0;
+
       width: 100%;
       height: 100%;
+
       object-fit: contain;
+
       user-select: none;
       pointer-events: none;
-      clip-path: inset(40% 40% 40% 40%);
-      transition: clip-path .35s ease;
-    }
 
-    /*
-      Görselin geri kalanını beyazlaştıran katman.
-      Böylece ekranda sadece açık pencere görünür.
-    */
-    .white-overlay {
-      position: absolute;
-      inset: 0;
-      background: white;
-      pointer-events: none;
-      z-index: 2;
-      clip-path: polygon(
-        0 0,
-        100% 0,
-        100% 100%,
-        0 100%
+      clip-path: inset(
+        40% 40% 40% 40%
       );
-      transition: clip-path .35s ease;
-    }
 
-    /*
-      Açık alanın çevresindeki ince çerçeve.
-    */
-    .reveal-border {
-      position: absolute;
-      border: 2px solid rgba(17,24,39,.55);
-      border-radius: 8px;
-      pointer-events: none;
-      z-index: 4;
-      transition: all .35s ease;
+      transition:
+        clip-path .35s ease;
     }
 
     .reveal-info {
       position: absolute;
       left: 12px;
       bottom: 12px;
-      z-index: 5;
-      background: rgba(255,255,255,.95);
+
+      background: rgba(255,255,255,.96);
+
       border: 1px solid #d9dde3;
-      color: #111827;
+
       padding: 7px 10px;
       border-radius: 10px;
+
       font-size: 12px;
       font-weight: 900;
+
+      z-index: 5;
     }
 
-    /* ---------------- INPUT ---------------- */
+    /* ================= ANSWER ================= */
 
     .hint {
-      text-align: center;
       min-height: 25px;
-      margin: 16px 0 11px;
+      text-align: center;
       color: var(--muted);
       font-weight: 800;
+      margin: 16px 0 11px;
     }
 
     .answer-row {
@@ -424,21 +422,26 @@
     .answer {
       flex: 1;
       min-width: 0;
-      border: 1px solid #d0d5dd;
-      background: white;
-      border-radius: 15px;
+
       padding: 15px;
+
+      border-radius: 15px;
+      border: 1px solid #d0d5dd;
+
       outline: none;
+
+      background: white;
       color: var(--text);
     }
 
     .answer:focus {
       border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.10);
+      box-shadow:
+        0 0 0 3px rgba(124,58,237,.10);
     }
 
     .feedback {
-      min-height: 30px;
+      min-height: 29px;
       text-align: center;
       margin-top: 14px;
       font-weight: 900;
@@ -458,34 +461,40 @@
       margin-top: 12px;
     }
 
-    /* ---------------- RESULT ---------------- */
+    /* ================= RESULT ================= */
 
     .result {
       text-align: center;
-      padding: 30px 0;
+      padding: 32px 0;
     }
 
     .result h2 {
       margin: 0;
       font-size: 48px;
-      letter-spacing: -2px;
     }
 
     .big-score {
-      font-size: 78px;
+      font-size: 80px;
       font-weight: 900;
       margin: 8px 0;
-      background: linear-gradient(90deg, var(--purple), var(--blue));
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--purple),
+          var(--blue)
+        );
+
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
+      color: transparent;
     }
 
     .result-line {
       color: var(--muted);
       font-size: 17px;
       line-height: 1.8;
-      margin-bottom: 25px;
+      margin-bottom: 24px;
     }
 
     .result-buttons {
@@ -495,7 +504,7 @@
       flex-wrap: wrap;
     }
 
-    /* ---------------- RESPONSIVE ---------------- */
+    /* ================= MOBILE ================= */
 
     @media (max-width: 900px) {
       .category-grid {
@@ -508,18 +517,14 @@
     }
 
     @media (max-width: 650px) {
+
       .app {
         width: 94%;
-        padding-top: 15px;
       }
 
       .screen {
         padding: 18px;
-        border-radius: 21px;
-      }
-
-      header {
-        margin-bottom: 15px;
+        border-radius: 20px;
       }
 
       .logo {
@@ -545,6 +550,7 @@
       .hero h1 {
         letter-spacing: -3px;
       }
+
     }
   </style>
 </head>
@@ -554,94 +560,163 @@
 <div class="app">
 
   <header>
-    <div class="logo">Spot<span>Guess</span></div>
+
+    <div class="logo">
+      Spot<span>Guess</span>
+    </div>
 
     <div class="score-pill">
       🏆 <span id="topScore">0</span>
     </div>
+
   </header>
+
 
   <!-- ================= HOME ================= -->
 
-  <section id="homeScreen" class="screen">
+  <section
+    id="homeScreen"
+    class="screen"
+  >
 
     <div class="hero">
+
       <h1>SpotGuess</h1>
 
       <p>
-        Bir logo, bayrak veya görselin sadece küçük bir kısmını gör.
-        Ne olduğunu tahmin et. Ne kadar az parçayla bilirsen o kadar çok puan kazan.
+        Bir logo, bayrak veya görselin sadece küçük
+        bir kısmını gör. Ne olduğunu tahmin et.
+        Ne kadar erken bilirsen o kadar çok puan kazan.
       </p>
+
     </div>
+
 
     <div class="section-title">
       Kategori seç
     </div>
 
+
     <div class="category-grid">
 
-      <button class="category active" data-category="flags">
+      <button
+        class="category active"
+        data-category="flags"
+      >
         <span class="category-icon">🌍</span>
         Bayraklar
       </button>
 
-      <button class="category" data-category="brands">
+
+      <button
+        class="category"
+        data-category="brands"
+      >
         <span class="category-icon">🏷️</span>
         Markalar
       </button>
 
-      <button class="category" data-category="football">
+
+      <button
+        class="category"
+        data-category="football"
+      >
         <span class="category-icon">⚽</span>
         Futbol
       </button>
 
-      <button class="category" data-category="basketball">
+
+      <button
+        class="category"
+        data-category="basketball"
+      >
         <span class="category-icon">🏀</span>
         Basketbol
       </button>
 
-      <button class="category" data-category="games">
+
+      <button
+        class="category"
+        data-category="games"
+      >
         <span class="category-icon">🎮</span>
         Oyunlar
       </button>
 
     </div>
 
+
     <div class="section-title">
       Zorluk
     </div>
 
+
     <div class="difficulty-grid">
 
-      <button class="difficulty active" data-difficulty="easy">
+      <button
+        class="difficulty active"
+        data-difficulty="easy"
+      >
         🟢 Kolay
       </button>
 
-      <button class="difficulty" data-difficulty="medium">
+
+      <button
+        class="difficulty"
+        data-difficulty="medium"
+      >
         🟡 Orta
       </button>
 
-      <button class="difficulty" data-difficulty="hard">
+
+      <button
+        class="difficulty"
+        data-difficulty="hard"
+      >
         🔴 Zor
       </button>
 
-      <button class="difficulty" data-difficulty="impossible">
+
+      <button
+        class="difficulty"
+        data-difficulty="impossible"
+      >
         💀 İmkânsız
       </button>
 
     </div>
 
+
     <div class="start-wrap">
-      <button id="startButton" class="primary">
+
+      <button
+        id="startButton"
+        class="primary"
+      >
         Oyuna Başla
       </button>
+
     </div>
 
+
     <div class="info-row">
-      <div class="info-chip">10 soru</div>
-      <div class="info-chip">Süreli</div>
-      <div class="info-chip">Puan sistemi</div>
-      <div class="info-chip">Rastgele bölge</div>
+
+      <div class="info-chip">
+        10 soru
+      </div>
+
+      <div class="info-chip">
+        Süreli
+      </div>
+
+      <div class="info-chip">
+        Puan sistemi
+      </div>
+
+      <div class="info-chip">
+        Rastgele bölge
+      </div>
+
     </div>
 
   </section>
@@ -649,39 +724,66 @@
 
   <!-- ================= GAME ================= -->
 
-  <section id="gameScreen" class="screen hidden">
+  <section
+    id="gameScreen"
+    class="screen hidden"
+  >
 
     <div class="game-top">
 
       <div class="round">
-        Soru <span id="roundNumber">1</span> / 10
+        Soru
+        <span id="roundNumber">1</span>
+        / 10
       </div>
 
-      <div id="categoryBadge" class="badge">
+
+      <div
+        id="categoryBadge"
+        class="badge"
+      >
         🌍 Bayraklar
       </div>
 
     </div>
 
-    <h2 id="questionTitle" class="question">
+
+    <h2
+      id="questionTitle"
+      class="question"
+    >
       Bu hangi ülke?
     </h2>
 
+
     <div class="question-sub">
-      Sadece açık olan küçük bölgeyi görebiliyorsun.
+      Görselin sadece açık olan küçük parçasını görüyorsun.
     </div>
+
 
     <div class="timer-top">
+
       <span>Zaman</span>
-      <span><strong id="timerText">15</strong> saniye</span>
+
+      <span>
+        <strong id="timerText">15</strong>
+        saniye
+      </span>
+
     </div>
+
 
     <div class="timer">
-      <div id="timerFill" class="timer-fill"></div>
+
+      <div
+        id="timerFill"
+        class="timer-fill"
+      ></div>
+
     </div>
 
 
-    <!-- IMAGE -->
+    <!-- GÖRSEL -->
 
     <div class="image-container">
 
@@ -690,7 +792,6 @@
         <img
           id="logoImage"
           class="logo-image"
-          src=""
           alt="Tahmin görseli"
           draggable="false"
         >
@@ -698,14 +799,20 @@
       </div>
 
 
-      <div id="revealInfo" class="reveal-info">
+      <div
+        id="revealInfo"
+        class="reveal-info"
+      >
         Görünen alan: %8
       </div>
 
     </div>
 
 
-    <div id="hint" class="hint">
+    <div
+      id="hint"
+      class="hint"
+    >
       Henüz ipucu yok.
     </div>
 
@@ -720,19 +827,29 @@
         placeholder="Tahminini yaz..."
       >
 
-      <button id="guessButton" class="primary">
+
+      <button
+        id="guessButton"
+        class="primary"
+      >
         Tahmin Et
       </button>
 
     </div>
 
 
-    <div id="feedback" class="feedback"></div>
+    <div
+      id="feedback"
+      class="feedback"
+    ></div>
 
 
     <div class="next-wrap">
 
-      <button id="nextButton" class="secondary hidden">
+      <button
+        id="nextButton"
+        class="secondary hidden"
+      >
         Sonraki Soru →
       </button>
 
@@ -743,32 +860,54 @@
 
   <!-- ================= RESULT ================= -->
 
-  <section id="resultScreen" class="screen hidden">
+  <section
+    id="resultScreen"
+    class="screen hidden"
+  >
 
     <div class="result">
 
-      <h2>Oyun Bitti</h2>
+      <h2>
+        Oyun Bitti
+      </h2>
 
-      <div id="bigScore" class="big-score">
+
+      <div
+        id="bigScore"
+        class="big-score"
+      >
         0
       </div>
 
+
       <div class="result-line">
-        Doğru cevap:
-        <strong id="correctCount">0</strong> / 10
+
+        Doğru:
+        <strong id="correctCount">0</strong>
+        / 10
+
         <br>
 
         Başarı:
         <strong id="successPercent">%0</strong>
+
       </div>
+
 
       <div class="result-buttons">
 
-        <button id="againButton" class="primary">
+        <button
+          id="againButton"
+          class="primary"
+        >
           Tekrar Oyna
         </button>
 
-        <button id="homeButton" class="secondary">
+
+        <button
+          id="homeButton"
+          class="secondary"
+        >
           Ana Menü
         </button>
 
@@ -783,27 +922,20 @@
 
 <script>
 
-  /*
-    ==========================================================
-    SORU VERİLERİ
-    ==========================================================
+  /* ==========================================================
+     SORULAR
+  ==========================================================
 
-    Görseller images/ klasöründen okunuyor.
+     Görseller images/ klasöründe olacak.
 
-    ÖRNEK:
-      images/bjk.png
+     Örnek:
 
-    Yeni soru eklemek için:
-      {
-        answer: "Beşiktaş",
-        aliases: ["bjk", "besiktas", "beşiktaş"],
-        image: "images/bjk.png",
-        hint: "İstanbul'dan bir spor kulübü."
-      }
+     images/bjk.png
+     images/nike.png
+     images/turkiye.png
 
-    Görsel dosyaları senin eklediğin,
-    kullanma hakkına sahip olduğun görseller olmalı.
-  */
+     Dosya adları kodla BİREBİR aynı olmalı.
+  ========================================================== */
 
 
   const QUESTION_BANK = {
@@ -812,42 +944,61 @@
 
       {
         answer: "Türkiye",
-        aliases: ["turkiye", "türkiye", "turkey"],
+        aliases: [
+          "turkiye",
+          "türkiye",
+          "turkey"
+        ],
         image: "images/turkiye.png",
         hint: "Bayrağında ay ve yıldız bulunur."
       },
 
       {
         answer: "Japonya",
-        aliases: ["japonya", "japan"],
+        aliases: [
+          "japonya",
+          "japan"
+        ],
         image: "images/japonya.png",
         hint: "Asya'da bir ada ülkesi."
       },
 
       {
         answer: "Fransa",
-        aliases: ["fransa", "france"],
+        aliases: [
+          "fransa",
+          "france"
+        ],
         image: "images/fransa.png",
         hint: "Avrupa'da bulunan üç renkli bir bayrak."
       },
 
       {
         answer: "Almanya",
-        aliases: ["almanya", "germany"],
+        aliases: [
+          "almanya",
+          "germany"
+        ],
         image: "images/almanya.png",
         hint: "Üç yatay renkli bölgesi vardır."
       },
 
       {
         answer: "İtalya",
-        aliases: ["italya", "italy"],
+        aliases: [
+          "italya",
+          "italy"
+        ],
         image: "images/italya.png",
         hint: "Akdeniz'de çizme şeklinde bir ülke."
       },
 
       {
         answer: "Kanada",
-        aliases: ["kanada", "canada"],
+        aliases: [
+          "kanada",
+          "canada"
+        ],
         image: "images/kanada.png",
         hint: "Bayrağında akçaağaç yaprağı vardır."
       }
@@ -859,35 +1010,47 @@
 
       {
         answer: "Beşiktaş",
-        aliases: ["bjk", "besiktas", "beşiktaş"],
+        aliases: [
+          "bjk",
+          "besiktas",
+          "beşiktaş"
+        ],
         image: "images/bjk.png",
         hint: "İstanbul'dan siyah-beyaz bir spor kulübü."
       },
 
       {
         answer: "Nike",
-        aliases: ["nike"],
+        aliases: [
+          "nike"
+        ],
         image: "images/nike.png",
         hint: "Spor giyim markası."
       },
 
       {
         answer: "Adidas",
-        aliases: ["adidas"],
+        aliases: [
+          "adidas"
+        ],
         image: "images/adidas.png",
         hint: "Üç çizgili tasarımıyla tanınır."
       },
 
       {
         answer: "YouTube",
-        aliases: ["youtube"],
+        aliases: [
+          "youtube"
+        ],
         image: "images/youtube.png",
         hint: "Video platformu."
       },
 
       {
         answer: "Spotify",
-        aliases: ["spotify"],
+        aliases: [
+          "spotify"
+        ],
         image: "images/spotify.png",
         hint: "Müzik ve podcast platformu."
       }
@@ -899,28 +1062,43 @@
 
       {
         answer: "Beşiktaş",
-        aliases: ["bjk", "besiktas", "beşiktaş"],
+        aliases: [
+          "bjk",
+          "besiktas",
+          "beşiktaş"
+        ],
         image: "images/bjk.png",
         hint: "İstanbul'un siyah-beyaz kulüplerinden biri."
       },
 
       {
         answer: "Galatasaray",
-        aliases: ["galatasaray", "gs"],
+        aliases: [
+          "galatasaray",
+          "gs"
+        ],
         image: "images/galatasaray.png",
         hint: "Sarı-kırmızı renklerle bilinir."
       },
 
       {
         answer: "Fenerbahçe",
-        aliases: ["fenerbahce", "fenerbahçe", "fb"],
+        aliases: [
+          "fenerbahce",
+          "fenerbahçe",
+          "fb"
+        ],
         image: "images/fenerbahce.png",
         hint: "Sarı-lacivert renklerle bilinir."
       },
 
       {
         answer: "Barcelona",
-        aliases: ["barcelona", "barca", "barça"],
+        aliases: [
+          "barcelona",
+          "barca",
+          "barça"
+        ],
         image: "images/barcelona.png",
         hint: "Katalonya ile özdeşleşen futbol kulübü."
       }
@@ -932,21 +1110,30 @@
 
       {
         answer: "Chicago Bulls",
-        aliases: ["bulls", "chicago bulls"],
+        aliases: [
+          "bulls",
+          "chicago bulls"
+        ],
         image: "images/chicago-bulls.png",
-        hint: "NBA'de oynayan kırmızı renkli takım."
+        hint: "NBA'de oynayan kırmızı ağırlıklı takım."
       },
 
       {
         answer: "Los Angeles Lakers",
-        aliases: ["lakers", "los angeles lakers"],
+        aliases: [
+          "lakers",
+          "los angeles lakers"
+        ],
         image: "images/lakers.png",
-        hint: "Mor ve sarı renkleriyle tanınır."
+        hint: "Mor ve sarı renklerle tanınır."
       },
 
       {
         answer: "Boston Celtics",
-        aliases: ["celtics", "boston celtics"],
+        aliases: [
+          "celtics",
+          "boston celtics"
+        ],
         image: "images/celtics.png",
         hint: "Yeşil renkli NBA takımı."
       }
@@ -958,30 +1145,38 @@
 
       {
         answer: "Minecraft",
-        aliases: ["minecraft"],
+        aliases: [
+          "minecraft"
+        ],
         image: "images/minecraft.png",
         hint: "Bloklardan oluşan bir oyun dünyası."
       },
 
       {
         answer: "Fortnite",
-        aliases: ["fortnite"],
+        aliases: [
+          "fortnite"
+        ],
         image: "images/fortnite.png",
         hint: "Battle royale türüyle tanınır."
       },
 
       {
         answer: "Roblox",
-        aliases: ["roblox"],
+        aliases: [
+          "roblox"
+        ],
         image: "images/roblox.png",
-        hint: "Kullanıcıların birçok farklı oyun oynayabildiği platform."
+        hint: "Birçok farklı oyun ve deneyim barındırır."
       },
 
       {
         answer: "Among Us",
-        aliases: ["among us"],
+        aliases: [
+          "among us"
+        ],
         image: "images/among-us.png",
-        hint: "Astronotların olduğu sosyal çıkarım oyunu."
+        hint: "Renkli astronotların olduğu sosyal çıkarım oyunu."
       }
 
     ]
@@ -1040,12 +1235,6 @@
   const logoImage =
     document.getElementById("logoImage");
 
-  const logoFrame =
-    document.querySelector(".logo-frame");
-
-  const revealBorder =
-    document.getElementById("revealBorder");
-
   const revealInfo =
     document.getElementById("revealInfo");
 
@@ -1069,7 +1258,7 @@
 
 
   /* ==========================================================
-     KATEGORİ SEÇİMİ
+     KATEGORİ
   ========================================================== */
 
   document
@@ -1095,7 +1284,7 @@
 
 
   /* ==========================================================
-     ZORLUK SEÇİMİ
+     ZORLUK
   ========================================================== */
 
   document
@@ -1121,7 +1310,7 @@
 
 
   /* ==========================================================
-     YARDIMCI FONKSİYONLAR
+     NORMALIZE
   ========================================================== */
 
   function normalize(text) {
@@ -1129,15 +1318,19 @@
     return text
       .toLocaleLowerCase("tr-TR")
       .trim()
-      .replace(/ı/g, "i")
-      .replace(/ş/g, "s")
-      .replace(/ğ/g, "g")
-      .replace(/ü/g, "u")
-      .replace(/ö/g, "o")
-      .replace(/ç/g, "c");
+      .replace(/ı/g,"i")
+      .replace(/ş/g,"s")
+      .replace(/ğ/g,"g")
+      .replace(/ü/g,"u")
+      .replace(/ö/g,"o")
+      .replace(/ç/g,"c");
 
   }
 
+
+  /* ==========================================================
+     SHUFFLE
+  ========================================================== */
 
   function shuffle(array) {
 
@@ -1150,7 +1343,9 @@
     ) {
 
       const j =
-        Math.floor(Math.random() * (i + 1));
+        Math.floor(
+          Math.random() * (i + 1)
+        );
 
       [
         result[i],
@@ -1167,32 +1362,58 @@
   }
 
 
-  function getTimeByDifficulty() {
+  /* ==========================================================
+     ZAMAN
+  ========================================================== */
 
-    if (selectedDifficulty === "easy")
+  function getTime() {
+
+    if (
+      selectedDifficulty === "easy"
+    ) {
       return 18;
+    }
 
-    if (selectedDifficulty === "medium")
+    if (
+      selectedDifficulty === "medium"
+    ) {
       return 14;
+    }
 
-    if (selectedDifficulty === "hard")
+    if (
+      selectedDifficulty === "hard"
+    ) {
       return 11;
+    }
 
     return 8;
 
   }
 
 
+  /* ==========================================================
+     İLK GÖRÜNEN ALAN
+  ========================================================== */
+
   function getInitialSize() {
 
-    if (selectedDifficulty === "easy")
+    if (
+      selectedDifficulty === "easy"
+    ) {
       return 23;
+    }
 
-    if (selectedDifficulty === "medium")
-      return 18;
+    if (
+      selectedDifficulty === "medium"
+    ) {
+      return 17;
+    }
 
-    if (selectedDifficulty === "hard")
-      return 13;
+    if (
+      selectedDifficulty === "hard"
+    ) {
+      return 12;
+    }
 
     return 8;
 
@@ -1205,107 +1426,115 @@
 
   function generateRandomRegion() {
 
-    const size =
-      revealLevel === 1
-        ? getInitialSize()
-        : revealLevel === 2
-        ? getInitialSize() * 1.55
-        : revealLevel === 3
-        ? getInitialSize() * 2.3
-        : revealLevel === 4
-        ? getInitialSize() * 3.2
-        : 100;
+    let size;
 
-    const finalSize =
-      Math.min(size, 85);
+    if (revealLevel === 1) {
+
+      size =
+        getInitialSize();
+
+    } else if (revealLevel === 2) {
+
+      size =
+        getInitialSize() * 1.55;
+
+    } else if (revealLevel === 3) {
+
+      size =
+        getInitialSize() * 2.3;
+
+    } else if (revealLevel === 4) {
+
+      size =
+        getInitialSize() * 3.4;
+
+    } else {
+
+      size = 100;
+
+    }
+
+    size =
+      Math.min(size, 88);
+
+    /*
+      Rastgele konum.
+    */
 
     const x =
-      Math.random() * (100 - finalSize);
+      Math.random() *
+      (100 - size);
 
     const y =
-      Math.random() * (100 - finalSize);
+      Math.random() *
+      (100 - size);
 
     return {
       x,
       y,
-      width: finalSize,
-      height: finalSize
+      width: size,
+      height: size
     };
 
   }
 
 
   /* ==========================================================
-     CLIP-PATH UYGULA
+     SADECE SEÇİLEN KISMI GÖSTER
   ========================================================== */
 
   function applyReveal() {
 
-    if (!currentRegion)
+    if (!currentRegion) {
       return;
+    }
 
     const r =
       currentRegion;
 
-    /*
-      Görselin sadece seçilen bölgesi görünür.
-    */
+    const top =
+      r.y;
 
-    logoImage.style.clipPath = `
-      inset(
-        ${r.y}%
-        ${100 - r.x - r.width}%
-        ${100 - r.y - r.height}%
-        ${r.x}%
-      )
-    `;
+    const right =
+      100 -
+      r.x -
+      r.width;
 
-    /*
-      Açık pencerenin çerçevesini görselin üzerine
-      aynı yerde yerleştiriyoruz.
-    */
-
-    const frameRect =
-      logoFrame.getBoundingClientRect();
-
-    const containerRect =
-      logoFrame.parentElement.getBoundingClientRect();
+    const bottom =
+      100 -
+      r.y -
+      r.height;
 
     const left =
-      logoFrame.offsetLeft +
-      frameRect.width * (r.x / 100);
+      r.x;
 
-    const top =
-      logoFrame.offsetTop +
-      frameRect.height * (r.y / 100);
+    /*
+      En önemli kısım:
+      Görselin tamamı değil,
+      SADECE bu bölge gösteriliyor.
+    */
 
-    const width =
-      frameRect.width *
-      (r.width / 100);
+    logoImage.style.clipPath =
+      `inset(
+        ${top}%
+        ${right}%
+        ${bottom}%
+        ${left}%
+      )`;
 
-    const height =
-      frameRect.height *
-      (r.height / 100);
-
-    revealBorder.style.left =
-      `${left}px`;
-
-    revealBorder.style.top =
-      `${top}px`;
-
-    revealBorder.style.width =
-      `${width}px`;
-
-    revealBorder.style.height =
-      `${height}px`;
-
-    revealInfo.textContent =
-      `Görünen alan: ${Math.max(
+    const visible =
+      Math.max(
         1,
         Math.round(
-          (r.width * r.height) / 100
+          (
+            r.width *
+            r.height
+          ) / 100
         )
-      )}%`;
+      );
+
+    revealInfo.textContent =
+      `Görünen alan: %${visible}`;
 
   }
 
@@ -1319,7 +1548,7 @@
     clearInterval(timer);
 
     timeLeft =
-      getTimeByDifficulty();
+      getTime();
 
     timerText.textContent =
       timeLeft;
@@ -1330,8 +1559,9 @@
     timer =
       setInterval(() => {
 
-        if (locked)
+        if (locked) {
           return;
+        }
 
         timeLeft--;
 
@@ -1341,7 +1571,10 @@
         timerFill.style.width =
           `${Math.max(
             0,
-            (timeLeft / getTimeByDifficulty()) * 100
+            (
+              timeLeft /
+              getTime()
+            ) * 100
           )}%`;
 
         if (timeLeft <= 0) {
@@ -1354,7 +1587,7 @@
 
         }
 
-      }, 1000);
+      },1000);
 
   }
 
@@ -1365,17 +1598,21 @@
 
   function getPoints() {
 
-    if (revealLevel === 1)
+    if (revealLevel === 1) {
       return 1000;
+    }
 
-    if (revealLevel === 2)
+    if (revealLevel === 2) {
       return 750;
+    }
 
-    if (revealLevel === 3)
+    if (revealLevel === 3) {
       return 500;
+    }
 
-    if (revealLevel === 4)
+    if (revealLevel === 4) {
       return 250;
+    }
 
     return 0;
 
@@ -1397,9 +1634,14 @@
   function startGame() {
 
     const pool =
-      QUESTION_BANK[selectedCategory];
+      QUESTION_BANK[
+        selectedCategory
+      ];
 
-    if (!pool || pool.length === 0) {
+    if (
+      !pool ||
+      pool.length === 0
+    ) {
 
       alert(
         "Bu kategoride henüz görsel eklenmemiş."
@@ -1409,11 +1651,11 @@
 
     }
 
-    /*
-      Havuz 10'dan azsa tekrar kullan.
-    */
-
     questions = [];
+
+    /*
+      10 soru doldur.
+    */
 
     while (
       questions.length < 10
@@ -1426,7 +1668,7 @@
     }
 
     questions =
-      questions.slice(0, 10);
+      questions.slice(0,10);
 
     currentIndex = 0;
     score = 0;
@@ -1453,10 +1695,10 @@
 
 
   /* ==========================================================
-     KATEGORİ YAZILARI
+     KATEGORİ ADI
   ========================================================== */
 
-  function getCategoryName() {
+  function categoryName() {
 
     const names = {
 
@@ -1479,7 +1721,11 @@
   }
 
 
-  function getQuestionTitle() {
+  /* ==========================================================
+     SORU TİTLE
+  ========================================================== */
+
+  function questionName() {
 
     const titles = {
 
@@ -1521,45 +1767,10 @@
       currentIndex + 1;
 
     categoryBadge.textContent =
-      getCategoryName();
+      categoryName();
 
     questionTitle.textContent =
-      getQuestionTitle();
-
-    /*
-      Önce görseli yükle.
-      Yüklenince clip-path uygula.
-    */
-
-    logoImage.onload = () => {
-
-      requestAnimationFrame(() => {
-
-        currentRegion =
-          generateRandomRegion();
-
-        applyReveal();
-
-      });
-
-    };
-
-    logoImage.onerror = () => {
-
-      feedback.textContent =
-        `Görsel bulunamadı: ${question.image}`;
-
-      feedback.className =
-        "feedback wrong";
-
-    };
-
-    logoImage.src =
-      question.image;
-
-    /*
-      Başlangıç değerleri
-    */
+      questionName();
 
     hint.textContent =
       "Henüz ipucu yok.";
@@ -1580,31 +1791,59 @@
       "hidden"
     );
 
+    /*
+      Görseli yüklemeden clip-path
+      uygulanmasın.
+    */
+
+    logoImage.onload = () => {
+
+      currentRegion =
+        generateRandomRegion();
+
+      applyReveal();
+
+    };
+
+    logoImage.onerror = () => {
+
+      feedback.textContent =
+        `Görsel bulunamadı: ${question.image}`;
+
+      feedback.className =
+        "feedback wrong";
+
+    };
+
+    logoImage.src =
+      question.image;
+
     startTimer();
 
     setTimeout(() => {
       answerInput.focus();
-    }, 100);
+    },100);
 
   }
 
 
   /* ==========================================================
-     DAHA FAZLA GÖSTER
+     DAHA FAZLA GÖRSEL GÖSTER
   ========================================================== */
 
   function revealMore(message = "") {
 
-    if (locked)
+    if (locked) {
       return;
+    }
 
     if (revealLevel < 4) {
 
       revealLevel++;
 
       /*
-        Aynı bölgeyi büyütmek için mevcut bölgenin
-        merkezini koruyoruz.
+        Aynı bölgenin merkezini koruyoruz.
+        Yani yer değişmiyor, sadece büyüyor.
       */
 
       const old =
@@ -1630,11 +1869,17 @@
 
       let newX =
         old.x -
-        (newWidth - old.width) / 2;
+        (
+          newWidth -
+          old.width
+        ) / 2;
 
       let newY =
         old.y -
-        (newHeight - old.height) / 2;
+        (
+          newHeight -
+          old.height
+        ) / 2;
 
       newX =
         Math.max(
@@ -1664,7 +1909,9 @@
       applyReveal();
 
       hint.textContent =
-        `İpucu: ${questions[currentIndex].hint}`;
+        `İpucu: ${
+          questions[currentIndex].hint
+        }`;
 
       feedback.textContent =
         `${message} Daha fazla açıldı.`;
@@ -1684,7 +1931,7 @@
 
 
   /* ==========================================================
-     CEVAP KONTROL
+     CEVAP
   ========================================================== */
 
   document
@@ -1713,8 +1960,9 @@
 
   function submitAnswer() {
 
-    if (locked)
+    if (locked) {
       return;
+    }
 
     const question =
       questions[currentIndex];
@@ -1737,13 +1985,20 @@
     }
 
     const accepted = [
-      normalize(question.answer),
+
+      normalize(
+        question.answer
+      ),
+
       ...(question.aliases || [])
         .map(normalize)
+
     ];
 
     if (
-      accepted.includes(guess)
+      accepted.includes(
+        guess
+      )
     ) {
 
       clearInterval(timer);
@@ -1763,6 +2018,11 @@
 
       topScore.textContent =
         score;
+
+      /*
+        Doğru cevaptan sonra büyük
+        bir alan göster.
+      */
 
       currentRegion = {
         x: 5,
@@ -1788,7 +2048,7 @@
     }
 
     feedback.textContent =
-      "❌ Yanlış. Biraz daha açıyoruz.";
+      "❌ Yanlış. Daha fazla açıyoruz.";
 
     feedback.className =
       "feedback wrong";
@@ -1799,7 +2059,7 @@
 
 
   /* ==========================================================
-     SORUYU BİTİR
+     SORU BİTİR
   ========================================================== */
 
   function finishQuestion() {
@@ -1811,6 +2071,10 @@
     answerInput.disabled =
       true;
 
+    /*
+      Tam görseli göster.
+    */
+
     currentRegion = {
       x: 0,
       y: 0,
@@ -1820,12 +2084,10 @@
 
     applyReveal();
 
-    /*
-      Puan verilmez.
-    */
-
     feedback.textContent =
-      `Cevap: ${questions[currentIndex].answer}`;
+      `Cevap: ${
+        questions[currentIndex].answer
+      }`;
 
     feedback.className =
       "feedback wrong";
@@ -1838,7 +2100,7 @@
 
 
   /* ==========================================================
-     SONRAKİ SORU
+     NEXT
   ========================================================== */
 
   nextButton.addEventListener(
@@ -1895,7 +2157,10 @@
     ).textContent =
       "%" +
       Math.round(
-        (correctAnswers / 10) * 100
+        (
+          correctAnswers /
+          questions.length
+        ) * 100
       );
 
   }
@@ -1954,8 +2219,7 @@
 
 
   /* ==========================================================
-     PENCERE BOYUTU DEĞİŞİNCE
-     ÇERÇEVEYİ TEKRAR HESAPLA
+     EKRAN BOYUTU DEĞİŞİRSE
   ========================================================== */
 
   window.addEventListener(
@@ -1967,9 +2231,7 @@
         !gameScreen.classList.contains("hidden")
       ) {
 
-        requestAnimationFrame(
-          applyReveal
-        );
+        applyReveal();
 
       }
 
